@@ -1,0 +1,16 @@
+
+<GraphGroup>
+	<Cols>1</Cols>
+	<Graph>
+		<Variables>root.SmoothCMPBasedICPPlannerVisualizer.SmoothCMPBasedICPPlanner.icpPlannerIsDoubleSupport</Variables>
+		<GraphConfiguration>
+			<Name>config3</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+</GraphGroup>

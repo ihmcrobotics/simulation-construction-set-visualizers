@@ -1,0 +1,4 @@
+root*false*false
+root.dummy*false*false
+root.VelocityConstrainedOrientationTrajectoryGeneratorVisualizer*false*false
+root.VelocityConstrainedOrientationTrajectoryGeneratorVisualizer.traj1VelocityConstrainedOrientationTrajectoryGenerator*false*false

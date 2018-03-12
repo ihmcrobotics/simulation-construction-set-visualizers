@@ -1,0 +1,9 @@
+root*false*false
+root.Dummy*false*false
+root.CoPPlanVisualizer*false*false
+root.CoPPlanVisualizer.leftFootYoPlaneContactState*false*false
+root.CoPPlanVisualizer.rightFootYoPlaneContactState*false*false
+root.CoPPlanVisualizer.BipedSupportPolygons*false*false
+root.CoPPlanVisualizer.ReferenceCoPTrajectoryGenerator*false*false
+root.CoPPlanVisualizer.CoPBalls*false*false
+root.CoPPlanVisualizer.WaypointVizBalls*false*false

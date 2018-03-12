@@ -1,0 +1,40 @@
+
+<GraphGroup>
+	<Cols>1</Cols>
+	<Graph>
+		<Variables>root.SmoothCMPBasedICPPlannerVisualizer.heelToeDesiredCMPX,root.SmoothCMPBasedICPPlannerVisualizer.cdsDesiredCMPX,root.SmoothCMPBasedICPPlannerVisualizer.desiredCMPX,root.SmoothCMPBasedICPPlannerVisualizer.desiredCMPAMOffX</Variables>
+		<GraphConfiguration>
+			<Name>config1</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.SmoothCMPBasedICPPlannerVisualizer.heelToeDesiredCMPY,root.SmoothCMPBasedICPPlannerVisualizer.cdsDesiredCMPY,root.SmoothCMPBasedICPPlannerVisualizer.desiredCMPY,root.SmoothCMPBasedICPPlannerVisualizer.desiredCMPAMOffY</Variables>
+		<GraphConfiguration>
+			<Name>config2</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.SmoothCMPBasedICPPlannerVisualizer.heelToeDesiredCMPZ,root.SmoothCMPBasedICPPlannerVisualizer.cdsDesiredCMPZ,root.SmoothCMPBasedICPPlannerVisualizer.desiredCMPAMOffZ,root.SmoothCMPBasedICPPlannerVisualizer.desiredCMPZ</Variables>
+		<GraphConfiguration>
+			<Name>config3</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+</GraphGroup>

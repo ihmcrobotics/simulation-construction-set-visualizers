@@ -1,0 +1,40 @@
+
+<GraphGroup>
+	<Cols>1</Cols>
+	<Graph>
+		<Variables>root.SmoothCMPBasedICPPlannerVisualizer.heelToeDesiredReactionForceX,root.SmoothCMPBasedICPPlannerVisualizer.cdsToeDesiredReactionForceX,root.SmoothCMPBasedICPPlannerVisualizer.desiredReactionForceAMOffX,root.SmoothCMPBasedICPPlannerVisualizer.desiredReactionForceX,root.SmoothCMPBasedICPPlannerVisualizer.desiredReactionForceNewtonX</Variables>
+		<GraphConfiguration>
+			<Name>config10</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.SmoothCMPBasedICPPlannerVisualizer.heelToeDesiredReactionForceY,root.SmoothCMPBasedICPPlannerVisualizer.cdsToeDesiredReactionForceY,root.SmoothCMPBasedICPPlannerVisualizer.desiredReactionForceAMOffY,root.SmoothCMPBasedICPPlannerVisualizer.desiredReactionForceY,root.SmoothCMPBasedICPPlannerVisualizer.desiredReactionForceNewtonY</Variables>
+		<GraphConfiguration>
+			<Name>config11</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.SmoothCMPBasedICPPlannerVisualizer.heelToeDesiredReactionForceZ,root.SmoothCMPBasedICPPlannerVisualizer.cdsToeDesiredReactionForceZ,root.SmoothCMPBasedICPPlannerVisualizer.desiredReactionForceAMOffZ,root.SmoothCMPBasedICPPlannerVisualizer.desiredReactionForceZ,root.SmoothCMPBasedICPPlannerVisualizer.desiredReactionForceNewtonZ</Variables>
+		<GraphConfiguration>
+			<Name>config12</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+</GraphGroup>

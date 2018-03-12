@@ -1,0 +1,6 @@
+root*false*false
+root.dummy*false*false
+root.TrajectoryPointOptimizerVisualizer*false*false
+root.TrajectoryPointOptimizerVisualizer.Trajectory*false*false
+root.TrajectoryPointOptimizerVisualizer.Trajectory.TrajectoryPointOptimizer*false*false
+root.TrajectoryPointOptimizerVisualizer.Trajectory.TrajectoryBalls*false*false

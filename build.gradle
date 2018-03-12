@@ -1,0 +1,94 @@
+buildscript {
+   repositories {
+      maven { url "https://plugins.gradle.org/m2/" }
+      mavenLocal()
+   }
+   dependencies {
+      classpath "us.ihmc:ihmc-build:0.12.8"
+      classpath "org.hidetake:gradle-ssh-plugin:2.1.1"
+   }
+}
+apply plugin: "us.ihmc.ihmc-build"
+apply plugin: "org.hidetake.ssh"
+
+import org.gradle.api.GradleException
+
+ihmc {
+   //loadProductProperties("../product.properties")
+
+   configureDependencyResolution()
+   configurePublications()
+}
+
+mainDependencies {
+   compile group: 'us.ihmc', name: 'euclid', version: '0.7.9.1'
+   compile group: 'us.ihmc', name: 'ihmc-yovariables', version: '0.2.8'
+   compile "org.ejml:dense64:0.30"
+   compile "org.ejml:core:0.30"
+   compile "net.sf.trove4j:trove4j:3.0.3"
+   compile "com.thoughtworks.xstream:xstream:1.4.7"
+   compile group: "us.ihmc", name: "ihmc-communication", version: groupDependencyVersion
+   compile group: "us.ihmc", name: "ihmc-common-walking-control-modules", version: groupDependencyVersion
+   compile group: "us.ihmc", name: "ihmc-robot-models", version: groupDependencyVersion
+   compile group: "us.ihmc", name: "ihmc-sensor-processing", version: groupDependencyVersion
+   compile group: "us.ihmc", name: "ihmc-humanoid-robotics", version: groupDependencyVersion
+   compile group: "us.ihmc", name: "ihmc-humanoid-behaviors", version: groupDependencyVersion
+   compile group: "us.ihmc", name: "ihmc-avatar-interfaces", version: groupDependencyVersion
+   compile group: "us.ihmc", name: "simulation-construction-set", version: groupDependencyVersion
+   compile group: "us.ihmc", name: "ihmc-state-estimation", version: groupDependencyVersion
+   compile group: "us.ihmc", name: "atlas", version: groupDependencyVersion
+   compile group: "us.ihmc", name: "ihmc-java-toolkit", version: groupDependencyVersion
+   compile group: "us.ihmc", name: "ihmc-commons", version: "0.18.0"
+   compile group: "us.ihmc", name: "ihmc-robotics-toolkit", version: groupDependencyVersion
+   compile group: "us.ihmc", name: "ihmc-graphics-description", version: groupDependencyVersion
+   compile group: "us.ihmc", name: "ihmc-geometry", version: groupDependencyVersion
+   compile group: "us.ihmc", name: "ihmc-simulation-toolkit", version: groupDependencyVersion
+}
+
+if (ihmc.isBuildRoot())
+{
+   remotes {
+      testbed {
+         host = '10.7.4.50'
+
+         // Set the username and password in ~/.gradle/gradle.properties.
+         user = project.hasProperty('testbed_username') ? "${testbed_username}" : "invalid"
+         password = project.hasProperty('testbed_password') ? "${testbed_password}" : "invalid"
+
+         knownHosts = allowAnyHosts
+      }
+   }
+
+   task deploy(dependsOn: ['jar']) {
+      ihmc.jarWithLibFolder()
+      def projectDir = project.buildscript.sourceFile.parent
+      def directory = 'testbed'
+
+      doLast {
+         if (!project.hasProperty('testbed_username') || !project.hasProperty('testbed_password'))
+         {
+            throw new GradleException("Please set testbed_username and testbed_password in ~/.gradle/gradle.properties. See https://docs.gradle.org/current/userguide/build_environment.html#sec:gradle_properties_and_system_properties for more information.")
+         }
+
+         ssh.run {
+            session(remotes.testbed) {
+               execute("mkdir -p " + directory + "/lib")
+
+               configurations.runtime.each {
+                  put it, directory + '/lib'
+               }
+
+               put jar.archivePath, directory + '/testbed.jar'
+
+               def scriptDir = new File(projectDir, "launchScripts")
+               def scriptDirCollection = files { scriptDir.listFiles() }
+               put scriptDirCollection, directory
+
+               scriptDirCollection.each {
+                  execute 'chmod 777 ' + directory + '/' + it.name
+               }
+            }
+         }
+      }
+   }
+}

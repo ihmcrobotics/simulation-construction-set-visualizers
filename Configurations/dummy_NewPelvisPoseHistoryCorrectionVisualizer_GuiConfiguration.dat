@@ -1,0 +1,373 @@
+<GraphGroup>
+	<Cols>1</Cols>
+	<Graph>
+		<Variables>root.dummy.timeStamp</Variables>
+		<GraphConfiguration>
+			<Name>config1</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.hasOneIcpPacketEverBeenReceived</Variables>
+		<GraphConfiguration>
+			<Name>config2</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.goalTranslationRawX,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.goalTranslationWithDeadzoneX</Variables>
+		<GraphConfiguration>
+			<Name>config3</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.goalTranslationRawY,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.goalTranslationWithDeadzoneY</Variables>
+		<GraphConfiguration>
+			<Name>config4</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.goalTranslationRawZ,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.goalTranslationWithDeadzoneZ</Variables>
+		<GraphConfiguration>
+			<Name>config5</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+</GraphGroup>
+<Entry Boxes Tab Pane>
+</Entry Boxes Tab Pane>
+
+<Number of ViewPorts>1</Number of ViewPorts>
+ <Main Viewport> 
+<Visible> true</Visible>
+</Main Viewport>
+
+<Graph Array Window Size>3</Graph Array Window Size>
+<Graph Array Window1>
+<ScreenID>1</ScreenID>
+<WindowLocation>1912.0, -41.0</WindowLocation>
+<WindowSize>1936.0, 1212.0</WindowSize>
+<GraphGroup>
+	<Cols>2</Cols>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.stateEstimatorInWorldFramePoseX,root.dummy.newPelvisPoseHistoryCorrection.iterativeClosestPointPoseInWorldFrameX,root.dummy.newPelvisPoseHistoryCorrection.correctedPelvisPoseInWorldFrameX</Variables>
+		<GraphConfiguration>
+			<Name>config6</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.stateEstimatorInWorldFramePoseYaw,root.dummy.newPelvisPoseHistoryCorrection.iterativeClosestPointPoseInWorldFrameYaw,root.dummy.newPelvisPoseHistoryCorrection.correctedPelvisPoseInWorldFrameYaw</Variables>
+		<GraphConfiguration>
+			<Name>config7</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.stateEstimatorInWorldFramePoseY,root.dummy.newPelvisPoseHistoryCorrection.iterativeClosestPointPoseInWorldFrameY,root.dummy.newPelvisPoseHistoryCorrection.correctedPelvisPoseInWorldFrameY</Variables>
+		<GraphConfiguration>
+			<Name>config8</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.stateEstimatorInWorldFramePosePitch,root.dummy.newPelvisPoseHistoryCorrection.iterativeClosestPointPoseInWorldFramePitch,root.dummy.newPelvisPoseHistoryCorrection.correctedPelvisPoseInWorldFramePitch</Variables>
+		<GraphConfiguration>
+			<Name>config9</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.stateEstimatorInWorldFramePoseZ,root.dummy.newPelvisPoseHistoryCorrection.iterativeClosestPointPoseInWorldFrameZ,root.dummy.newPelvisPoseHistoryCorrection.correctedPelvisPoseInWorldFrameZ</Variables>
+		<GraphConfiguration>
+			<Name>config10</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.stateEstimatorInWorldFramePoseRoll,root.dummy.newPelvisPoseHistoryCorrection.iterativeClosestPointPoseInWorldFrameRoll,root.dummy.newPelvisPoseHistoryCorrection.correctedPelvisPoseInWorldFrameRoll</Variables>
+		<GraphConfiguration>
+			<Name>config11</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+</GraphGroup>
+</Graph Array Window1><Graph Array Window2>
+<ScreenID>3</ScreenID>
+<WindowLocation>5752.0, -41.0</WindowLocation>
+<WindowSize>1936.0, 1212.0</WindowSize>
+<GraphGroup>
+	<Cols>2</Cols>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoGoalOffsetFramePoint_TranslationX,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoInterpolatedOffsetFramePoint_TranslationX</Variables>
+		<GraphConfiguration>
+			<Name>config12</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoGoalOffsetFrameOrientation_RotationYaw,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoInterpolatedOffsetFrameOrientation_RotationYaw</Variables>
+		<GraphConfiguration>
+			<Name>config13</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoGoalOffsetFramePoint_TranslationY,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoInterpolatedOffsetFramePoint_TranslationY</Variables>
+		<GraphConfiguration>
+			<Name>config14</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoGoalOffsetFrameOrientation_RotationPitch,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoInterpolatedOffsetFrameOrientation_RotationPitch</Variables>
+		<GraphConfiguration>
+			<Name>config15</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoGoalOffsetFramePoint_TranslationZ,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoInterpolatedOffsetFramePoint_TranslationZ</Variables>
+		<GraphConfiguration>
+			<Name>config16</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoGoalOffsetFrameOrientation_RotationRoll,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoInterpolatedOffsetFrameOrientation_RotationRoll</Variables>
+		<GraphConfiguration>
+			<Name>config17</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.distanceToTravel</Variables>
+		<GraphConfiguration>
+			<Name>config18</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.angleToTravel</Variables>
+		<GraphConfiguration>
+			<Name>config19</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+</GraphGroup>
+</Graph Array Window2><Graph Array Window3>
+<ScreenID>0</ScreenID>
+<WindowLocation>70.0, -8.0</WindowLocation>
+<WindowSize>1858.0, 1096.0</WindowSize>
+<GraphGroup>
+	<Cols>2</Cols>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoStartOffsetErrorPose_InWorldFrameX,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoGoalOffsetErrorPose_InWorldFrameX,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoInterpolatedOffset_InWorldFrameX</Variables>
+		<GraphConfiguration>
+			<Name>config20</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoStartOffsetErrorPose_InWorldFrameYaw,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoGoalOffsetErrorPose_InWorldFrameYaw,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoInterpolatedOffset_InWorldFrameYaw</Variables>
+		<GraphConfiguration>
+			<Name>config21</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoStartOffsetErrorPose_InWorldFrameY,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoGoalOffsetErrorPose_InWorldFrameY,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoInterpolatedOffset_InWorldFrameY</Variables>
+		<GraphConfiguration>
+			<Name>config22</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoStartOffsetErrorPose_InWorldFramePitch,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoGoalOffsetErrorPose_InWorldFramePitch,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoInterpolatedOffset_InWorldFramePitch</Variables>
+		<GraphConfiguration>
+			<Name>config23</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoStartOffsetErrorPose_InWorldFrameZ,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoGoalOffsetErrorPose_InWorldFrameZ,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoInterpolatedOffset_InWorldFrameZ</Variables>
+		<GraphConfiguration>
+			<Name>config24</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+	<Graph>
+		<Variables>root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoStartOffsetErrorPose_InWorldFrameRoll,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoGoalOffsetErrorPose_InWorldFrameRoll,root.dummy.newPelvisPoseHistoryCorrection.ClippedSpeedOffsetErrorInterpolator.yoInterpolatedOffset_InWorldFrameRoll</Variables>
+		<GraphConfiguration>
+			<Name>config25</Name>
+			<ScalingMethod>1</ScalingMethod>
+			<PlotType>100</PlotType>
+			<ShowBaseLines>true</ShowBaseLines>
+			<BaseLines>0.0,</BaseLines>
+			<MaxScaling>1.0</MaxScaling>
+			<MinScaling>0.0</MinScaling>
+		</GraphConfig>
+	</Graph>
+</GraphGroup>
+</Graph Array Window3>
+
+<Extra Panels>
+<Main Viewport>
+
+</Main Viewport></Extra Panels>
+
+<Current View>Normal View</Current View>
+ <Canvas 1> 
+ <Camera X>0.0</Camera X>
+ <Camera Y>-6.0</Camera Y>
+ <Camera Z>1.0</Camera Z>
+ <Dolly data> 
+ <Position X>2.0</Position X>
+ <Position Y>12.0</Position Y>
+ <Position Z>0.0</Position Z>
+<Dolly Booleans>
+<Dolly>false</Dolly>
+<Dolly X>true</Dolly X>
+<Dolly Y>true</Dolly Y>
+<Dolly Z>true</Dolly Z>
+</Dolly Booleans>
+</Dolly data>
+ <Track data> 
+ <Position X>0.0</Position X>
+ <Position Y>0.0</Position Y>
+ <Position Z>0.0</Position Z>
+ <Track Booleans>
+<Track>false</Track>
+<Track X>true</Track X>
+<Track Y>true</Track Y>
+<Track Z>false</Track Z>
+</Track Booleans>
+</Track data>
+<Fix Position>
+<Fix X>0.0</Fix X>
+<Fix Y>0.0</Fix Y>
+<Fix Z>0.6</Fix Z>
+</Fix Position>
+</Canvas 1>
