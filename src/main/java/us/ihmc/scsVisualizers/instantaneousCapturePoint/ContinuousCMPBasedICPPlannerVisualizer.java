@@ -658,7 +658,7 @@ public class ContinuousCMPBasedICPPlannerVisualizer
 
          for (FootstepDataListMessage footstepDataList : footstepDataLists)
          {
-            for (FootstepDataMessage footstepData : footstepDataList.getDataList())
+            for (FootstepDataMessage footstepData : footstepDataList.getFootstepDataList())
             {
                RobotSide robotSide = RobotSide.fromByte(footstepData.getRobotSide());
                Point3D position = footstepData.getLocation();
