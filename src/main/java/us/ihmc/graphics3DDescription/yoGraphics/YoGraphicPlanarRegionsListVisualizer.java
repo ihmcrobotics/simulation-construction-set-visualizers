@@ -9,6 +9,7 @@ import java.util.concurrent.TimeUnit;
 
 import us.ihmc.commons.Conversions;
 import us.ihmc.euclid.geometry.ConvexPolygon2D;
+import us.ihmc.euclid.geometry.interfaces.Vertex2DSupplier;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.euclid.tools.EuclidCoreRandomTools;
 import us.ihmc.euclid.transform.RigidBodyTransform;
@@ -20,8 +21,6 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPolygon;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.robotDataLogger.YoVariableServer;
 import us.ihmc.robotDataLogger.logger.LogSettings;
-import us.ihmc.util.PeriodicNonRealtimeThreadSchedulerFactory;
-import us.ihmc.util.PeriodicThreadSchedulerFactory;
 import us.ihmc.robotDataVisualizer.visualizer.SCSVisualizer;
 import us.ihmc.robotics.geometry.PlanarRegion;
 import us.ihmc.robotics.geometry.PlanarRegionsList;
@@ -31,6 +30,8 @@ import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
 import us.ihmc.simulationconstructionset.scripts.Script;
 import us.ihmc.tools.processManagement.JavaProcessSpawner;
+import us.ihmc.util.PeriodicNonRealtimeThreadSchedulerFactory;
+import us.ihmc.util.PeriodicThreadSchedulerFactory;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 
 public class YoGraphicPlanarRegionsListVisualizer
@@ -100,7 +101,7 @@ public class YoGraphicPlanarRegionsListVisualizer
    private static YoGraphicPolygon createYoGraphicPolygon(YoVariableRegistry registry)
    {
       YoFrameConvexPolygon2d convexPolygon2d = new YoFrameConvexPolygon2d("poupou", ReferenceFrame.getWorldFrame(), 30, registry);
-      ConvexPolygon2D polygon = new ConvexPolygon2D(createCircle(new Point2D(1.0, 0.0), 0.1));
+      ConvexPolygon2D polygon = new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(createCircle(new Point2D(1.0, 0.0), 0.1)));
       convexPolygon2d.setConvexPolygon2d(polygon);
       return new YoGraphicPolygon("poly", convexPolygon2d, "shnoup", "", registry, 1.0, YoAppearance.Red());
    }
@@ -111,20 +112,20 @@ public class YoGraphicPlanarRegionsListVisualizer
       RigidBodyTransform transformToWorld = new RigidBodyTransform();
       transformToWorld.setTranslation(0.0, 0.0, 0.2);
       List<ConvexPolygon2D> polygons1 = new ArrayList<>();
-      polygons1.add(new ConvexPolygon2D(createCircle(0.1)));
-      polygons1.add(new ConvexPolygon2D(createCircle(new Point2D(0.5, -0.2), 0.35)));
-      polygons1.add(new ConvexPolygon2D(createCircle(new Point2D(-0.5, -0.1), 0.4)));
+      polygons1.add(new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(createCircle(0.1))));
+      polygons1.add(new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(createCircle(new Point2D(0.5, -0.2), 0.35))));
+      polygons1.add(new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(createCircle(new Point2D(-0.5, -0.1), 0.4))));
       PlanarRegion planarRegion1 = new PlanarRegion(transformToWorld, polygons1);
       transformToWorld.setRotationRollAndZeroTranslation(0.3 * Math.PI);
       transformToWorld.setTranslation(0.0, 0.3, 0.1);
-      PlanarRegion planarRegion2 = new PlanarRegion(transformToWorld, new ConvexPolygon2D(createCircle(0.3)));
+      PlanarRegion planarRegion2 = new PlanarRegion(transformToWorld, new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(createCircle(0.3))));
       Random random = new Random(45L);
       transformToWorld = EuclidCoreRandomTools.nextRigidBodyTransform(random);
-      PlanarRegion planarRegion3 = new PlanarRegion(transformToWorld, new ConvexPolygon2D(createCircle(0.3)));
+      PlanarRegion planarRegion3 = new PlanarRegion(transformToWorld, new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(createCircle(0.3))));
       transformToWorld = EuclidCoreRandomTools.nextRigidBodyTransform(random);
-      PlanarRegion planarRegion4 = new PlanarRegion(transformToWorld, new ConvexPolygon2D(createCircle(0.3)));
+      PlanarRegion planarRegion4 = new PlanarRegion(transformToWorld, new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(createCircle(0.3))));
       transformToWorld = EuclidCoreRandomTools.nextRigidBodyTransform(random);
-      PlanarRegion planarRegion5 = new PlanarRegion(transformToWorld, new ConvexPolygon2D(createCircle(0.3)));
+      PlanarRegion planarRegion5 = new PlanarRegion(transformToWorld, new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(createCircle(0.3))));
 
       return new PlanarRegionsList(planarRegion1, planarRegion2, planarRegion3, planarRegion4, planarRegion5);
    }
