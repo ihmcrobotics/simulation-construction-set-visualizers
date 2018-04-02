@@ -50,13 +50,13 @@ public class ChangingMeshGraphicsVisualizer
 
 
       ConvexPolygon2D polygon = new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(new double[][]{{0.0, 0.0, 0.01}, {0.0, 1.0, 0.01}, {1.0, 1.0, 0.01}, {1.0, 0.0, 0.01}}));
-      yoConvexPolygon2d.setConvexPolygon2d(polygon);
+      yoConvexPolygon2d.set(polygon);
       graphicPolygon.update();
 
       scs.tickAndUpdate();
 
       polygon = new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(new double[][]{{0.0, 1.0, 0.01}, {0.0, 2.0, 0.01}, {1.0, 2.0, 0.01}, {1.0, 1.0, 0.01}}));
-      yoConvexPolygon2d.setConvexPolygon2d(polygon);
+      yoConvexPolygon2d.set(polygon);
       graphicPolygon.update();
 
       scs.tickAndUpdate();

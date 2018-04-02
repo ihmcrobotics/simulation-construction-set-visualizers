@@ -368,7 +368,7 @@ public class CoPPlannerVisualizer
                                                                                                      footstep.getFootstepPose().getPosition());
          tempFootPolygon.setIncludingFrame(footFrame, Vertex2DSupplier.asVertex2DSupplier(footstep.getPredictedContactPoints()));
          tempFootPolygon.changeFrameAndProjectToXYPlane(worldFrame);
-         yoNextFootstepPolygon.get(i).setFrameConvexPolygon2d(tempFootPolygon);
+         yoNextFootstepPolygon.get(i).set(tempFootPolygon);
          yoNextFootstepPose.get(i).setAndMatchFrame(new FramePose3D(footFrame));
       }
       for (int i = numberOfPolygonsToUpdate; i < yoNextFootstepPose.size(); i++)
@@ -378,7 +378,7 @@ public class CoPPlannerVisualizer
    private void setVizFootstepsToNaN(int index)
    {
       yoNextFootstepPose.get(index).setToNaN();
-      yoNextFootstepPolygon.get(index).hide();
+      yoNextFootstepPolygon.get(index).clear();
    }
 
    private void setVizFootstepsToNaN()

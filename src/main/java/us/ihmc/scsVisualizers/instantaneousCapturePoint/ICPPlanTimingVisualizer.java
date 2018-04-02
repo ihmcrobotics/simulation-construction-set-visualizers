@@ -340,9 +340,9 @@ public class ICPPlanTimingVisualizer
          yoNextFootstepPose.setToNaN();
          yoNextNextFootstepPose.setToNaN();
          yoNextNextNextFootstepPose.setToNaN();
-         yoNextFootstepPolygon.hide();
-         yoNextNextFootstepPolygon.hide();
-         yoNextNextNextFootstepPolygon.hide();
+         yoNextFootstepPolygon.clear();
+         yoNextNextFootstepPolygon.clear();
+         yoNextNextNextFootstepPolygon.clear();
          return;
       }
 
@@ -355,7 +355,7 @@ public class ICPPlanTimingVisualizer
       convexPolygonShrinker.scaleConvexPolygon(tempFootstepPolygonForShrinking, polygonShrinkAmount, footstepPolygon);
 
       footstepPolygon.changeFrameAndProjectToXYPlane(worldFrame);
-      yoNextFootstepPolygon.setFrameConvexPolygon2d(footstepPolygon);
+      yoNextFootstepPolygon.set(footstepPolygon);
 
       FramePose3D nextFootstepPose = new FramePose3D(plannedFootsteps.get(0).getSoleReferenceFrame());
       yoNextFootstepPose.setAndMatchFrame(nextFootstepPose);
@@ -364,8 +364,8 @@ public class ICPPlanTimingVisualizer
       {
          yoNextNextFootstepPose.setToNaN();
          yoNextNextNextFootstepPose.setToNaN();
-         yoNextNextFootstepPolygon.hide();
-         yoNextNextNextFootstepPolygon.hide();
+         yoNextNextFootstepPolygon.clear();
+         yoNextNextNextFootstepPolygon.clear();
          return;
       }
 
@@ -376,7 +376,7 @@ public class ICPPlanTimingVisualizer
       convexPolygonShrinker.scaleConvexPolygon(tempFootstepPolygonForShrinking, polygonShrinkAmount, footstepPolygon);
 
       footstepPolygon.changeFrameAndProjectToXYPlane(worldFrame);
-      yoNextNextFootstepPolygon.setFrameConvexPolygon2d(footstepPolygon);
+      yoNextNextFootstepPolygon.set(footstepPolygon);
 
       FramePose3D nextNextFootstepPose = new FramePose3D(plannedFootsteps.get(1).getSoleReferenceFrame());
       yoNextNextFootstepPose.setAndMatchFrame(nextNextFootstepPose);
@@ -384,7 +384,7 @@ public class ICPPlanTimingVisualizer
       if (plannedFootsteps.get(2) == null)
       {
          yoNextNextNextFootstepPose.setToNaN();
-         yoNextNextNextFootstepPolygon.hide();
+         yoNextNextNextFootstepPolygon.clear();
          return;
       }
 
@@ -395,7 +395,7 @@ public class ICPPlanTimingVisualizer
       convexPolygonShrinker.scaleConvexPolygon(tempFootstepPolygonForShrinking, polygonShrinkAmount, footstepPolygon);
 
       footstepPolygon.changeFrameAndProjectToXYPlane(worldFrame);
-      yoNextNextNextFootstepPolygon.setFrameConvexPolygon2d(footstepPolygon);
+      yoNextNextNextFootstepPolygon.set(footstepPolygon);
 
       FramePose3D nextNextNextFootstepPose = new FramePose3D(plannedFootsteps.get(2).getSoleReferenceFrame());
       yoNextNextNextFootstepPose.setAndMatchFrame(nextNextNextFootstepPose);

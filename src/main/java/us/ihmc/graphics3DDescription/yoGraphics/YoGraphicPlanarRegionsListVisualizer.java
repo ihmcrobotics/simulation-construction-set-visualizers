@@ -102,7 +102,7 @@ public class YoGraphicPlanarRegionsListVisualizer
    {
       YoFrameConvexPolygon2d convexPolygon2d = new YoFrameConvexPolygon2d("poupou", ReferenceFrame.getWorldFrame(), 30, registry);
       ConvexPolygon2D polygon = new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(createCircle(new Point2D(1.0, 0.0), 0.1)));
-      convexPolygon2d.setConvexPolygon2d(polygon);
+      convexPolygon2d.set(polygon);
       return new YoGraphicPolygon("poly", convexPolygon2d, "shnoup", "", registry, 1.0, YoAppearance.Red());
    }
 

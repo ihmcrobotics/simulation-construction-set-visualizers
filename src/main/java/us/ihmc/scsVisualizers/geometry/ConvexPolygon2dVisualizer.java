@@ -203,8 +203,8 @@ public class ConvexPolygon2dVisualizer
                }
             }
 
-            yoOriginalPolygon.setConvexPolygon2d(originalPolygon);
-            yoShrunkPolygon.setConvexPolygon2d(shrunkPolygon);
+            yoOriginalPolygon.set(originalPolygon);
+            yoShrunkPolygon.set(shrunkPolygon);
 
             scs.setTime(scs.getTime() + 0.01);
             scs.tickAndUpdate();
