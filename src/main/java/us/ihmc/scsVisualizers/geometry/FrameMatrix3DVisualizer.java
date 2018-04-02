@@ -70,7 +70,7 @@ public class FrameMatrix3DVisualizer
          // Transform the originalVector while in aFrame 
          transformationFrameMatrix.transform(originalVector, transformedVector);
          // Update the viz that is in worldFrame to check that we obtain the same result as before
-         yoVectorTransformedInAFrame.setAndMatchFrame(transformedVector);
+         yoVectorTransformedInAFrame.setMatchingFrame(transformedVector);
          
          scs.tickAndUpdate();
       }
