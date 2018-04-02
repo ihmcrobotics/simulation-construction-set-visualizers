@@ -7,11 +7,13 @@ import java.util.List;
 
 import us.ihmc.commonWalkingControlModules.bipedSupportPolygons.BipedSupportPolygons;
 import us.ihmc.commonWalkingControlModules.bipedSupportPolygons.YoPlaneContactState;
+import us.ihmc.commonWalkingControlModules.capturePoint.ContinuousCMPBasedICPPlanner;
 import us.ihmc.commonWalkingControlModules.configurations.CoPPointName;
 import us.ihmc.commonWalkingControlModules.configurations.ContinuousCMPICPPlannerParameters;
 import us.ihmc.commonWalkingControlModules.configurations.ICPPlannerParameters;
 import us.ihmc.commonWalkingControlModules.desiredFootStep.footstepGenerator.FootstepTestHelper;
-import us.ihmc.commonWalkingControlModules.capturePoint.ContinuousCMPBasedICPPlanner;
+import us.ihmc.euclid.geometry.interfaces.Vertex2DSupplier;
+import us.ihmc.euclid.referenceFrame.FrameConvexPolygon2D;
 import us.ihmc.euclid.referenceFrame.FramePoint2D;
 import us.ihmc.euclid.referenceFrame.FramePose3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
@@ -27,7 +29,6 @@ import us.ihmc.humanoidRobotics.footstep.FootSpoof;
 import us.ihmc.humanoidRobotics.footstep.Footstep;
 import us.ihmc.humanoidRobotics.footstep.FootstepTiming;
 import us.ihmc.robotics.geometry.ConvexPolygonScaler;
-import us.ihmc.robotics.geometry.FrameConvexPolygon2d;
 import us.ihmc.robotics.math.frames.YoFrameConvexPolygon2d;
 import us.ihmc.robotics.math.frames.YoFramePose;
 import us.ihmc.robotics.referenceFrames.MidFrameZUpFrame;
@@ -321,8 +322,8 @@ public class ICPPlanTimingVisualizer
    private final FramePose3D nextNextPlannedFootstep = new FramePose3D();
    private final FramePose3D nextNextNextPlannedFootstep = new FramePose3D();
 
-   private final FrameConvexPolygon2d footstepPolygon = new FrameConvexPolygon2d();
-   private final FrameConvexPolygon2d tempFootstepPolygonForShrinking = new FrameConvexPolygon2d();
+   private final FrameConvexPolygon2D footstepPolygon = new FrameConvexPolygon2D();
+   private final FrameConvexPolygon2D tempFootstepPolygonForShrinking = new FrameConvexPolygon2D();
    private final ConvexPolygonScaler convexPolygonShrinker = new ConvexPolygonScaler();
 
    private void updateViz()
@@ -350,7 +351,7 @@ public class ICPPlanTimingVisualizer
 
       double polygonShrinkAmount = 0.005;
 
-      tempFootstepPolygonForShrinking.setIncludingFrameAndUpdate(plannedFootsteps.get(0).getSoleReferenceFrame(), plannedFootsteps.get(0).getPredictedContactPoints());
+      tempFootstepPolygonForShrinking.setIncludingFrame(plannedFootsteps.get(0).getSoleReferenceFrame(), Vertex2DSupplier.asVertex2DSupplier(plannedFootsteps.get(0).getPredictedContactPoints()));
       convexPolygonShrinker.scaleConvexPolygon(tempFootstepPolygonForShrinking, polygonShrinkAmount, footstepPolygon);
 
       footstepPolygon.changeFrameAndProjectToXYPlane(worldFrame);
@@ -371,7 +372,7 @@ public class ICPPlanTimingVisualizer
       if (plannedFootsteps.get(1).getPredictedContactPoints() == null)
          plannedFootsteps.get(1).setPredictedContactPoints(contactableFeet.get(plannedFootsteps.get(1).getRobotSide()).getContactPoints2d());
 
-      tempFootstepPolygonForShrinking.setIncludingFrameAndUpdate(plannedFootsteps.get(1).getSoleReferenceFrame(), plannedFootsteps.get(1).getPredictedContactPoints());
+      tempFootstepPolygonForShrinking.setIncludingFrame(plannedFootsteps.get(1).getSoleReferenceFrame(), Vertex2DSupplier.asVertex2DSupplier(plannedFootsteps.get(1).getPredictedContactPoints()));
       convexPolygonShrinker.scaleConvexPolygon(tempFootstepPolygonForShrinking, polygonShrinkAmount, footstepPolygon);
 
       footstepPolygon.changeFrameAndProjectToXYPlane(worldFrame);
@@ -390,7 +391,7 @@ public class ICPPlanTimingVisualizer
       if (plannedFootsteps.get(2).getPredictedContactPoints() == null)
          plannedFootsteps.get(2).setPredictedContactPoints(contactableFeet.get(plannedFootsteps.get(2).getRobotSide()).getContactPoints2d());
 
-      tempFootstepPolygonForShrinking.setIncludingFrameAndUpdate(plannedFootsteps.get(2).getSoleReferenceFrame(), plannedFootsteps.get(2).getPredictedContactPoints());
+      tempFootstepPolygonForShrinking.setIncludingFrame(plannedFootsteps.get(2).getSoleReferenceFrame(), Vertex2DSupplier.asVertex2DSupplier(plannedFootsteps.get(2).getPredictedContactPoints()));
       convexPolygonShrinker.scaleConvexPolygon(tempFootstepPolygonForShrinking, polygonShrinkAmount, footstepPolygon);
 
       footstepPolygon.changeFrameAndProjectToXYPlane(worldFrame);
