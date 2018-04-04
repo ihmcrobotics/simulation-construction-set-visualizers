@@ -11,6 +11,7 @@ import us.ihmc.commons.MathTools;
 import us.ihmc.commons.RandomNumbers;
 import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.euclid.geometry.ConvexPolygon2D;
+import us.ihmc.euclid.geometry.interfaces.Vertex2DSupplier;
 import us.ihmc.euclid.referenceFrame.FrameLine2D;
 import us.ihmc.euclid.referenceFrame.FramePoint2D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
@@ -127,7 +128,7 @@ public class ConvexPolygon2dVisualizer
       contactPointsFromAtlas.add(new Point2D(atlasPhysicalProperties.getFootLengthForControl() / 2.0, -atlasPhysicalProperties.getToeWidthForControl() / 2.0));
       contactPointsFromAtlas.add(new Point2D(-atlasPhysicalProperties.getFootLengthForControl() / 2.0, -atlasPhysicalProperties.getFootWidthForControl() / 2.0));
       contactPointsFromAtlas.add(new Point2D(-atlasPhysicalProperties.getFootLengthForControl() / 2.0, atlasPhysicalProperties.getFootWidthForControl() / 2.0));
-      ConvexPolygon2D convexPolygon = new ConvexPolygon2D(contactPointsFromAtlas);
+      ConvexPolygon2D convexPolygon = new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(contactPointsFromAtlas));
       return convexPolygon;
    }
    
@@ -138,7 +139,7 @@ public class ConvexPolygon2dVisualizer
       contactPointsFromAtlas.add(new Point2D(1.0, 0.0));
       contactPointsFromAtlas.add(new Point2D(1.0, 0.2));
       contactPointsFromAtlas.add(new Point2D(0.0, 0.2));
-      ConvexPolygon2D convexPolygon = new ConvexPolygon2D(contactPointsFromAtlas);
+      ConvexPolygon2D convexPolygon = new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(contactPointsFromAtlas));
       return convexPolygon;
    }
 
@@ -147,7 +148,7 @@ public class ConvexPolygon2dVisualizer
       List<Point2D> line = new ArrayList<Point2D>();
       line.add(new Point2D(0.0, 0.1));
       line.add(new Point2D(1.0, 0.1));
-      ConvexPolygon2D convexPolygon = new ConvexPolygon2D(line);
+      ConvexPolygon2D convexPolygon = new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(line));
       return convexPolygon;
    }
 
@@ -155,7 +156,7 @@ public class ConvexPolygon2dVisualizer
    {
       List<Point2D> point = new ArrayList<Point2D>();
       point.add(new Point2D(0.1, 0.1));
-      ConvexPolygon2D convexPolygon = new ConvexPolygon2D(point);
+      ConvexPolygon2D convexPolygon = new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(point));
       return convexPolygon;
    }
    
@@ -177,10 +178,10 @@ public class ConvexPolygon2dVisualizer
             if (MathTools.epsilonEquals(shrink, 0.047, 1.0e-5))
                System.out.println();
             amountToShrink.set(shrink);
-            originalPolygon.setAndUpdate(polygonToShrink);
+            originalPolygon.set(polygonToShrink);
             
             shrunkPolygon = new ConvexPolygon2D();
-            shrunkPolygon.setAndUpdate(originalPolygon);
+            shrunkPolygon.set(originalPolygon);
             
             shrinkSucceed.set(shrinker.scaleConvexPolygon(originalPolygon, shrink, shrunkPolygon));
 
@@ -202,8 +203,8 @@ public class ConvexPolygon2dVisualizer
                }
             }
 
-            yoOriginalPolygon.setConvexPolygon2d(originalPolygon);
-            yoShrunkPolygon.setConvexPolygon2d(shrunkPolygon);
+            yoOriginalPolygon.set(originalPolygon);
+            yoShrunkPolygon.set(shrunkPolygon);
 
             scs.setTime(scs.getTime() + 0.01);
             scs.tickAndUpdate();

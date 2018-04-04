@@ -1,6 +1,7 @@
 package us.ihmc.scsVisualizers.graphics;
 
 import us.ihmc.euclid.geometry.ConvexPolygon2D;
+import us.ihmc.euclid.geometry.interfaces.Vertex2DSupplier;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.graphicsDescription.Graphics3DObject;
@@ -8,11 +9,11 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPolygon;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.robotics.math.frames.YoFrameConvexPolygon2d;
 import us.ihmc.robotics.math.frames.YoFramePose;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
+import us.ihmc.yoVariables.registry.YoVariableRegistry;
 
 public class ChangingMeshGraphicsVisualizer
 {
@@ -48,14 +49,14 @@ public class ChangingMeshGraphicsVisualizer
       scs.tickAndUpdate();
 
 
-      ConvexPolygon2D polygon = new ConvexPolygon2D(new double[][]{{0.0, 0.0, 0.01}, {0.0, 1.0, 0.01}, {1.0, 1.0, 0.01}, {1.0, 0.0, 0.01}});
-      yoConvexPolygon2d.setConvexPolygon2d(polygon);
+      ConvexPolygon2D polygon = new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(new double[][]{{0.0, 0.0, 0.01}, {0.0, 1.0, 0.01}, {1.0, 1.0, 0.01}, {1.0, 0.0, 0.01}}));
+      yoConvexPolygon2d.set(polygon);
       graphicPolygon.update();
 
       scs.tickAndUpdate();
 
-      polygon = new ConvexPolygon2D(new double[][]{{0.0, 1.0, 0.01}, {0.0, 2.0, 0.01}, {1.0, 2.0, 0.01}, {1.0, 1.0, 0.01}});
-      yoConvexPolygon2d.setConvexPolygon2d(polygon);
+      polygon = new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(new double[][]{{0.0, 1.0, 0.01}, {0.0, 2.0, 0.01}, {1.0, 2.0, 0.01}, {1.0, 1.0, 0.01}}));
+      yoConvexPolygon2d.set(polygon);
       graphicPolygon.update();
 
       scs.tickAndUpdate();

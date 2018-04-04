@@ -22,11 +22,14 @@ import us.ihmc.commonWalkingControlModules.configurations.ICPPlannerParameters;
 import us.ihmc.commonWalkingControlModules.controllers.Updatable;
 import us.ihmc.commonWalkingControlModules.desiredFootStep.footstepGenerator.FootstepTestHelper;
 import us.ihmc.commons.thread.ThreadTools;
+import us.ihmc.euclid.geometry.interfaces.Vertex2DSupplier;
+import us.ihmc.euclid.referenceFrame.FrameConvexPolygon2D;
 import us.ihmc.euclid.referenceFrame.FrameLine2D;
 import us.ihmc.euclid.referenceFrame.FramePoint2D;
 import us.ihmc.euclid.referenceFrame.FramePose3D;
 import us.ihmc.euclid.referenceFrame.FrameVector2D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
+import us.ihmc.euclid.referenceFrame.interfaces.FrameVertex2DSupplier;
 import us.ihmc.euclid.referenceFrame.tools.EuclidFrameRandomTools;
 import us.ihmc.euclid.tools.RotationMatrixTools;
 import us.ihmc.euclid.tuple2D.Point2D;
@@ -51,7 +54,6 @@ import us.ihmc.humanoidRobotics.footstep.Footstep;
 import us.ihmc.humanoidRobotics.footstep.FootstepTiming;
 import us.ihmc.robotics.geometry.ConvexPolygonScaler;
 import us.ihmc.robotics.geometry.ConvexPolygonTools;
-import us.ihmc.robotics.geometry.FrameConvexPolygon2d;
 import us.ihmc.robotics.math.frames.YoFrameConvexPolygon2d;
 import us.ihmc.robotics.math.frames.YoFramePoint;
 import us.ihmc.robotics.math.frames.YoFramePoint2d;
@@ -308,8 +310,8 @@ public class ContinuousCMPBasedICPPlannerVisualizer
       }
    }
 
-   private final FrameConvexPolygon2d footstepPolygon = new FrameConvexPolygon2d();
-   private final FrameConvexPolygon2d tempFootstepPolygonForShrinking = new FrameConvexPolygon2d();
+   private final FrameConvexPolygon2D footstepPolygon = new FrameConvexPolygon2D();
+   private final FrameConvexPolygon2D tempFootstepPolygonForShrinking = new FrameConvexPolygon2D();
    private final ConvexPolygonScaler convexPolygonShrinker = new ConvexPolygonScaler();
 
    private int stepCount = -1;
@@ -523,7 +525,7 @@ public class ContinuousCMPBasedICPPlannerVisualizer
 
    private void generateRandomPredictedContactPoints(Footstep footstep)
    {
-      FrameConvexPolygon2d randomSupportPolygon = new FrameConvexPolygon2d(contactableFeet.get(footstep.getRobotSide()).getContactPoints2d());
+      FrameConvexPolygon2D randomSupportPolygon = new FrameConvexPolygon2D(FrameVertex2DSupplier.asFrameVertex2DSupplier(contactableFeet.get(footstep.getRobotSide()).getContactPoints2d()));
       List<FramePoint2D> randomPredictedContactPointList = new ArrayList<>();
 
       double minX = 0.5 * randomSupportPolygon.getMinX();
@@ -540,7 +542,7 @@ public class ContinuousCMPBasedICPPlannerVisualizer
       while (randomSupportPolygon.getNumberOfVertices() < 4)
       {
          FramePoint2D duplicate = EuclidFrameRandomTools.nextFramePoint2D(random, randomSupportPolygon.getReferenceFrame(), 1.0e-3, 1.0e-3, 1.0e-3, 1.0e-3);
-         duplicate.add(randomSupportPolygon.getFrameVertexCopy(0));
+         duplicate.add(new FramePoint2D(randomSupportPolygon.getVertex(0)));
          randomSupportPolygon.addVertex(duplicate);
          randomSupportPolygon.update();
       }
@@ -549,7 +551,7 @@ public class ContinuousCMPBasedICPPlannerVisualizer
          System.out.println();
 
       for (int i = 0; i < randomSupportPolygon.getNumberOfVertices(); i++)
-         randomPredictedContactPointList.add(randomSupportPolygon.getFrameVertexCopy(i));
+         randomPredictedContactPointList.add(new FramePoint2D(randomSupportPolygon.getVertex(i)));
 
       footstep.setPredictedContactPoints(randomPredictedContactPointList);
    }
@@ -561,9 +563,9 @@ public class ContinuousCMPBasedICPPlannerVisualizer
          yoNextFootstepPose.setToNaN();
          yoNextNextFootstepPose.setToNaN();
          yoNextNextNextFootstepPose.setToNaN();
-         yoNextFootstepPolygon.hide();
-         yoNextNextFootstepPolygon.hide();
-         yoNextNextNextFootstepPolygon.hide();
+         yoNextFootstepPolygon.clear();
+         yoNextNextFootstepPolygon.clear();
+         yoNextNextNextFootstepPolygon.clear();
          return;
       }
 
@@ -573,11 +575,11 @@ public class ContinuousCMPBasedICPPlannerVisualizer
       double polygonShrinkAmount = 0.005;
 
       ReferenceFrame soleFrame = contactableFeet.get(nextFootstep.getRobotSide()).getSoleFrame();
-      tempFootstepPolygonForShrinking.setIncludingFrameAndUpdate(soleFrame, nextFootstep.getPredictedContactPoints());
+      tempFootstepPolygonForShrinking.setIncludingFrame(soleFrame, Vertex2DSupplier.asVertex2DSupplier(nextFootstep.getPredictedContactPoints()));
       convexPolygonShrinker.scaleConvexPolygon(tempFootstepPolygonForShrinking, polygonShrinkAmount, footstepPolygon);
 
       footstepPolygon.changeFrameAndProjectToXYPlane(worldFrame);
-      yoNextFootstepPolygon.setFrameConvexPolygon2d(footstepPolygon);
+      yoNextFootstepPolygon.set(footstepPolygon);
 
       FramePose3D nextFootstepPose = new FramePose3D(soleFrame);
       yoNextFootstepPose.setAndMatchFrame(nextFootstepPose);
@@ -586,8 +588,8 @@ public class ContinuousCMPBasedICPPlannerVisualizer
       {
          yoNextNextFootstepPose.setToNaN();
          yoNextNextNextFootstepPose.setToNaN();
-         yoNextNextFootstepPolygon.hide();
-         yoNextNextNextFootstepPolygon.hide();
+         yoNextNextFootstepPolygon.clear();
+         yoNextNextNextFootstepPolygon.clear();
          return;
       }
 
@@ -595,11 +597,11 @@ public class ContinuousCMPBasedICPPlannerVisualizer
          nextNextFootstep.setPredictedContactPoints(contactableFeet.get(nextNextFootstep.getRobotSide()).getContactPoints2d());
 
       ReferenceFrame nextSoleFrame = contactableFeet.get(nextNextFootstep.getRobotSide()).getSoleFrame();
-      tempFootstepPolygonForShrinking.setIncludingFrameAndUpdate(nextSoleFrame, nextNextFootstep.getPredictedContactPoints());
+      tempFootstepPolygonForShrinking.setIncludingFrame(nextSoleFrame, Vertex2DSupplier.asVertex2DSupplier(nextNextFootstep.getPredictedContactPoints()));
       convexPolygonShrinker.scaleConvexPolygon(tempFootstepPolygonForShrinking, polygonShrinkAmount, footstepPolygon);
 
       footstepPolygon.changeFrameAndProjectToXYPlane(worldFrame);
-      yoNextNextFootstepPolygon.setFrameConvexPolygon2d(footstepPolygon);
+      yoNextNextFootstepPolygon.set(footstepPolygon);
 
       FramePose3D nextNextFootstepPose = new FramePose3D(nextSoleFrame);
       yoNextNextFootstepPose.setAndMatchFrame(nextNextFootstepPose);
@@ -607,7 +609,7 @@ public class ContinuousCMPBasedICPPlannerVisualizer
       if (nextNextNextFootstep == null)
       {
          yoNextNextNextFootstepPose.setToNaN();
-         yoNextNextNextFootstepPolygon.hide();
+         yoNextNextNextFootstepPolygon.clear();
          return;
       }
 
@@ -615,11 +617,11 @@ public class ContinuousCMPBasedICPPlannerVisualizer
          nextNextNextFootstep.setPredictedContactPoints(contactableFeet.get(nextNextNextFootstep.getRobotSide()).getContactPoints2d());
 
       ReferenceFrame nextNextSoleFrame = contactableFeet.get(nextNextNextFootstep.getRobotSide()).getSoleFrame();
-      tempFootstepPolygonForShrinking.setIncludingFrameAndUpdate(nextNextSoleFrame, nextNextNextFootstep.getPredictedContactPoints());
+      tempFootstepPolygonForShrinking.setIncludingFrame(nextNextSoleFrame, Vertex2DSupplier.asVertex2DSupplier(nextNextNextFootstep.getPredictedContactPoints()));
       convexPolygonShrinker.scaleConvexPolygon(tempFootstepPolygonForShrinking, polygonShrinkAmount, footstepPolygon);
 
       footstepPolygon.changeFrameAndProjectToXYPlane(worldFrame);
-      yoNextNextNextFootstepPolygon.setFrameConvexPolygon2d(footstepPolygon);
+      yoNextNextNextFootstepPolygon.set(footstepPolygon);
 
       FramePose3D nextNextNextFootstepPose = new FramePose3D(nextNextSoleFrame);
       yoNextNextNextFootstepPose.setAndMatchFrame(nextNextNextFootstepPose);

@@ -28,6 +28,8 @@ import us.ihmc.commonWalkingControlModules.controllers.Updatable;
 import us.ihmc.commonWalkingControlModules.desiredFootStep.footstepGenerator.FootstepTestHelper;
 import us.ihmc.commons.PrintTools;
 import us.ihmc.commons.thread.ThreadTools;
+import us.ihmc.euclid.geometry.interfaces.Vertex2DSupplier;
+import us.ihmc.euclid.referenceFrame.FrameConvexPolygon2D;
 import us.ihmc.euclid.referenceFrame.FrameLine2D;
 import us.ihmc.euclid.referenceFrame.FramePoint2D;
 import us.ihmc.euclid.referenceFrame.FramePoint3D;
@@ -35,6 +37,7 @@ import us.ihmc.euclid.referenceFrame.FramePose3D;
 import us.ihmc.euclid.referenceFrame.FrameVector2D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.euclid.referenceFrame.interfaces.FramePoint3DReadOnly;
+import us.ihmc.euclid.referenceFrame.interfaces.FrameVertex2DSupplier;
 import us.ihmc.euclid.referenceFrame.tools.EuclidFrameRandomTools;
 import us.ihmc.euclid.tuple2D.Point2D;
 import us.ihmc.euclid.tuple2D.Vector2D;
@@ -61,7 +64,6 @@ import us.ihmc.humanoidRobotics.footstep.FootSpoof;
 import us.ihmc.humanoidRobotics.footstep.Footstep;
 import us.ihmc.humanoidRobotics.footstep.FootstepTiming;
 import us.ihmc.robotics.geometry.ConvexPolygonTools;
-import us.ihmc.robotics.geometry.FrameConvexPolygon2d;
 import us.ihmc.robotics.math.frames.YoFrameConvexPolygon2d;
 import us.ihmc.robotics.math.frames.YoFramePoint;
 import us.ihmc.robotics.math.frames.YoFramePose;
@@ -835,7 +837,7 @@ public class SmoothCMPICPPlannerVisualizer
       }
    }
 
-   private FrameConvexPolygon2d tempFootPolygon = new FrameConvexPolygon2d();
+   private FrameConvexPolygon2D tempFootPolygon = new FrameConvexPolygon2D();
 
    private void updateFootStepViz(List<Footstep> nextFootsteps, List<FootstepTiming> nextFootstepTimings)
    {
@@ -855,9 +857,9 @@ public class SmoothCMPICPPlannerVisualizer
          }
          ReferenceFrame footFrame = ReferenceFrame.constructFrameWithUnchangingTranslationFromParent("FootstepFrame", worldFrame,
                                                                                                      footstep.getFootstepPose().getPosition());
-         tempFootPolygon.setIncludingFrameAndUpdate(footFrame, footstep.getPredictedContactPoints());
+         tempFootPolygon.setIncludingFrame(footFrame, Vertex2DSupplier.asVertex2DSupplier(footstep.getPredictedContactPoints()));
          tempFootPolygon.changeFrameAndProjectToXYPlane(worldFrame);
-         yoNextFootstepPolygon.get(i).setFrameConvexPolygon2d(tempFootPolygon);
+         yoNextFootstepPolygon.get(i).set(tempFootPolygon);
          yoNextFootstepPose.get(i).setAndMatchFrame(new FramePose3D(footFrame));
       }
       for (int i = numberOfPolygonsToUpdate; i < yoNextFootstepPose.size(); i++)
@@ -867,7 +869,7 @@ public class SmoothCMPICPPlannerVisualizer
    private void setVizFootstepsToNaN(int index)
    {
       yoNextFootstepPose.get(index).setToNaN();
-      yoNextFootstepPolygon.get(index).hide();
+      yoNextFootstepPolygon.get(index).clear();
    }
 
    private void setVizFootstepsToNaN()
@@ -936,7 +938,7 @@ public class SmoothCMPICPPlannerVisualizer
 
    private void generateRandomPredictedContactPoints(Footstep footstep)
    {
-      FrameConvexPolygon2d randomSupportPolygon = new FrameConvexPolygon2d(contactableFeet.get(footstep.getRobotSide()).getContactPoints2d());
+      FrameConvexPolygon2D randomSupportPolygon = new FrameConvexPolygon2D(FrameVertex2DSupplier.asFrameVertex2DSupplier(contactableFeet.get(footstep.getRobotSide()).getContactPoints2d()));
       List<FramePoint2D> randomPredictedContactPointList = new ArrayList<>();
 
       double minX = 0.5 * randomSupportPolygon.getMinX();
@@ -953,7 +955,7 @@ public class SmoothCMPICPPlannerVisualizer
       while (randomSupportPolygon.getNumberOfVertices() < 4)
       {
          FramePoint2D duplicate = EuclidFrameRandomTools.nextFramePoint2D(random, randomSupportPolygon.getReferenceFrame(), 1.0e-3, 1.0e-3, 1.0e-3, 1.0e-3);
-         duplicate.add(randomSupportPolygon.getFrameVertexCopy(0));
+         duplicate.add(new FramePoint2D(randomSupportPolygon.getVertex(0)));
          randomSupportPolygon.addVertex(duplicate);
          randomSupportPolygon.update();
       }
@@ -962,7 +964,7 @@ public class SmoothCMPICPPlannerVisualizer
          System.out.println();
 
       for (int i = 0; i < randomSupportPolygon.getNumberOfVertices(); i++)
-         randomPredictedContactPointList.add(randomSupportPolygon.getFrameVertexCopy(i));
+         randomPredictedContactPointList.add(new FramePoint2D(randomSupportPolygon.getVertex(i)));
 
       footstep.setPredictedContactPoints(randomPredictedContactPointList);
    }
