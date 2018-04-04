@@ -3,6 +3,7 @@ package us.ihmc.scsVisualizers.trajectories;
 import java.util.Random;
 
 import us.ihmc.commonWalkingControlModules.trajectories.CirclePoseTrajectoryGenerator;
+import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.euclid.geometry.tools.EuclidGeometryTools;
 import us.ihmc.euclid.referenceFrame.FramePoint3D;
 import us.ihmc.euclid.referenceFrame.FramePose3D;
@@ -11,16 +12,15 @@ import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.robotics.geometry.TransformTools;
 import us.ihmc.robotics.math.frames.YoFramePoint;
 import us.ihmc.robotics.math.frames.YoFrameVector;
 import us.ihmc.robotics.trajectories.providers.ConstantDoubleProvider;
-import us.ihmc.robotics.trajectories.providers.DoubleProvider;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
-import us.ihmc.commons.thread.ThreadTools;
+import us.ihmc.yoVariables.providers.DoubleProvider;
+import us.ihmc.yoVariables.registry.YoVariableRegistry;
 
 public class CirclePoseTrajectoryGeneratorVisualizer
 {
