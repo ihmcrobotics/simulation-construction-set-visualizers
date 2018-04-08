@@ -40,10 +40,6 @@ import us.ihmc.humanoidRobotics.footstep.FootSpoof;
 import us.ihmc.humanoidRobotics.footstep.Footstep;
 import us.ihmc.humanoidRobotics.footstep.FootstepTiming;
 import us.ihmc.robotModels.FullHumanoidRobotModel;
-import us.ihmc.robotics.math.frames.YoFrameConvexPolygon2d;
-import us.ihmc.robotics.math.frames.YoFramePoint;
-import us.ihmc.robotics.math.frames.YoFramePose;
-import us.ihmc.robotics.math.frames.YoFrameVector;
 import us.ihmc.robotics.referenceFrames.MidFootZUpGroundFrame;
 import us.ihmc.robotics.referenceFrames.ZUpFrame;
 import us.ihmc.robotics.robotSide.RobotSide;
@@ -56,6 +52,10 @@ import us.ihmc.simulationconstructionset.gui.tools.SimulationOverheadPlotterFact
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.yoVariables.variable.YoBoolean;
 import us.ihmc.yoVariables.variable.YoDouble;
+import us.ihmc.yoVariables.variable.YoFrameConvexPolygon2D;
+import us.ihmc.yoVariables.variable.YoFramePoint3D;
+import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
+import us.ihmc.yoVariables.variable.YoFrameVector3D;
 import us.ihmc.yoVariables.variable.YoInteger;
 
 public class CMPPlannerVisualizer
@@ -73,8 +73,8 @@ public class CMPPlannerVisualizer
    private final YoGraphicsListRegistry graphicsListRegistry = new YoGraphicsListRegistry();
    private final SimulationConstructionSet scs;
 
-   private final List<YoFramePose> yoNextFootstepPose = new ArrayList<>();
-   private final List<YoFrameConvexPolygon2d> yoNextFootstepPolygon = new ArrayList<>();
+   private final List<YoFramePoseUsingYawPitchRoll> yoNextFootstepPose = new ArrayList<>();
+   private final List<YoFrameConvexPolygon2D> yoNextFootstepPolygon = new ArrayList<>();
    private final ArrayList<Updatable> updatables = new ArrayList<>();
    public static final Color defaultLeftColor = new Color(0.85f, 0.35f, 0.65f, 1.0f);
    public static final Color defaultRightColor = new Color(0.15f, 0.8f, 0.15f, 1.0f);
@@ -91,7 +91,7 @@ public class CMPPlannerVisualizer
    private SideDependentList<FootSpoof> contactableFeet = new SideDependentList<>();
    private MidFootZUpGroundFrame midFeetZUpFrame;
    private SideDependentList<YoPlaneContactState> contactStates = new SideDependentList<>();
-   private SideDependentList<YoFramePose> currentFootPoses = new SideDependentList<>();
+   private SideDependentList<YoFramePoseUsingYawPitchRoll> currentFootPoses = new SideDependentList<>();
    private BipedSupportPolygons bipedSupportPolygons;
 
    private SmoothCMPPlannerParameters planParameters;
@@ -115,12 +115,12 @@ public class CMPPlannerVisualizer
    private List<YoDouble> swingDurationShiftFractions = new ArrayList<>();
    private List<YoDouble> transferSplitFractions = new ArrayList<>();
 
-   private final YoFramePoint desiredCoP;
-   private final YoFramePoint desiredCMP;
-   private final YoFrameVector desiredCoPVelocity;
-   private final YoFramePoint predictedCoM, predictedSwingFootLocation;
-   private final YoFrameVector predictedAngularMomentum;
-   private final YoFrameVector predictedTorque;
+   private final YoFramePoint3D desiredCoP;
+   private final YoFramePoint3D desiredCMP;
+   private final YoFrameVector3D desiredCoPVelocity;
+   private final YoFramePoint3D predictedCoM, predictedSwingFootLocation;
+   private final YoFrameVector3D predictedAngularMomentum;
+   private final YoFrameVector3D predictedTorque;
 
    public CMPPlannerVisualizer()
    {
@@ -129,17 +129,17 @@ public class CMPPlannerVisualizer
       setupPlanner();
       for (int i = 0; i < planParameters.getNumberOfFootstepsToConsider(); i++)
       {
-         YoFrameConvexPolygon2d nextFootPolygon = new YoFrameConvexPolygon2d("nextFootstep" + i, "", worldFrame, 4, registry);
+         YoFrameConvexPolygon2D nextFootPolygon = new YoFrameConvexPolygon2D("nextFootstep" + i, "", worldFrame, 4, registry);
          yoNextFootstepPolygon.add(nextFootPolygon);
          graphicsListRegistry.registerArtifact("upcomingFootsteps", new YoArtifactPolygon("nextFootstep" + i, nextFootPolygon, Color.blue, false));
       }
-      desiredCoP = new YoFramePoint("desiredCoP", worldFrame, registry);
-      desiredCMP = new YoFramePoint("desiredCMP", worldFrame, registry);
-      predictedCoM = new YoFramePoint("predictedCoM", worldFrame, registry);
-      predictedSwingFootLocation = new YoFramePoint("predictedSwFootLoc", worldFrame, registry);
-      predictedAngularMomentum = new YoFrameVector("predictedAngularMomentum", worldFrame, registry);
-      predictedTorque = new YoFrameVector("predictedTorque", worldFrame, registry);
-      desiredCoPVelocity = new YoFrameVector("desiredCoPVelocity", worldFrame, registry);
+      desiredCoP = new YoFramePoint3D("desiredCoP", worldFrame, registry);
+      desiredCMP = new YoFramePoint3D("desiredCMP", worldFrame, registry);
+      predictedCoM = new YoFramePoint3D("predictedCoM", worldFrame, registry);
+      predictedSwingFootLocation = new YoFramePoint3D("predictedSwFootLoc", worldFrame, registry);
+      predictedAngularMomentum = new YoFrameVector3D("predictedAngularMomentum", worldFrame, registry);
+      predictedTorque = new YoFrameVector3D("predictedTorque", worldFrame, registry);
+      desiredCoPVelocity = new YoFrameVector3D("desiredCoPVelocity", worldFrame, registry);
 
       Graphics3DObject footstepGraphics = new Graphics3DObject();
       List<Point2D> contactPoints = new ArrayList<Point2D>();
@@ -148,7 +148,7 @@ public class CMPPlannerVisualizer
       footstepGraphics.addExtrudedPolygon(contactPoints, 0.02, YoAppearance.Color(Color.blue));
       for (int i = 0; i < planParameters.getNumberOfFootstepsToConsider(); i++)
       {
-         YoFramePose nextPose = new YoFramePose("nextFootstepPose" + i, worldFrame, registry);
+         YoFramePoseUsingYawPitchRoll nextPose = new YoFramePoseUsingYawPitchRoll("nextFootstepPose" + i, worldFrame, registry);
          yoNextFootstepPose.add(nextPose);
          graphicsListRegistry.registerYoGraphic("upcomingFootsteps", new YoGraphicShape("nextFootstep" + i, footstepGraphics, nextPose, 1.0));
       }
@@ -440,7 +440,7 @@ public class CMPPlannerVisualizer
          tempFootPolygon.setIncludingFrame(footFrame, Vertex2DSupplier.asVertex2DSupplier(footstep.getPredictedContactPoints()));
          tempFootPolygon.changeFrameAndProjectToXYPlane(worldFrame);
          yoNextFootstepPolygon.get(i).set(tempFootPolygon);
-         yoNextFootstepPose.get(i).setAndMatchFrame(new FramePose3D(footFrame));
+         yoNextFootstepPose.get(i).setMatchingFrame(new FramePose3D(footFrame));
       }
       for (int i = numberOfPolygonsToUpdate; i < yoNextFootstepPose.size(); i++)
          setVizFootstepsToNaN(i);
@@ -481,7 +481,7 @@ public class CMPPlannerVisualizer
          startingPose.setY(robotSide.negateIfRightSide(0.15));
          contactableFoot.setSoleFrame(startingPose);
          contactableFeet.put(robotSide, contactableFoot);
-         currentFootPoses.put(robotSide, new YoFramePose(sidePrefix + "FootPose", worldFrame, registry));
+         currentFootPoses.put(robotSide, new YoFramePoseUsingYawPitchRoll(sidePrefix + "FootPose", worldFrame, registry));
 
          Graphics3DObject footGraphics = new Graphics3DObject();
          AppearanceDefinition footColor = robotSide == RobotSide.LEFT ? YoAppearance.Color(defaultLeftColor) : YoAppearance.Color(defaultRightColor);

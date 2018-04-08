@@ -20,8 +20,6 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.graphicsDescription.yoGraphics.plotting.YoArtifactLine2d;
 import us.ihmc.graphicsDescription.yoGraphics.plotting.YoArtifactPolygon;
 import us.ihmc.robotics.geometry.ConvexPolygonScaler;
-import us.ihmc.robotics.math.frames.YoFrameConvexPolygon2d;
-import us.ihmc.robotics.math.frames.YoFrameLine2d;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
@@ -29,6 +27,8 @@ import us.ihmc.simulationconstructionset.gui.tools.SimulationOverheadPlotterFact
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.yoVariables.variable.YoBoolean;
 import us.ihmc.yoVariables.variable.YoDouble;
+import us.ihmc.yoVariables.variable.YoFrameConvexPolygon2D;
+import us.ihmc.yoVariables.variable.YoFrameLine2D;
 
 public class ConvexPolygon2dVisualizer
 {
@@ -44,10 +44,10 @@ public class ConvexPolygon2dVisualizer
    private final int maxNumberOfVertices = 30;
    private final int maxNumberOfEdges = maxNumberOfVertices;
 
-   private final YoFrameConvexPolygon2d yoOriginalPolygon = new YoFrameConvexPolygon2d("originalPolygon", "", worldFrame, maxNumberOfVertices, registry);
-   private final YoFrameConvexPolygon2d yoShrunkPolygon = new YoFrameConvexPolygon2d("shrunkPolygon", "", worldFrame, maxNumberOfVertices, registry);
+   private final YoFrameConvexPolygon2D yoOriginalPolygon = new YoFrameConvexPolygon2D("originalPolygon", "", worldFrame, maxNumberOfVertices, registry);
+   private final YoFrameConvexPolygon2D yoShrunkPolygon = new YoFrameConvexPolygon2D("shrunkPolygon", "", worldFrame, maxNumberOfVertices, registry);
 
-   private final YoFrameLine2d[] edgeLines = new YoFrameLine2d[maxNumberOfEdges];
+   private final YoFrameLine2D[] edgeLines = new YoFrameLine2D[maxNumberOfEdges];
 
    private final YoArtifactPolygon originalPolygonArtifact = new YoArtifactPolygon("originalPolygon", yoOriginalPolygon, Color.blue, false);
    private final YoArtifactPolygon shrunkPolygonArtifact = new YoArtifactPolygon("shrunkPolygon", yoShrunkPolygon, Color.gray, false);
@@ -67,7 +67,7 @@ public class ConvexPolygon2dVisualizer
 
       for (int i = 0; i < maxNumberOfEdges; i++)
       {
-         YoFrameLine2d edgeLine = new YoFrameLine2d("edgeLine_" + i, "", worldFrame, registry);
+         YoFrameLine2D edgeLine = new YoFrameLine2D("edgeLine_" + i, "", worldFrame, registry);
          edgeLines[i] = edgeLine;
 
          yoGraphicsListRegistry.registerArtifact("Viz", new YoArtifactLine2d("edgeViz_" + i, edgeLine, Color.yellow));

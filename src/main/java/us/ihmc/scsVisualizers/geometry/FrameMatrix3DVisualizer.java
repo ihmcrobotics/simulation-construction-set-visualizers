@@ -11,9 +11,9 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicReferenceFrame;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicVector;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.variable.YoFramePoint3D;
+import us.ihmc.yoVariables.variable.YoFrameVector3D;
 import us.ihmc.robotics.geometry.FrameMatrix3D;
-import us.ihmc.robotics.math.frames.YoFramePoint;
-import us.ihmc.robotics.math.frames.YoFrameVector;
 import us.ihmc.robotics.random.RandomGeometry;
 import us.ihmc.robotics.referenceFrames.PoseReferenceFrame;
 import us.ihmc.simulationconstructionset.Robot;
@@ -27,10 +27,10 @@ public class FrameMatrix3DVisualizer
 
    private final PoseReferenceFrame aFrame = new PoseReferenceFrame("aFrame", worldFrame);
 
-   private final YoFramePoint zero = new YoFramePoint("zero", worldFrame, registry);
-   private final YoFrameVector yoVectorOriginal = new YoFrameVector("original", worldFrame, registry);
-   private final YoFrameVector yoVectorTransformedInWorld = new YoFrameVector("transformedInWorld", worldFrame, registry);
-   private final YoFrameVector yoVectorTransformedInAFrame = new YoFrameVector("transformedInAFrame", worldFrame, registry);
+   private final YoFramePoint3D zero = new YoFramePoint3D("zero", worldFrame, registry);
+   private final YoFrameVector3D yoVectorOriginal = new YoFrameVector3D("original", worldFrame, registry);
+   private final YoFrameVector3D yoVectorTransformedInWorld = new YoFrameVector3D("transformedInWorld", worldFrame, registry);
+   private final YoFrameVector3D yoVectorTransformedInAFrame = new YoFrameVector3D("transformedInAFrame", worldFrame, registry);
 
    private final FramePose3D aFramePose = new FramePose3D();
    private final FrameVector3D originalVector = new FrameVector3D();

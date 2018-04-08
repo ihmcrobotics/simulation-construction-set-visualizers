@@ -13,14 +13,14 @@ import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.robotics.geometry.TransformTools;
-import us.ihmc.robotics.math.frames.YoFramePoint;
-import us.ihmc.robotics.math.frames.YoFrameVector;
 import us.ihmc.robotics.trajectories.providers.ConstantDoubleProvider;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
 import us.ihmc.yoVariables.providers.DoubleProvider;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.variable.YoFramePoint3D;
+import us.ihmc.yoVariables.variable.YoFrameVector3D;
 
 public class CirclePoseTrajectoryGeneratorVisualizer
 {
@@ -35,9 +35,9 @@ public class CirclePoseTrajectoryGeneratorVisualizer
 
    private final CirclePoseTrajectoryGenerator traj;
 
-   private final YoFramePoint position = new YoFramePoint("position", aFrame, registry);
-   private final YoFrameVector velocity = new YoFrameVector("velocity", aFrame, registry);
-   private final YoFrameVector acceleration = new YoFrameVector("acceleration", aFrame, registry);
+   private final YoFramePoint3D position = new YoFramePoint3D("position", aFrame, registry);
+   private final YoFrameVector3D velocity = new YoFrameVector3D("velocity", aFrame, registry);
+   private final YoFrameVector3D acceleration = new YoFrameVector3D("acceleration", aFrame, registry);
 
    private final FramePoint3D tempPoint = new FramePoint3D();
    private final FrameVector3D tempVector = new FrameVector3D();

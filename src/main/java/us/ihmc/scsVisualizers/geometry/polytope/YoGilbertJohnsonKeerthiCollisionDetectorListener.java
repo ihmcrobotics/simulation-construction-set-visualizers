@@ -19,7 +19,7 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicTriangle;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
-import us.ihmc.robotics.math.frames.YoFramePoint;
+import us.ihmc.yoVariables.variable.YoFramePoint3D;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 
@@ -31,13 +31,13 @@ public class YoGilbertJohnsonKeerthiCollisionDetectorListener implements Gilbert
    private final YoDouble[] lambdas = new YoDouble[4];
    private final YoDouble tripleProduct = new YoDouble("tripleProduct", registry);
 
-   private final YoFramePoint[] simplexPoints = new YoFramePoint[4];
-   private final YoFramePoint[] correspondingPointsOnPolytopeA = new YoFramePoint[4];
-   private final YoFramePoint[] correspondingPointsOnPolytopeB = new YoFramePoint[4];
+   private final YoFramePoint3D[] simplexPoints = new YoFramePoint3D[4];
+   private final YoFramePoint3D[] correspondingPointsOnPolytopeA = new YoFramePoint3D[4];
+   private final YoFramePoint3D[] correspondingPointsOnPolytopeB = new YoFramePoint3D[4];
 
    private final int maxNumberOfPolytopePoints = 80;
-   private final ArrayList<YoFramePoint> polytopeAPoints = new ArrayList<>();
-   private final ArrayList<YoFramePoint> polytopeBPoints = new ArrayList<>();
+   private final ArrayList<YoFramePoint3D> polytopeAPoints = new ArrayList<>();
+   private final ArrayList<YoFramePoint3D> polytopeBPoints = new ArrayList<>();
 
    private final int maxNumberOfPolytopeEdges = 200;
    private final ArrayList<YoGraphicLineSegment> polytopeAEdgesViz = new ArrayList<>();
@@ -51,9 +51,9 @@ public class YoGilbertJohnsonKeerthiCollisionDetectorListener implements Gilbert
 
    //   private final YoFrameConvexPolygon2d convexPolygon;
 
-   private final YoFramePoint closestPointOnSimplex;
-   private final YoFramePoint closestPointOnA;
-   private final YoFramePoint closestPointOnB;
+   private final YoFramePoint3D closestPointOnSimplex;
+   private final YoFramePoint3D closestPointOnA;
+   private final YoFramePoint3D closestPointOnB;
 
    private final YoDouble distanceSimplexToOrigin = new YoDouble("distanceSimplexToOrigin", registry);
    private final YoDouble distanceBetweenClosestPoints = new YoDouble("distanceBetweenClosestPoints", registry);
@@ -70,13 +70,13 @@ public class YoGilbertJohnsonKeerthiCollisionDetectorListener implements Gilbert
 
       for (int i = 0; i < maxNumberOfPolytopePoints; i++)
       {
-         YoFramePoint polytopeAPoint = new YoFramePoint("polytopeA" + i, ReferenceFrame.getWorldFrame(), registry);
+         YoFramePoint3D polytopeAPoint = new YoFramePoint3D("polytopeA" + i, ReferenceFrame.getWorldFrame(), registry);
          polytopeAPoint.setToNaN();
          polytopeAPoints.add(polytopeAPoint);
          YoGraphicPosition polytopeAPointViz = new YoGraphicPosition("polytopeA" + i, polytopeAPoint, 0.03, polytopeAAppearance);
          yoGraphicsListRegistry.registerYoGraphic("PolytopeAPoints", polytopeAPointViz);
 
-         YoFramePoint polytopeBPoint = new YoFramePoint("polytopeB" + i, ReferenceFrame.getWorldFrame(), registry);
+         YoFramePoint3D polytopeBPoint = new YoFramePoint3D("polytopeB" + i, ReferenceFrame.getWorldFrame(), registry);
          polytopeBPoint.setToNaN();
          polytopeBPoints.add(polytopeBPoint);
          YoGraphicPosition polytopeBPointViz = new YoGraphicPosition("polytopeB" + i, polytopeBPoint, 0.03, polytopeBAppearance);
@@ -98,15 +98,15 @@ public class YoGilbertJohnsonKeerthiCollisionDetectorListener implements Gilbert
 
       for (int i = 0; i < 4; i++)
       {
-         simplexPoints[i] = new YoFramePoint("simplexPoint" + i, ReferenceFrame.getWorldFrame(), registry);
+         simplexPoints[i] = new YoFramePoint3D("simplexPoint" + i, ReferenceFrame.getWorldFrame(), registry);
          YoGraphicPosition simplexPointViz = new YoGraphicPosition("simplexPoint" + i, simplexPoints[i], 0.1, simplexPointAppearances[i]);
          yoGraphicsListRegistry.registerYoGraphic("SimplexPoints", simplexPointViz);
 
-         correspondingPointsOnPolytopeA[i] = new YoFramePoint("correspondingPointOnPolytopeA" + i, ReferenceFrame.getWorldFrame(), registry);
+         correspondingPointsOnPolytopeA[i] = new YoFramePoint3D("correspondingPointOnPolytopeA" + i, ReferenceFrame.getWorldFrame(), registry);
          YoGraphicPosition correspondingPointOnPolytopeAViz = new YoGraphicPosition("correspondingPointOnPolytopeA" + i, correspondingPointsOnPolytopeA[i], 0.06, simplexPointAppearances[i]);
          yoGraphicsListRegistry.registerYoGraphic("SimplexPoints", correspondingPointOnPolytopeAViz);
 
-         correspondingPointsOnPolytopeB[i] = new YoFramePoint("correspondingPointOnPolytopeB" + i, ReferenceFrame.getWorldFrame(), registry);
+         correspondingPointsOnPolytopeB[i] = new YoFramePoint3D("correspondingPointOnPolytopeB" + i, ReferenceFrame.getWorldFrame(), registry);
          YoGraphicPosition correspondingPointOnPolytopeBViz = new YoGraphicPosition("correspondingPointOnPolytopeB" + i, correspondingPointsOnPolytopeB[i], 0.06, simplexPointAppearances[i]);
          yoGraphicsListRegistry.registerYoGraphic("SimplexPoints", correspondingPointOnPolytopeBViz);
 
@@ -136,17 +136,17 @@ public class YoGilbertJohnsonKeerthiCollisionDetectorListener implements Gilbert
       //      yoGraphicsListRegistry.registerYoGraphic("SimplexTriangles", graphicPolygon);
       //      yoGraphicsListRegistry.registerGraphicsUpdatableToUpdateInAPlaybackListener(graphicPolygon);
 
-      closestPointOnSimplex = new YoFramePoint("closestPointOnSimplex", ReferenceFrame.getWorldFrame(), registry);
+      closestPointOnSimplex = new YoFramePoint3D("closestPointOnSimplex", ReferenceFrame.getWorldFrame(), registry);
       AppearanceDefinition closestPointAppearance = YoAppearance.Gold();
       closestPointAppearance.setTransparency(0.5);
       YoGraphicPosition closestPointOnSimplexViz = new YoGraphicPosition("closestPointOnSimplex", closestPointOnSimplex, 0.14, closestPointAppearance);
       yoGraphicsListRegistry.registerYoGraphic("SimplexPoints", closestPointOnSimplexViz);
 
-      closestPointOnA = new YoFramePoint("closestPointOnA", ReferenceFrame.getWorldFrame(), registry);
+      closestPointOnA = new YoFramePoint3D("closestPointOnA", ReferenceFrame.getWorldFrame(), registry);
       YoGraphicPosition closestPointOnAViz = new YoGraphicPosition("closestPointOnAViz", closestPointOnA, 0.12, closestPointAppearance);
       yoGraphicsListRegistry.registerYoGraphic("SimplexPoints", closestPointOnAViz);
 
-      closestPointOnB = new YoFramePoint("closestPointOnB", ReferenceFrame.getWorldFrame(), registry);
+      closestPointOnB = new YoFramePoint3D("closestPointOnB", ReferenceFrame.getWorldFrame(), registry);
       YoGraphicPosition closestPointOnBViz = new YoGraphicPosition("closestPointOnBViz", closestPointOnB, 0.12, closestPointAppearance);
       yoGraphicsListRegistry.registerYoGraphic("SimplexPoints", closestPointOnBViz);
 
@@ -208,17 +208,17 @@ public class YoGilbertJohnsonKeerthiCollisionDetectorListener implements Gilbert
       }
    }
 
-   private void clearYoFramePoints(ArrayList<YoFramePoint> yoFramePoints)
+   private void clearYoFramePoints(ArrayList<YoFramePoint3D> yoFramePoints)
    {
-      for (YoFramePoint yoFramePoint : yoFramePoints)
+      for (YoFramePoint3D yoFramePoint : yoFramePoints)
       {
          yoFramePoint.setToNaN();
       }
    }
 
-   private void clearYoFramePoints(YoFramePoint[] yoFramePoints)
+   private void clearYoFramePoints(YoFramePoint3D[] yoFramePoints)
    {
-      for (YoFramePoint yoFramePoint : yoFramePoints)
+      for (YoFramePoint3D yoFramePoint : yoFramePoints)
       {
          yoFramePoint.setToNaN();
       }
@@ -232,7 +232,7 @@ public class YoGilbertJohnsonKeerthiCollisionDetectorListener implements Gilbert
       }
    }
 
-   private static void drawPolytopeVertices(SupportingVertexHolder polytope, ArrayList<YoFramePoint> polytopeVertcesForViz)
+   private static void drawPolytopeVertices(SupportingVertexHolder polytope, ArrayList<YoFramePoint3D> polytopeVertcesForViz)
    {
       if (polytope instanceof ConvexPolytope)
       {

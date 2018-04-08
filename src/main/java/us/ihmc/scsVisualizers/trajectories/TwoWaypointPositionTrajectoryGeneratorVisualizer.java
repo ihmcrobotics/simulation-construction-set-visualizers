@@ -12,8 +12,6 @@ import us.ihmc.graphicsDescription.yoGraphics.BagOfBalls;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicVector;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
-import us.ihmc.robotics.math.frames.YoFramePoint;
-import us.ihmc.robotics.math.frames.YoFrameVector;
 import us.ihmc.robotics.math.trajectories.providers.YoPositionProvider;
 import us.ihmc.robotics.math.trajectories.providers.YoVariableDoubleProvider;
 import us.ihmc.robotics.math.trajectories.providers.YoVelocityProvider;
@@ -30,6 +28,8 @@ import us.ihmc.yoVariables.providers.DoubleProvider;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.yoVariables.variable.YoBoolean;
 import us.ihmc.yoVariables.variable.YoDouble;
+import us.ihmc.yoVariables.variable.YoFramePoint3D;
+import us.ihmc.yoVariables.variable.YoFrameVector3D;
 
 public class TwoWaypointPositionTrajectoryGeneratorVisualizer
 {
@@ -40,12 +40,12 @@ public class TwoWaypointPositionTrajectoryGeneratorVisualizer
    private static final SupportedGraphics3DAdapter graphics3DAdapterToUse = SupportedGraphics3DAdapter.JAVA_MONKEY_ENGINE;
    private static final String namePrefix = "Viz";
    private static final ReferenceFrame worldFrame = ReferenceFrame.getWorldFrame();
-   private final YoFramePoint initialPosition;
-   private final YoFramePoint stancePosition;
-   private final YoFramePoint finalPosition;
-   private final List<YoFramePoint> waypoints = new ArrayList<YoFramePoint>();
-   private final YoFrameVector initialVelocity;
-   private final YoFrameVector finalVelocity;
+   private final YoFramePoint3D initialPosition;
+   private final YoFramePoint3D stancePosition;
+   private final YoFramePoint3D finalPosition;
+   private final List<YoFramePoint3D> waypoints = new ArrayList<YoFramePoint3D>();
+   private final YoFrameVector3D initialVelocity;
+   private final YoFrameVector3D finalVelocity;
    private final YoDouble stepTime;
    private final YoDouble timeIntoStep;
    private final YoDouble cartesianSpeed;
@@ -60,12 +60,12 @@ public class TwoWaypointPositionTrajectoryGeneratorVisualizer
       registry = new YoVariableRegistry(namePrefix);
       yoGraphicsListRegistry = new YoGraphicsListRegistry();
 
-      initialPosition = new YoFramePoint(namePrefix + "P0", worldFrame, registry);
-      finalPosition = new YoFramePoint(namePrefix + "P3", worldFrame, registry);
-      waypoints.add(new YoFramePoint(namePrefix + "P1", worldFrame, registry));
-      waypoints.add(new YoFramePoint(namePrefix + "P2", worldFrame, registry));
-      initialVelocity = new YoFrameVector(namePrefix + "V0", worldFrame, registry);
-      finalVelocity = new YoFrameVector(namePrefix + "V3", worldFrame, registry);
+      initialPosition = new YoFramePoint3D(namePrefix + "P0", worldFrame, registry);
+      finalPosition = new YoFramePoint3D(namePrefix + "P3", worldFrame, registry);
+      waypoints.add(new YoFramePoint3D(namePrefix + "P1", worldFrame, registry));
+      waypoints.add(new YoFramePoint3D(namePrefix + "P2", worldFrame, registry));
+      initialVelocity = new YoFrameVector3D(namePrefix + "V0", worldFrame, registry);
+      finalVelocity = new YoFrameVector3D(namePrefix + "V3", worldFrame, registry);
       stepTime = new YoDouble(namePrefix + "StepT", registry);
       timeIntoStep = new YoDouble(namePrefix + "T", registry);
       cartesianSpeed = new YoDouble(namePrefix + "CartesianSpeed", registry);
@@ -100,8 +100,8 @@ public class TwoWaypointPositionTrajectoryGeneratorVisualizer
       scs.addYoGraphicsListRegistry(yoGraphicsListRegistry);
 
       SliderBoardConfigurationManager sliderBoardConfigurationManager = new SliderBoardConfigurationManager(scs);
-      YoFramePoint[] positions = new YoFramePoint[] {initialPosition, waypoints.get(0), waypoints.get(1), finalPosition};
-      YoFrameVector[] velocities = new YoFrameVector[] {initialVelocity, finalVelocity};
+      YoFramePoint3D[] positions = new YoFramePoint3D[] {initialPosition, waypoints.get(0), waypoints.get(1), finalPosition};
+      YoFrameVector3D[] velocities = new YoFrameVector3D[] {initialVelocity, finalVelocity};
 
       for (int i = 0; i < positions.length; i++)
       {
@@ -193,13 +193,13 @@ public class TwoWaypointPositionTrajectoryGeneratorVisualizer
    public static class TwoWaypointPositionTrajectorySpecifiedByPoints extends TwoWaypointPositionTrajectoryGenerator
    {
       private final ReferenceFrame referenceFrame;
-      private final List<YoFramePoint> waypoints;
+      private final List<YoFramePoint3D> waypoints;
 
       public TwoWaypointPositionTrajectorySpecifiedByPoints(String namePrefix, ReferenceFrame referenceFrame, DoubleProvider stepTimeProvider,
             PositionProvider initialPositionProvider, VectorProvider initialVelocityProvider, PositionProvider stancePositionProvider,
             PositionProvider finalPositionProvider, VectorProvider finalDesiredVelocityProvider, TrajectoryParametersProvider trajectoryParametersProvider,
             YoVariableRegistry parentRegistry, int arcLengthCalculatorDivisionsPerPolynomial, YoGraphicsListRegistry yoGraphicsListRegistry,
-            double maxSwingHeightFromStanceFoot, boolean visualize, List<YoFramePoint> waypoints)
+            double maxSwingHeightFromStanceFoot, boolean visualize, List<YoFramePoint3D> waypoints)
       {
          super(namePrefix, referenceFrame, stepTimeProvider, initialPositionProvider, initialVelocityProvider, stancePositionProvider, finalPositionProvider,
                finalDesiredVelocityProvider, trajectoryParametersProvider, parentRegistry, yoGraphicsListRegistry, maxSwingHeightFromStanceFoot, visualize);

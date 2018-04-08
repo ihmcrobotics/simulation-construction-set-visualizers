@@ -10,10 +10,10 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
+import us.ihmc.yoVariables.variable.YoFramePoint3D;
 import us.ihmc.robotics.geometry.SpiralBasedAlgorithm;
 import us.ihmc.robotics.lists.GenericTypeBuilder;
 import us.ihmc.robotics.lists.RecyclingArrayList;
-import us.ihmc.robotics.math.frames.YoFramePoint;
 import us.ihmc.robotics.math.trajectories.waypoints.EuclideanTrajectoryPointCalculator;
 import us.ihmc.robotics.math.trajectories.waypoints.MultipleWaypointsPositionTrajectoryGenerator;
 import us.ihmc.robotics.math.trajectories.waypoints.YoFrameEuclideanTrajectoryPoint;
@@ -40,7 +40,7 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
    private final EuclideanTrajectoryPointCalculator calculator = new EuclideanTrajectoryPointCalculator();
    private final MultipleWaypointsPositionTrajectoryGenerator traj;
 
-   private final YoFramePoint currentPositionViz = new YoFramePoint("currentPositionViz", worldFrame, registry);
+   private final YoFramePoint3D currentPositionViz = new YoFramePoint3D("currentPositionViz", worldFrame, registry);
    private final RecyclingArrayList<YoFrameEuclideanTrajectoryPoint> trajectoryPointsViz;
    private final YoDouble[] relativeWaypointTimes;
 

@@ -26,7 +26,7 @@ import us.ihmc.humanoidRobotics.frames.HumanoidReferenceFrames;
 import us.ihmc.robotModels.FullHumanoidRobotModel;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
-import us.ihmc.robotics.math.frames.YoFramePose;
+import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
 import us.ihmc.robotics.robotSide.RobotSide;
 import us.ihmc.robotics.robotSide.SideDependentList;
 import us.ihmc.robotics.screwTheory.OneDoFJoint;
@@ -88,12 +88,12 @@ public class CutForceControllerVisualizer
    private ReferenceFrame rightWristFrame;
    private ReferenceFrame leftWristFrame;
 
-   private final YoFramePose finalHandPose = new YoFramePose("finalHandPose", worldFrame, registry);
-   private final YoFramePose initialHandPose = new YoFramePose("initialHandPose", worldFrame, registry);
-   private final YoFramePose currentHandPose = new YoFramePose("currentHandPose", worldFrame, registry);
-   private final YoFramePose rightWristSensorCoordinateSystemPose = new YoFramePose("rightWristSensorCoordinateSystem", worldFrame, registry);
-   private final YoFramePose leftWristSensorCoordinateSystemPose = new YoFramePose("leftWristSensorCoordinateSystem", worldFrame, registry);
-   private final YoFramePose leftHandControlCoordinateSystemPose = new YoFramePose("leftHandControlFrameCoordinateSystem", worldFrame, registry);
+   private final YoFramePoseUsingYawPitchRoll finalHandPose = new YoFramePoseUsingYawPitchRoll("finalHandPose", worldFrame, registry);
+   private final YoFramePoseUsingYawPitchRoll initialHandPose = new YoFramePoseUsingYawPitchRoll("initialHandPose", worldFrame, registry);
+   private final YoFramePoseUsingYawPitchRoll currentHandPose = new YoFramePoseUsingYawPitchRoll("currentHandPose", worldFrame, registry);
+   private final YoFramePoseUsingYawPitchRoll rightWristSensorCoordinateSystemPose = new YoFramePoseUsingYawPitchRoll("rightWristSensorCoordinateSystem", worldFrame, registry);
+   private final YoFramePoseUsingYawPitchRoll leftWristSensorCoordinateSystemPose = new YoFramePoseUsingYawPitchRoll("leftWristSensorCoordinateSystem", worldFrame, registry);
+   private final YoFramePoseUsingYawPitchRoll leftHandControlCoordinateSystemPose = new YoFramePoseUsingYawPitchRoll("leftHandControlFrameCoordinateSystem", worldFrame, registry);
    
    private final FramePose3D handPose = new FramePose3D();
 

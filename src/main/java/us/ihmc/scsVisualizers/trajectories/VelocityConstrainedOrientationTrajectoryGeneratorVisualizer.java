@@ -15,14 +15,14 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicVector;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.robotics.geometry.AngleTools;
 import us.ihmc.robotics.math.filters.FiniteDifferenceAngularVelocityYoFrameVector;
-import us.ihmc.robotics.math.frames.YoFramePose;
-import us.ihmc.robotics.math.frames.YoFrameVector;
 import us.ihmc.robotics.math.trajectories.VelocityConstrainedOrientationTrajectoryGenerator;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
+import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
+import us.ihmc.yoVariables.variable.YoFrameVector3D;
 
 public class VelocityConstrainedOrientationTrajectoryGeneratorVisualizer
 {
@@ -47,12 +47,12 @@ public class VelocityConstrainedOrientationTrajectoryGeneratorVisualizer
 
    private final FiniteDifferenceAngularVelocityYoFrameVector FD2AngularVelocity = new FiniteDifferenceAngularVelocityYoFrameVector("FD2AngularVelocity", worldFrame, dt, registry);
    
-   private final YoFrameVector FDAngularVelocity = new YoFrameVector("FDAngularVelocity", worldFrame, registry);
+   private final YoFrameVector3D FDAngularVelocity = new YoFrameVector3D("FDAngularVelocity", worldFrame, registry);
    private final YoDouble FDAngularVelocityMagnitude = new YoDouble("FDAngularVelocityMagnitude", registry);
-   private final YoFrameVector FDAngularVelocityDirection = new YoFrameVector("FDAngularVelocityDirection", worldFrame, registry);
-   private final YoFrameVector FDAngularAcceleration = new YoFrameVector("FDAngularAcceleration", worldFrame, registry);
+   private final YoFrameVector3D FDAngularVelocityDirection = new YoFrameVector3D("FDAngularVelocityDirection", worldFrame, registry);
+   private final YoFrameVector3D FDAngularAcceleration = new YoFrameVector3D("FDAngularAcceleration", worldFrame, registry);
 
-   private final YoFrameVector trajAngularVelocityDirection = new YoFrameVector("trajAngularVelocityDirectionViz", worldFrame, registry);
+   private final YoFrameVector3D trajAngularVelocityDirection = new YoFrameVector3D("trajAngularVelocityDirectionViz", worldFrame, registry);
 
    private final YoDouble initialDriftFullRotations = new YoDouble("initialDriftFullRotations", registry);
    private final YoDouble finalDriftFullRotations = new YoDouble("finalDriftFullRotations", registry);
@@ -88,8 +88,8 @@ public class VelocityConstrainedOrientationTrajectoryGeneratorVisualizer
       SimulationConstructionSet scs = new SimulationConstructionSet(robot, parameters);
       scs.addYoVariableRegistry(registry);
       scs.setDT(dt, recordFrequency);
-      YoFramePose desiredOrientationViz = new YoFramePose("desiredOrientationViz", "viz", worldFrame, registry);
-      YoFramePose orientationFromIntegrationViz = new YoFramePose("orientationFromIntegrationViz", "viz", worldFrame, registry);
+      YoFramePoseUsingYawPitchRoll desiredOrientationViz = new YoFramePoseUsingYawPitchRoll("desiredOrientationViz", "viz", worldFrame, registry);
+      YoFramePoseUsingYawPitchRoll orientationFromIntegrationViz = new YoFramePoseUsingYawPitchRoll("orientationFromIntegrationViz", "viz", worldFrame, registry);
 //      pose.setZ(1.0);
       yoGraphicsListRegistry.registerYoGraphic("trajViz", new YoGraphicCoordinateSystem("blopDes", desiredOrientationViz, 1.0));
       yoGraphicsListRegistry.registerYoGraphic("trajViz", new YoGraphicCoordinateSystem("blopInt", orientationFromIntegrationViz, 1.0, YoAppearance.GreenYellow()));

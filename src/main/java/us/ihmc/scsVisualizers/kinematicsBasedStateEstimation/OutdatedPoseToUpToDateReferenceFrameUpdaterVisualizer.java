@@ -15,9 +15,9 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicCoordinateSystem;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.humanoidRobotics.communication.subscribers.TimeStampedTransformBuffer;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
 import us.ihmc.yoVariables.variable.YoLong;
 import us.ihmc.robotics.kinematics.TimeStampedTransform3D;
-import us.ihmc.robotics.math.frames.YoFramePose;
 import us.ihmc.robotics.random.RandomGeometry;
 import us.ihmc.robotics.referenceFrames.PoseReferenceFrame;
 import us.ihmc.simulationconstructionset.Robot;
@@ -60,17 +60,17 @@ public class OutdatedPoseToUpToDateReferenceFrameUpdaterVisualizer
       TimeStampedTransformBuffer upToDateTimeStampedTransformPoseBuffer = new TimeStampedTransformBuffer(numberOfUpToDateTransforms);
       TimeStampedTransformBuffer outdatedTimeStampedTransformBuffer = new TimeStampedTransformBuffer(numberOfOutdatedTransforms);
 
-      YoFramePose upToDateYoPoseInPresent = new YoFramePose("upToDateYoPoseInPresent", worldFrame, registry);
+      YoFramePoseUsingYawPitchRoll upToDateYoPoseInPresent = new YoFramePoseUsingYawPitchRoll("upToDateYoPoseInPresent", worldFrame, registry);
       YoGraphicCoordinateSystem upToDateYoPoseInPresentGraphic = new YoGraphicCoordinateSystem("upToDateYoPoseInPresentGraph", upToDateYoPoseInPresent, 0.5,
             YoAppearance.Yellow());
       yoGraphicsListRegistry.registerYoGraphic("upToDatePoses", upToDateYoPoseInPresentGraphic);
 
-      YoFramePose lastOutdatedPoseInPresentYoPose = new YoFramePose("lastOutdatedPoseInPresentYoPose", worldFrame, registry);
+      YoFramePoseUsingYawPitchRoll lastOutdatedPoseInPresentYoPose = new YoFramePoseUsingYawPitchRoll("lastOutdatedPoseInPresentYoPose", worldFrame, registry);
       YoGraphicCoordinateSystem lastOutdatedPoseInPresentYoPoseGraphic = new YoGraphicCoordinateSystem("lastOutdatedPoseInPresentYoPoseGraph",
             lastOutdatedPoseInPresentYoPose, 0.5, YoAppearance.Purple());
       yoGraphicsListRegistry.registerYoGraphic("outdatedPosesInPresentAtTimeStamp", lastOutdatedPoseInPresentYoPoseGraphic);
 
-      YoFramePose outdatedPoseExpressedInUpToDateReferenceFrameYoPose = new YoFramePose("outdatedPoseExpressedInUpToDateReferenceFrameYoPose", worldFrame,
+      YoFramePoseUsingYawPitchRoll outdatedPoseExpressedInUpToDateReferenceFrameYoPose = new YoFramePoseUsingYawPitchRoll("outdatedPoseExpressedInUpToDateReferenceFrameYoPose", worldFrame,
             registry);
       YoGraphicCoordinateSystem outdatedPoseExpressedInUpToDateReferenceFrameYoPoseGraphic = new YoGraphicCoordinateSystem(
             "outdatedPoseExpressedInUpToDateReferenceFrameYoPoseGraph", outdatedPoseExpressedInUpToDateReferenceFrameYoPose, 0.5, YoAppearance.White());
@@ -86,7 +86,7 @@ public class OutdatedPoseToUpToDateReferenceFrameUpdaterVisualizer
          upToDateTimeStampedTransformPoseBuffer.put(currentUpToDateTransform, currentTimeStamp);
          outdatedPoseToUpToDateReferenceFrameUpdater.putStateEstimatorTransformInBuffer(currentUpToDateTransform, currentTimeStamp);
 
-         YoFramePose currentUpToDateTransformYoFramePose = new YoFramePose("currentUpToDateTransformYoFramePose_" + i, worldFrame, registry);
+         YoFramePoseUsingYawPitchRoll currentUpToDateTransformYoFramePose = new YoFramePoseUsingYawPitchRoll("currentUpToDateTransformYoFramePose_" + i, worldFrame, registry);
          FramePose3D temporaryFramePose = new FramePose3D(worldFrame, currentUpToDateTransform);
          currentUpToDateTransformYoFramePose.set(temporaryFramePose);
          YoGraphicCoordinateSystem upToDateTransformGraphic = new YoGraphicCoordinateSystem("upToDateTransformGraph_" + i,
@@ -125,7 +125,7 @@ public class OutdatedPoseToUpToDateReferenceFrameUpdaterVisualizer
          
          outdatedTimeStampedTransformBuffer.put(finalErrorTransform, timeStamp);
 
-         YoFramePose currentOutdatedTransformYoFramePose = new YoFramePose("currentOutdatedTransformYoFramePose_" + j, worldFrame, registry);
+         YoFramePoseUsingYawPitchRoll currentOutdatedTransformYoFramePose = new YoFramePoseUsingYawPitchRoll("currentOutdatedTransformYoFramePose_" + j, worldFrame, registry);
          FramePose3D temporaryFramePose = new FramePose3D(worldFrame, finalErrorTransform);
          currentOutdatedTransformYoFramePose.set(temporaryFramePose);
          YoGraphicCoordinateSystem currentOutdatedTransformYoFramePoseGraphic = new YoGraphicCoordinateSystem("currentOutdatedTransformYoFramePoseGraphic_" + j, currentOutdatedTransformYoFramePose, 0.3,

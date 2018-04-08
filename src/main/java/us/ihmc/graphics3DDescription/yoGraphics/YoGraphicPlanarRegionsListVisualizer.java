@@ -24,7 +24,6 @@ import us.ihmc.robotDataLogger.logger.LogSettings;
 import us.ihmc.robotDataVisualizer.visualizer.SCSVisualizer;
 import us.ihmc.robotics.geometry.PlanarRegion;
 import us.ihmc.robotics.geometry.PlanarRegionsList;
-import us.ihmc.robotics.math.frames.YoFrameConvexPolygon2d;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
@@ -33,6 +32,7 @@ import us.ihmc.tools.processManagement.JavaProcessSpawner;
 import us.ihmc.util.PeriodicNonRealtimeThreadSchedulerFactory;
 import us.ihmc.util.PeriodicThreadSchedulerFactory;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.variable.YoFrameConvexPolygon2D;
 
 public class YoGraphicPlanarRegionsListVisualizer
 {
@@ -100,7 +100,7 @@ public class YoGraphicPlanarRegionsListVisualizer
 
    private static YoGraphicPolygon createYoGraphicPolygon(YoVariableRegistry registry)
    {
-      YoFrameConvexPolygon2d convexPolygon2d = new YoFrameConvexPolygon2d("poupou", ReferenceFrame.getWorldFrame(), 30, registry);
+      YoFrameConvexPolygon2D convexPolygon2d = new YoFrameConvexPolygon2D("poupou", ReferenceFrame.getWorldFrame(), 30, registry);
       ConvexPolygon2D polygon = new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(createCircle(new Point2D(1.0, 0.0), 0.1)));
       convexPolygon2d.set(polygon);
       return new YoGraphicPolygon("poly", convexPolygon2d, "shnoup", "", registry, 1.0, YoAppearance.Red());

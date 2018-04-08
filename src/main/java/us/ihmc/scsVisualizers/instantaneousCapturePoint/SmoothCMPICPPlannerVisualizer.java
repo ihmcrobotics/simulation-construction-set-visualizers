@@ -64,10 +64,6 @@ import us.ihmc.humanoidRobotics.footstep.FootSpoof;
 import us.ihmc.humanoidRobotics.footstep.Footstep;
 import us.ihmc.humanoidRobotics.footstep.FootstepTiming;
 import us.ihmc.robotics.geometry.ConvexPolygonTools;
-import us.ihmc.robotics.math.frames.YoFrameConvexPolygon2d;
-import us.ihmc.robotics.math.frames.YoFramePoint;
-import us.ihmc.robotics.math.frames.YoFramePose;
-import us.ihmc.robotics.math.frames.YoFrameVector;
 import us.ihmc.robotics.referenceFrames.MidFootZUpGroundFrame;
 import us.ihmc.robotics.referenceFrames.ZUpFrame;
 import us.ihmc.robotics.robotSide.RobotSide;
@@ -80,6 +76,10 @@ import us.ihmc.simulationconstructionset.gui.tools.SimulationOverheadPlotterFact
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.yoVariables.variable.YoBoolean;
 import us.ihmc.yoVariables.variable.YoDouble;
+import us.ihmc.yoVariables.variable.YoFrameConvexPolygon2D;
+import us.ihmc.yoVariables.variable.YoFramePoint3D;
+import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
+import us.ihmc.yoVariables.variable.YoFrameVector3D;
 import us.ihmc.yoVariables.variable.YoInteger;
 
 public class SmoothCMPICPPlannerVisualizer
@@ -106,8 +106,8 @@ public class SmoothCMPICPPlannerVisualizer
 
    private final YoDouble omega0 = new YoDouble("omega0", registry);
 
-   private final List<YoFramePose> yoNextFootstepPose = new ArrayList<>();
-   private final List<YoFrameConvexPolygon2d> yoNextFootstepPolygon = new ArrayList<>();
+   private final List<YoFramePoseUsingYawPitchRoll> yoNextFootstepPose = new ArrayList<>();
+   private final List<YoFrameConvexPolygon2D> yoNextFootstepPolygon = new ArrayList<>();
    private final ArrayList<Updatable> updatables = new ArrayList<>();
    public static final Color defaultLeftColor = new Color(0.85f, 0.35f, 0.65f, 1.0f);
    public static final Color defaultRightColor = new Color(0.15f, 0.8f, 0.15f, 1.0f);
@@ -123,7 +123,7 @@ public class SmoothCMPICPPlannerVisualizer
    private SideDependentList<FootSpoof> contactableFeet = new SideDependentList<>();
    private MidFootZUpGroundFrame midFeetZUpFrame;
    private SideDependentList<YoPlaneContactState> contactStates = new SideDependentList<>();
-   private SideDependentList<YoFramePose> currentFootPoses = new SideDependentList<>();
+   private SideDependentList<YoFramePoseUsingYawPitchRoll> currentFootPoses = new SideDependentList<>();
    private BipedSupportPolygons bipedSupportPolygons;
 
    private SmoothCMPPlannerParameters planParameters;
@@ -150,48 +150,48 @@ public class SmoothCMPICPPlannerVisualizer
 
    private final YoBoolean isStanding = new YoBoolean("isStanding", registry);
 
-   private final YoFramePoint heelToeDesiredICP;
-   private final YoFramePoint heelToeDesiredCoM;
-   private final YoFramePoint heelToeDesiredCMP;
-   private final YoFrameVector heelToeDesiredICPVelocity;
-   private final YoFrameVector heelToeDesiredCMPVelocity;
-   private final YoFramePoint cdsDesiredICP;
-   private final YoFramePoint cdsDesiredCoM;
-   private final YoFramePoint cdsDesiredCMP;
-   private final YoFrameVector cdsDesiredICPVelocity;
-   private final YoFrameVector cdsDesiredCMPVelocity;
+   private final YoFramePoint3D heelToeDesiredICP;
+   private final YoFramePoint3D heelToeDesiredCoM;
+   private final YoFramePoint3D heelToeDesiredCMP;
+   private final YoFrameVector3D heelToeDesiredICPVelocity;
+   private final YoFrameVector3D heelToeDesiredCMPVelocity;
+   private final YoFramePoint3D cdsDesiredICP;
+   private final YoFramePoint3D cdsDesiredCoM;
+   private final YoFramePoint3D cdsDesiredCMP;
+   private final YoFrameVector3D cdsDesiredICPVelocity;
+   private final YoFrameVector3D cdsDesiredCMPVelocity;
 
-   private final YoFramePoint desiredCoP;
-   private final YoFramePoint desiredCMP;
-   private final YoFramePoint desiredICP;
-   private final YoFrameVector desiredICPVelocity;
-   private final YoFramePoint predictedCoM, predictedSwingFootLocation;
-   private final YoFramePoint desiredCoM;
-   private final YoFrameVector desiredCoMVelocity;
-   private final YoFrameVector desiredCoMAcceleration;
-   private final YoFrameVector desiredCoPVelocity;
+   private final YoFramePoint3D desiredCoP;
+   private final YoFramePoint3D desiredCMP;
+   private final YoFramePoint3D desiredICP;
+   private final YoFrameVector3D desiredICPVelocity;
+   private final YoFramePoint3D predictedCoM, predictedSwingFootLocation;
+   private final YoFramePoint3D desiredCoM;
+   private final YoFrameVector3D desiredCoMVelocity;
+   private final YoFrameVector3D desiredCoMAcceleration;
+   private final YoFrameVector3D desiredCoPVelocity;
 
-   private final YoFramePoint desiredCoPAMOff;
-   private final YoFramePoint desiredCMPAMOff;
-   private final YoFramePoint desiredICPAMOff;
-   private final YoFramePoint desiredCoMAMOff;
-   private final YoFrameVector desiredICPVelocityAMOff;
-   private final YoFrameVector desiredCoMVelocityAMOff;
-   private final YoFrameVector desiredCoMAccelerationAMOff;
+   private final YoFramePoint3D desiredCoPAMOff;
+   private final YoFramePoint3D desiredCMPAMOff;
+   private final YoFramePoint3D desiredICPAMOff;
+   private final YoFramePoint3D desiredCoMAMOff;
+   private final YoFrameVector3D desiredICPVelocityAMOff;
+   private final YoFrameVector3D desiredCoMVelocityAMOff;
+   private final YoFrameVector3D desiredCoMAccelerationAMOff;
 
-   private final YoFrameVector desiredReactionForce;
+   private final YoFrameVector3D desiredReactionForce;
    private final YoGraphicVector desiredReactionForceGraphic;
 
-   private final YoFrameVector desiredReactionForceAMOff;
+   private final YoFrameVector3D desiredReactionForceAMOff;
    private final YoGraphicVector desiredReactionForceGraphicAMOff;
 
    private final YoGraphicVector heelToeDesiredReactionForceGraphic;
    private final YoGraphicVector cdsDesiredReactionForceGraphic;
 
-   private final YoFrameVector heelToeDesiredReactionForce;
-   private final YoFrameVector cdsDesiredReactionForce;
+   private final YoFrameVector3D heelToeDesiredReactionForce;
+   private final YoFrameVector3D cdsDesiredReactionForce;
 
-   private final YoFrameVector desiredReactionForceNewton;
+   private final YoFrameVector3D desiredReactionForceNewton;
    private final YoGraphicVector desiredReactionForceGraphicNewton;
 
    private FramePoint3D desiredCMPInitial;
@@ -239,29 +239,29 @@ public class SmoothCMPICPPlannerVisualizer
 
       for (int i = 0; i < planParameters.getNumberOfFootstepsToConsider(); i++)
       {
-         YoFrameConvexPolygon2d nextFootPolygon = new YoFrameConvexPolygon2d("nextFootstep" + i, "", worldFrame, 4, registry);
+         YoFrameConvexPolygon2D nextFootPolygon = new YoFrameConvexPolygon2D("nextFootstep" + i, "", worldFrame, 4, registry);
          yoNextFootstepPolygon.add(nextFootPolygon);
          graphicsListRegistry.registerArtifact("upcomingFootsteps", new YoArtifactPolygon("nextFootstep" + i, nextFootPolygon, Color.blue, false));
       }
 
       if (SHOW_OLD_PLANNER)
       {
-         heelToeDesiredCoM = new YoFramePoint("heelToeDesiredCoM", worldFrame, registry);
-         heelToeDesiredICP = new YoFramePoint("heelToeDesiredICP", worldFrame, registry);
-         heelToeDesiredCMP = new YoFramePoint("heelToeDesiredCMP", worldFrame, registry);
-         heelToeDesiredICPVelocity = new YoFrameVector("heelToeDesiredICPVelocity", worldFrame, registry);
-         heelToeDesiredCMPVelocity = new YoFrameVector("heelToeDesiredCMPVelocity", worldFrame, registry);
+         heelToeDesiredCoM = new YoFramePoint3D("heelToeDesiredCoM", worldFrame, registry);
+         heelToeDesiredICP = new YoFramePoint3D("heelToeDesiredICP", worldFrame, registry);
+         heelToeDesiredCMP = new YoFramePoint3D("heelToeDesiredCMP", worldFrame, registry);
+         heelToeDesiredICPVelocity = new YoFrameVector3D("heelToeDesiredICPVelocity", worldFrame, registry);
+         heelToeDesiredCMPVelocity = new YoFrameVector3D("heelToeDesiredCMPVelocity", worldFrame, registry);
 
-         cdsDesiredCoM = new YoFramePoint("cdsDesiredCoM", worldFrame, registry);
-         cdsDesiredICP = new YoFramePoint("cdsDesiredICP", worldFrame, registry);
-         cdsDesiredCMP = new YoFramePoint("cdsDesiredCMP", worldFrame, registry);
-         cdsDesiredICPVelocity = new YoFrameVector("cdsDesiredICPVelocity", worldFrame, registry);
-         cdsDesiredCMPVelocity = new YoFrameVector("cdsDesiredCMPVelocity", worldFrame, registry);
+         cdsDesiredCoM = new YoFramePoint3D("cdsDesiredCoM", worldFrame, registry);
+         cdsDesiredICP = new YoFramePoint3D("cdsDesiredICP", worldFrame, registry);
+         cdsDesiredCMP = new YoFramePoint3D("cdsDesiredCMP", worldFrame, registry);
+         cdsDesiredICPVelocity = new YoFrameVector3D("cdsDesiredICPVelocity", worldFrame, registry);
+         cdsDesiredCMPVelocity = new YoFrameVector3D("cdsDesiredCMPVelocity", worldFrame, registry);
 
-         heelToeDesiredReactionForce = new YoFrameVector("heelToeDesiredReactionForce", worldFrame, registry);
+         heelToeDesiredReactionForce = new YoFrameVector3D("heelToeDesiredReactionForce", worldFrame, registry);
          heelToeDesiredReactionForceGraphic = new YoGraphicVector("heelToeDesiredReactionForceViz", heelToeDesiredCMP, heelToeDesiredReactionForce,
                                                                   YoAppearance.Orange());
-         cdsDesiredReactionForce = new YoFrameVector("cdsToeDesiredReactionForce", worldFrame, registry);
+         cdsDesiredReactionForce = new YoFrameVector3D("cdsToeDesiredReactionForce", worldFrame, registry);
          cdsDesiredReactionForceGraphic = new YoGraphicVector("cdsToeDesiredReactionForceViz", cdsDesiredCMP, cdsDesiredReactionForce,
                                                               YoAppearance.Darkorange());
          graphicsListRegistry.registerYoGraphic("Heel Toe Desired Reaction Force", heelToeDesiredReactionForceGraphic);
@@ -289,15 +289,15 @@ public class SmoothCMPICPPlannerVisualizer
 
       if (SHOW_WITHOUT_ANGULAR_MOMENTUM)
       {
-         desiredCoPAMOff = new YoFramePoint("desiredCoPAMOff", worldFrame, registry);
-         desiredCMPAMOff = new YoFramePoint("desiredCMPAMOff", worldFrame, registry);
-         desiredICPAMOff = new YoFramePoint("desiredICPAMOff", worldFrame, registry);
-         desiredCoMAMOff = new YoFramePoint("desiredCoMAMOff", worldFrame, registry);
-         desiredICPVelocityAMOff = new YoFrameVector("desiredICPVelocityAMOff", worldFrame, registry);
-         desiredCoMVelocityAMOff = new YoFrameVector("desiredCoMVelocityAMOff", worldFrame, registry);
-         desiredCoMAccelerationAMOff = new YoFrameVector("desiredCoMAccelerationAMOff", worldFrame, registry);
+         desiredCoPAMOff = new YoFramePoint3D("desiredCoPAMOff", worldFrame, registry);
+         desiredCMPAMOff = new YoFramePoint3D("desiredCMPAMOff", worldFrame, registry);
+         desiredICPAMOff = new YoFramePoint3D("desiredICPAMOff", worldFrame, registry);
+         desiredCoMAMOff = new YoFramePoint3D("desiredCoMAMOff", worldFrame, registry);
+         desiredICPVelocityAMOff = new YoFrameVector3D("desiredICPVelocityAMOff", worldFrame, registry);
+         desiredCoMVelocityAMOff = new YoFrameVector3D("desiredCoMVelocityAMOff", worldFrame, registry);
+         desiredCoMAccelerationAMOff = new YoFrameVector3D("desiredCoMAccelerationAMOff", worldFrame, registry);
 
-         desiredReactionForceAMOff = new YoFrameVector("desiredReactionForceAMOff", worldFrame, registry);
+         desiredReactionForceAMOff = new YoFrameVector3D("desiredReactionForceAMOff", worldFrame, registry);
          desiredReactionForceGraphicAMOff = new YoGraphicVector("desiredReactionForceAMOffViz", desiredCoPAMOff, desiredReactionForceAMOff, YoAppearance.Red());
          graphicsListRegistry.registerYoGraphic("Angular Momentum Off Desired Reaction Force", desiredReactionForceGraphicAMOff);
       }
@@ -315,15 +315,15 @@ public class SmoothCMPICPPlannerVisualizer
          desiredReactionForceGraphicAMOff = null;
       }
 
-      desiredCoP = new YoFramePoint("desiredCoP", worldFrame, registry);
-      desiredCMP = new YoFramePoint("desiredCMP", worldFrame, registry);
-      desiredICP = new YoFramePoint("desiredICP", worldFrame, registry);
-      desiredICPVelocity = new YoFrameVector("desiredICPVelocity", worldFrame, registry);
-      predictedCoM = new YoFramePoint("predictedCoM", worldFrame, registry);
-      predictedSwingFootLocation = new YoFramePoint("estSwF", worldFrame, registry);
-      desiredCoM = new YoFramePoint("desiredCoM", worldFrame, registry);
-      desiredCoMVelocity = new YoFrameVector("desiredCoMVelocity", worldFrame, registry);
-      desiredCoMAcceleration = new YoFrameVector("desiredCoMAcceleration", worldFrame, registry);
+      desiredCoP = new YoFramePoint3D("desiredCoP", worldFrame, registry);
+      desiredCMP = new YoFramePoint3D("desiredCMP", worldFrame, registry);
+      desiredICP = new YoFramePoint3D("desiredICP", worldFrame, registry);
+      desiredICPVelocity = new YoFrameVector3D("desiredICPVelocity", worldFrame, registry);
+      predictedCoM = new YoFramePoint3D("predictedCoM", worldFrame, registry);
+      predictedSwingFootLocation = new YoFramePoint3D("estSwF", worldFrame, registry);
+      desiredCoM = new YoFramePoint3D("desiredCoM", worldFrame, registry);
+      desiredCoMVelocity = new YoFrameVector3D("desiredCoMVelocity", worldFrame, registry);
+      desiredCoMAcceleration = new YoFrameVector3D("desiredCoMAcceleration", worldFrame, registry);
       desiredCMPInitial = new FramePoint3D();
       desiredICPTerminal = new FramePoint3D();
       desiredICPInitial = new FramePoint3D();
@@ -331,14 +331,14 @@ public class SmoothCMPICPPlannerVisualizer
       desiredCoMInitial = new FramePoint3D();
       desiredCoMFinal = new FramePoint3D();
       desiredCMPFinal = new FramePoint3D();
-      desiredCoPVelocity = new YoFrameVector("desiredCoPVelocity", worldFrame, registry);
+      desiredCoPVelocity = new YoFrameVector3D("desiredCoPVelocity", worldFrame, registry);
 
-      desiredReactionForce = new YoFrameVector("desiredReactionForce", worldFrame, registry);
+      desiredReactionForce = new YoFrameVector3D("desiredReactionForce", worldFrame, registry);
       desiredReactionForceGraphic = new YoGraphicVector("desiredReactionForceViz", desiredCoP, desiredReactionForce, YoAppearance.Blue());
       desiredReactionForceGraphic.setVisible(false);
       //graphicsListRegistry.registerYoGraphic("Desired Reaction Force", desiredReactionForceGraphic);
 
-      desiredReactionForceNewton = new YoFrameVector("desiredReactionForceNewton", worldFrame, registry);
+      desiredReactionForceNewton = new YoFrameVector3D("desiredReactionForceNewton", worldFrame, registry);
       desiredReactionForceGraphicNewton = new YoGraphicVector("desiredReactionForceNewtonViz", desiredCoP, desiredReactionForceNewton, YoAppearance.Purple());
       //graphicsListRegistry.registerYoGraphic("Desired Reaction Force Newton", desiredReactionForceGraphicNewton);
 
@@ -360,7 +360,7 @@ public class SmoothCMPICPPlannerVisualizer
       footstepGraphics.addExtrudedPolygon(contactPoints, 0.02, YoAppearance.Color(Color.blue));
       for (int i = 0; i < planParameters.getNumberOfFootstepsToConsider(); i++)
       {
-         YoFramePose nextPose = new YoFramePose("nextFootstepPose" + i, worldFrame, registry);
+         YoFramePoseUsingYawPitchRoll nextPose = new YoFramePoseUsingYawPitchRoll("nextFootstepPose" + i, worldFrame, registry);
          yoNextFootstepPose.add(nextPose);
          graphicsListRegistry.registerYoGraphic("upcomingFootsteps", new YoGraphicShape("nextFootstep" + i, footstepGraphics, nextPose, 1.0));
       }
@@ -862,7 +862,7 @@ public class SmoothCMPICPPlannerVisualizer
          tempFootPolygon.setIncludingFrame(footFrame, Vertex2DSupplier.asVertex2DSupplier(footstep.getPredictedContactPoints()));
          tempFootPolygon.changeFrameAndProjectToXYPlane(worldFrame);
          yoNextFootstepPolygon.get(i).set(tempFootPolygon);
-         yoNextFootstepPose.get(i).setAndMatchFrame(new FramePose3D(footFrame));
+         yoNextFootstepPose.get(i).setMatchingFrame(new FramePose3D(footFrame));
       }
       for (int i = numberOfPolygonsToUpdate; i < yoNextFootstepPose.size(); i++)
          setVizFootstepsToNaN(i);
@@ -994,7 +994,7 @@ public class SmoothCMPICPPlannerVisualizer
          startingPose.setY(robotSide.negateIfRightSide(defaultStepWidth/2.0));
          contactableFoot.setSoleFrame(startingPose);
          contactableFeet.put(robotSide, contactableFoot);
-         currentFootPoses.put(robotSide, new YoFramePose(sidePrefix + "FootPose", worldFrame, registry));
+         currentFootPoses.put(robotSide, new YoFramePoseUsingYawPitchRoll(sidePrefix + "FootPose", worldFrame, registry));
 
          Graphics3DObject footGraphics = new Graphics3DObject();
          AppearanceDefinition footColor = robotSide == RobotSide.LEFT ? YoAppearance.Color(defaultLeftColor) : YoAppearance.Color(defaultRightColor);
@@ -1213,7 +1213,7 @@ public class SmoothCMPICPPlannerVisualizer
       graphicsListRegistry.registerArtifactList(artifactList);
    }
 
-   private void computeReactionForceFromCMPPosition(YoFramePoint desiredCoMPosition, YoFramePoint desiredCMPPosition, YoFrameVector desiredReactionForceToPack)
+   private void computeReactionForceFromCMPPosition(YoFramePoint3D desiredCoMPosition, YoFramePoint3D desiredCMPPosition, YoFrameVector3D desiredReactionForceToPack)
    {
       desiredReactionForceToPack.set(desiredCoMPosition);
       desiredReactionForceToPack.sub(desiredCMPPosition);
@@ -1222,7 +1222,7 @@ public class SmoothCMPICPPlannerVisualizer
       desiredReactionForceToPack.scale(mass);
    }
 
-   private void computeReactionForceFromNewton(YoFrameVector desiredCoMAcceleration, YoFrameVector desiredReactionForceToPack)
+   private void computeReactionForceFromNewton(YoFrameVector3D desiredCoMAcceleration, YoFrameVector3D desiredReactionForceToPack)
    {
       desiredReactionForceToPack.set(desiredCoMAcceleration);
       desiredReactionForceToPack.setZ(9.81);

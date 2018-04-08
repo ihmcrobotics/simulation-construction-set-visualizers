@@ -29,8 +29,6 @@ import us.ihmc.humanoidRobotics.footstep.FootSpoof;
 import us.ihmc.humanoidRobotics.footstep.Footstep;
 import us.ihmc.humanoidRobotics.footstep.FootstepTiming;
 import us.ihmc.robotics.geometry.ConvexPolygonScaler;
-import us.ihmc.robotics.math.frames.YoFrameConvexPolygon2d;
-import us.ihmc.robotics.math.frames.YoFramePose;
 import us.ihmc.robotics.referenceFrames.MidFrameZUpFrame;
 import us.ihmc.robotics.referenceFrames.ZUpFrame;
 import us.ihmc.robotics.robotSide.RobotSide;
@@ -41,6 +39,8 @@ import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.gui.tools.SimulationOverheadPlotterFactory;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
+import us.ihmc.yoVariables.variable.YoFrameConvexPolygon2D;
+import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
 
 public class ICPPlanTimingVisualizer
 {
@@ -69,7 +69,7 @@ public class ICPPlanTimingVisualizer
    private ReferenceFrame midFeetZUpFrame;
 
    private final SideDependentList<FramePose3D> footPosesAtTouchdown = new SideDependentList<FramePose3D>(new FramePose3D(), new FramePose3D());
-   private final SideDependentList<YoFramePose> currentFootPoses = new SideDependentList<>();
+   private final SideDependentList<YoFramePoseUsingYawPitchRoll> currentFootPoses = new SideDependentList<>();
    private final SideDependentList<YoPlaneContactState> contactStates = new SideDependentList<>();
 
 
@@ -77,16 +77,16 @@ public class ICPPlanTimingVisualizer
 
    private final ArrayList<Footstep> plannedFootsteps = new ArrayList<>();
 
-   private final YoFramePose yoNextFootstepPlan;
-   private final YoFramePose yoNextNextFootstepPlan;
-   private final YoFramePose yoNextNextNextFootstepPlan;
+   private final YoFramePoseUsingYawPitchRoll yoNextFootstepPlan;
+   private final YoFramePoseUsingYawPitchRoll yoNextNextFootstepPlan;
+   private final YoFramePoseUsingYawPitchRoll yoNextNextNextFootstepPlan;
 
-   private final YoFramePose yoNextFootstepPose;
-   private final YoFramePose yoNextNextFootstepPose;
-   private final YoFramePose yoNextNextNextFootstepPose;
-   private final YoFrameConvexPolygon2d yoNextFootstepPolygon;
-   private final YoFrameConvexPolygon2d yoNextNextFootstepPolygon;
-   private final YoFrameConvexPolygon2d yoNextNextNextFootstepPolygon;
+   private final YoFramePoseUsingYawPitchRoll yoNextFootstepPose;
+   private final YoFramePoseUsingYawPitchRoll yoNextNextFootstepPose;
+   private final YoFramePoseUsingYawPitchRoll yoNextNextNextFootstepPose;
+   private final YoFrameConvexPolygon2D yoNextFootstepPolygon;
+   private final YoFrameConvexPolygon2D yoNextNextFootstepPolygon;
+   private final YoFrameConvexPolygon2D yoNextNextNextFootstepPolygon;
 
    private BipedSupportPolygons bipedSupportPolygons;
    private FootstepTestHelper footstepTestHelper;
@@ -141,17 +141,17 @@ public class ICPPlanTimingVisualizer
       nextTransferInitialDuration.set(0.5 * transferDuration);
       nextTransferEndDuration.set(0.5 * transferDuration);
 
-      yoNextFootstepPlan = new YoFramePose("nextFootstepPlan", worldFrame, registry);
-      yoNextNextFootstepPlan = new YoFramePose("nextNextFootstepPlan", worldFrame, registry);
-      yoNextNextNextFootstepPlan = new YoFramePose("nextNextNextFootstepPlan", worldFrame, registry);
+      yoNextFootstepPlan = new YoFramePoseUsingYawPitchRoll("nextFootstepPlan", worldFrame, registry);
+      yoNextNextFootstepPlan = new YoFramePoseUsingYawPitchRoll("nextNextFootstepPlan", worldFrame, registry);
+      yoNextNextNextFootstepPlan = new YoFramePoseUsingYawPitchRoll("nextNextNextFootstepPlan", worldFrame, registry);
 
-      yoNextFootstepPose = new YoFramePose("nextFootstepPose", worldFrame, registry);
-      yoNextNextFootstepPose = new YoFramePose("nextNextFootstepPose", worldFrame, registry);
-      yoNextNextNextFootstepPose = new YoFramePose("nextNextNextFootstepPose", worldFrame, registry);
+      yoNextFootstepPose = new YoFramePoseUsingYawPitchRoll("nextFootstepPose", worldFrame, registry);
+      yoNextNextFootstepPose = new YoFramePoseUsingYawPitchRoll("nextNextFootstepPose", worldFrame, registry);
+      yoNextNextNextFootstepPose = new YoFramePoseUsingYawPitchRoll("nextNextNextFootstepPose", worldFrame, registry);
 
-      yoNextFootstepPolygon = new YoFrameConvexPolygon2d("nextFootstep", "", worldFrame, 4, registry);
-      yoNextNextFootstepPolygon = new YoFrameConvexPolygon2d("nextNextFootstep", "", worldFrame, 4, registry);
-      yoNextNextNextFootstepPolygon = new YoFrameConvexPolygon2d("nextNextNextFootstep", "", worldFrame, 4, registry);
+      yoNextFootstepPolygon = new YoFrameConvexPolygon2D("nextFootstep", "", worldFrame, 4, registry);
+      yoNextNextFootstepPolygon = new YoFrameConvexPolygon2D("nextNextFootstep", "", worldFrame, 4, registry);
+      yoNextNextNextFootstepPolygon = new YoFrameConvexPolygon2D("nextNextNextFootstep", "", worldFrame, 4, registry);
 
       Graphics3DObject footstepGraphics = new Graphics3DObject();
       List<Point2D> contactPoints = new ArrayList<>();
@@ -205,7 +205,7 @@ public class ICPPlanTimingVisualizer
          contactableFoot.setSoleFrame(startingPose);
          contactableFeet.put(robotSide, contactableFoot);
 
-         currentFootPoses.put(robotSide, new YoFramePose(sidePrefix + "FootPose", worldFrame, registry));
+         currentFootPoses.put(robotSide, new YoFramePoseUsingYawPitchRoll(sidePrefix + "FootPose", worldFrame, registry));
 
          Graphics3DObject footGraphics = new Graphics3DObject();
          AppearanceDefinition footColor = robotSide == RobotSide.LEFT ? YoAppearance.Color(defaultLeftColor) : YoAppearance.Color(defaultRightColor);
@@ -331,9 +331,9 @@ public class ICPPlanTimingVisualizer
       nextPlannedFootstep.setToZero(plannedFootsteps.get(0).getSoleReferenceFrame());
       nextNextPlannedFootstep.setToZero(plannedFootsteps.get(0).getSoleReferenceFrame());
       nextNextNextPlannedFootstep.setToZero(plannedFootsteps.get(0).getSoleReferenceFrame());
-      yoNextFootstepPlan.setAndMatchFrame(nextPlannedFootstep);
-      yoNextNextFootstepPlan.setAndMatchFrame(nextNextPlannedFootstep);
-      yoNextNextNextFootstepPlan.setAndMatchFrame(nextNextNextPlannedFootstep);
+      yoNextFootstepPlan.setMatchingFrame(nextPlannedFootstep);
+      yoNextNextFootstepPlan.setMatchingFrame(nextNextPlannedFootstep);
+      yoNextNextNextFootstepPlan.setMatchingFrame(nextNextNextPlannedFootstep);
 
       if (plannedFootsteps.get(0) == null)
       {
@@ -358,7 +358,7 @@ public class ICPPlanTimingVisualizer
       yoNextFootstepPolygon.set(footstepPolygon);
 
       FramePose3D nextFootstepPose = new FramePose3D(plannedFootsteps.get(0).getSoleReferenceFrame());
-      yoNextFootstepPose.setAndMatchFrame(nextFootstepPose);
+      yoNextFootstepPose.setMatchingFrame(nextFootstepPose);
 
       if (plannedFootsteps.get(1) == null)
       {
@@ -379,7 +379,7 @@ public class ICPPlanTimingVisualizer
       yoNextNextFootstepPolygon.set(footstepPolygon);
 
       FramePose3D nextNextFootstepPose = new FramePose3D(plannedFootsteps.get(1).getSoleReferenceFrame());
-      yoNextNextFootstepPose.setAndMatchFrame(nextNextFootstepPose);
+      yoNextNextFootstepPose.setMatchingFrame(nextNextFootstepPose);
 
       if (plannedFootsteps.get(2) == null)
       {
@@ -398,7 +398,7 @@ public class ICPPlanTimingVisualizer
       yoNextNextNextFootstepPolygon.set(footstepPolygon);
 
       FramePose3D nextNextNextFootstepPose = new FramePose3D(plannedFootsteps.get(2).getSoleReferenceFrame());
-      yoNextNextNextFootstepPose.setAndMatchFrame(nextNextNextFootstepPose);
+      yoNextNextNextFootstepPose.setMatchingFrame(nextNextNextFootstepPose);
 
       RobotSide supportSide = plannedFootsteps.get(0).getRobotSide().getOppositeSide();
       FootSpoof footSpoof = contactableFeet.get(supportSide.getOppositeSide());
