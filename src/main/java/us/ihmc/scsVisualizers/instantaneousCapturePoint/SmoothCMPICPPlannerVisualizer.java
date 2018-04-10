@@ -218,6 +218,8 @@ public class SmoothCMPICPPlannerVisualizer
 
    private final String namePrefix = "SmoothCMPICPPlannerVisualizer";
 
+   private final ConvexPolygonTools convexPolygonTools = new ConvexPolygonTools();
+
    public SmoothCMPICPPlannerVisualizer()
    {
       setupPlanner();
@@ -949,7 +951,7 @@ public class SmoothCMPICPPlannerVisualizer
       FrameVector2D randomLineVector = EuclidFrameRandomTools.nextFrameVector2D(random, randomSupportPolygon.getReferenceFrame());
       FrameLine2D randomLine = new FrameLine2D(randomLineOrigin, randomLineVector);
 
-      ConvexPolygonTools.cutPolygonWithLine(randomLine, randomSupportPolygon, RobotSide.generateRandomRobotSide(random));
+      convexPolygonTools.cutPolygonWithLine(randomLine, randomSupportPolygon, RobotSide.generateRandomRobotSide(random));
       randomSupportPolygon.update();
 
       while (randomSupportPolygon.getNumberOfVertices() < 4)
