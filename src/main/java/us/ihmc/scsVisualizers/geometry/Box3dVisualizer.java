@@ -12,15 +12,15 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicCoordinateSystem;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
-import us.ihmc.robotics.math.frames.YoFramePoint;
-import us.ihmc.robotics.math.frames.YoFramePose;
-import us.ihmc.robotics.math.frames.YoFrameVector;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.yoVariables.listener.VariableChangedListener;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.yoVariables.variable.YoBoolean;
+import us.ihmc.yoVariables.variable.YoFramePoint3D;
+import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
+import us.ihmc.yoVariables.variable.YoFrameVector3D;
 import us.ihmc.yoVariables.variable.YoVariable;
 
 public class Box3dVisualizer
@@ -31,14 +31,14 @@ public class Box3dVisualizer
    private final YoVariableRegistry registry;
    private final YoGraphicsListRegistry yoGraphicsListRegistry;
    
-   private final YoFramePose yoBoxPose;
-   private final YoFrameVector yoBoxSize;
-   private final YoFramePoint[] yoBoxVertices;
-   private final YoFramePose yoBox2Pose;
-   private final YoFrameVector yoBox2Size;
-   private final YoFramePoint[] yoBox2Vertices;
+   private final YoFramePoseUsingYawPitchRoll yoBoxPose;
+   private final YoFrameVector3D yoBoxSize;
+   private final YoFramePoint3D[] yoBoxVertices;
+   private final YoFramePoseUsingYawPitchRoll yoBox2Pose;
+   private final YoFrameVector3D yoBox2Size;
+   private final YoFramePoint3D[] yoBox2Vertices;
    
-   private final YoFramePoint isInsidePoint;
+   private final YoFramePoint3D isInsidePoint;
    private final YoBoolean isInside;
    
    private final Box3D box;
@@ -68,14 +68,14 @@ public class Box3dVisualizer
       registry = new YoVariableRegistry(getClass().getSimpleName());
       yoGraphicsListRegistry = new YoGraphicsListRegistry();
       
-      yoBoxPose = new YoFramePose(prefix + "Pose", WORLD, registry);
-      yoBoxSize = new YoFrameVector(prefix + "Size", WORLD, registry);
-      yoBox2Pose = new YoFramePose(prefix + "Pose2", WORLD, registry);
-      yoBox2Size = new YoFrameVector(prefix + "Size2", WORLD, registry);
+      yoBoxPose = new YoFramePoseUsingYawPitchRoll(prefix + "Pose", WORLD, registry);
+      yoBoxSize = new YoFrameVector3D(prefix + "Size", WORLD, registry);
+      yoBox2Pose = new YoFramePoseUsingYawPitchRoll(prefix + "Pose2", WORLD, registry);
+      yoBox2Size = new YoFrameVector3D(prefix + "Size2", WORLD, registry);
       
       boxTransform = new RigidBodyTransform();
       
-      isInsidePoint = new YoFramePoint(prefix + "IsInside", WORLD, registry);
+      isInsidePoint = new YoFramePoint3D(prefix + "IsInside", WORLD, registry);
       isInside = new YoBoolean(prefix + "IsInside", registry);
       yoGraphicsListRegistry.registerYoGraphic("Box", new YoGraphicPosition("isInside", isInsidePoint, scale , YoAppearance.Orange()));
       isInsidePoint.attachVariableChangedListener(doATickListener);
@@ -84,14 +84,14 @@ public class Box3dVisualizer
       box2 = new Box3D();
       boxVertices = new Point3D[8];
       box2Vertices = new Point3D[8];
-      yoBoxVertices = new YoFramePoint[8];
-      yoBox2Vertices = new YoFramePoint[8];
+      yoBoxVertices = new YoFramePoint3D[8];
+      yoBox2Vertices = new YoFramePoint3D[8];
       for (int i = 0; i < 8; i++)
       {
          boxVertices[i] = new Point3D();
          box2Vertices[i] = new Point3D();
-         yoBoxVertices[i] = new YoFramePoint(prefix + "Vertex" + i, WORLD, registry);
-         yoBox2Vertices[i] = new YoFramePoint(prefix + "Vertex" + i + "2", WORLD, registry);
+         yoBoxVertices[i] = new YoFramePoint3D(prefix + "Vertex" + i, WORLD, registry);
+         yoBox2Vertices[i] = new YoFramePoint3D(prefix + "Vertex" + i + "2", WORLD, registry);
          yoGraphicsListRegistry.registerYoGraphic("Box", new YoGraphicPosition("vertex" + i, yoBoxVertices[i], scale , YoAppearance.Blue()));
          yoGraphicsListRegistry.registerYoGraphic("Box", new YoGraphicPosition("vertex" + i + "2", yoBox2Vertices[i], scale , YoAppearance.Gray()));
       }

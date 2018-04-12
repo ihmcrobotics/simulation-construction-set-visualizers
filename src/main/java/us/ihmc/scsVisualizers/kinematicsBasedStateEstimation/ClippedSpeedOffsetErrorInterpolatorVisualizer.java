@@ -14,9 +14,9 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.humanoidRobotics.communication.subscribers.TimeStampedTransformBuffer;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
+import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
 import us.ihmc.yoVariables.variable.YoLong;
 import us.ihmc.robotics.kinematics.TimeStampedTransform3D;
-import us.ihmc.robotics.math.frames.YoFramePose;
 import us.ihmc.robotics.random.RandomGeometry;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
@@ -86,7 +86,7 @@ public class ClippedSpeedOffsetErrorInterpolatorVisualizer
 
       TimeStampedTransform3D timeStampedTransform = new TimeStampedTransform3D();
       FramePose3D referenceFrameToBeCorrectedPose = new FramePose3D(referenceFrameToBeCorrected);
-      YoFramePose yoReferenceFrameToBeCorrectedPose = new YoFramePose("referenceFrameToBeCorrected", worldFrame, registry);
+      YoFramePoseUsingYawPitchRoll yoReferenceFrameToBeCorrectedPose = new YoFramePoseUsingYawPitchRoll("referenceFrameToBeCorrected", worldFrame, registry);
       YoGraphicCoordinateSystem referenceFrameToBeCorrectedPoseGraphic = new YoGraphicCoordinateSystem("referenceFrameToBeCorrectedPoseGraphic", yoReferenceFrameToBeCorrectedPose, 1.0 ,YoAppearance.Black());
       yoGraphicsListRegistry.registerYoGraphic("referenceFrameTobeCorrected", referenceFrameToBeCorrectedPoseGraphic);
       
@@ -113,7 +113,7 @@ public class ClippedSpeedOffsetErrorInterpolatorVisualizer
 
       FramePose3D startPose = new FramePose3D(worldFrame);
       startPose.set(startPoseTransform);
-      YoFramePose yoStartPose = new YoFramePose("startPose", worldFrame, registry);
+      YoFramePoseUsingYawPitchRoll yoStartPose = new YoFramePoseUsingYawPitchRoll("startPose", worldFrame, registry);
       yoStartPose.set(startPose);
       YoGraphicCoordinateSystem startPoseGraphic = new YoGraphicCoordinateSystem("startPoseGraph", yoStartPose, 0.7, YoAppearance.Yellow());
       yoGraphicsListRegistry.registerYoGraphic("inputs", startPoseGraphic);
@@ -131,13 +131,13 @@ public class ClippedSpeedOffsetErrorInterpolatorVisualizer
 
       FramePose3D goalPose = new FramePose3D(worldFrame);
       goalPose.set(goalPoseTransform);
-      YoFramePose yoGoalPose = new YoFramePose("goalPose", worldFrame, registry);
+      YoFramePoseUsingYawPitchRoll yoGoalPose = new YoFramePoseUsingYawPitchRoll("goalPose", worldFrame, registry);
       yoGoalPose.set(goalPose);
       YoGraphicCoordinateSystem goalPoseGraphic = new YoGraphicCoordinateSystem("goalPoseGraph", yoGoalPose, 0.7, YoAppearance.Red());
       yoGraphicsListRegistry.registerYoGraphic("inputs", goalPoseGraphic);
 
       FramePose3D interpolatedPose = new FramePose3D(startPose);
-      YoFramePose yoInterpolatedPose = new YoFramePose("interpolatedPose", worldFrame, registry);
+      YoFramePoseUsingYawPitchRoll yoInterpolatedPose = new YoFramePoseUsingYawPitchRoll("interpolatedPose", worldFrame, registry);
       yoInterpolatedPose.set(interpolatedPose);
       YoGraphicCoordinateSystem interpolatedPoseGraphic = new YoGraphicCoordinateSystem("interpolatedPoseGraph", yoInterpolatedPose, 1.0, YoAppearance.Blue());
       yoGraphicsListRegistry.registerYoGraphic("outputs", interpolatedPoseGraphic);

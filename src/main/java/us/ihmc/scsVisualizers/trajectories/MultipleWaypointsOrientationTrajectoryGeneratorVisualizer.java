@@ -13,10 +13,6 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicCoordinateSystem;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicVector;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
-import us.ihmc.robotics.math.frames.YoFrameOrientation;
-import us.ihmc.robotics.math.frames.YoFramePoint;
-import us.ihmc.robotics.math.frames.YoFramePose;
-import us.ihmc.robotics.math.frames.YoFrameVector;
 import us.ihmc.robotics.math.trajectories.SimpleOrientationTrajectoryGenerator;
 import us.ihmc.robotics.math.trajectories.waypoints.MultipleWaypointsOrientationTrajectoryGenerator;
 import us.ihmc.simulationconstructionset.Robot;
@@ -24,6 +20,10 @@ import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
+import us.ihmc.yoVariables.variable.YoFramePoint3D;
+import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
+import us.ihmc.yoVariables.variable.YoFrameVector3D;
+import us.ihmc.yoVariables.variable.YoFrameYawPitchRoll;
 
 public class MultipleWaypointsOrientationTrajectoryGeneratorVisualizer
 {
@@ -41,13 +41,13 @@ public class MultipleWaypointsOrientationTrajectoryGeneratorVisualizer
    private final SimpleOrientationTrajectoryGenerator simpleTraj;
    private final MultipleWaypointsOrientationTrajectoryGenerator testedTraj;
 
-   private final YoFramePoint timeVizAsPosition = new YoFramePoint("timeVizAsPosition", worldFrame, registry);
-   private final YoFrameOrientation simpleTrajOrientationViz = new YoFrameOrientation("simpleTrajOrientationViz", worldFrame, registry);
-   private final YoFrameVector simpleTrajVelocityDirectionViz = new YoFrameVector("simpleTrajVelocityDirectionViz", worldFrame, registry);
+   private final YoFramePoint3D timeVizAsPosition = new YoFramePoint3D("timeVizAsPosition", worldFrame, registry);
+   private final YoFrameYawPitchRoll simpleTrajOrientationViz = new YoFrameYawPitchRoll("simpleTrajOrientationViz", worldFrame, registry);
+   private final YoFrameVector3D simpleTrajVelocityDirectionViz = new YoFrameVector3D("simpleTrajVelocityDirectionViz", worldFrame, registry);
 
-   private final YoFrameOrientation testedTrajOrientationViz = new YoFrameOrientation("testedTrajOrientationViz", worldFrame, registry);
-   private final YoFrameVector testedTrajVelocityDirectionViz = new YoFrameVector("testedTrajVelocityDirectionViz", worldFrame, registry);
-   private final YoFramePose[] waypointOrientationViz;
+   private final YoFrameYawPitchRoll testedTrajOrientationViz = new YoFrameYawPitchRoll("testedTrajOrientationViz", worldFrame, registry);
+   private final YoFrameVector3D testedTrajVelocityDirectionViz = new YoFrameVector3D("testedTrajVelocityDirectionViz", worldFrame, registry);
+   private final YoFramePoseUsingYawPitchRoll[] waypointOrientationViz;
 
    private final Point3D initialPosition = new Point3D(-1.0, 0.0, 0.7);
    private final Point3D finalPosition = new Point3D(1.0, 0.0, 0.7);
@@ -76,7 +76,7 @@ public class MultipleWaypointsOrientationTrajectoryGeneratorVisualizer
       
       int numberOfWaypoints = 5;
 
-      waypointOrientationViz = new YoFramePose[numberOfWaypoints];
+      waypointOrientationViz = new YoFramePoseUsingYawPitchRoll[numberOfWaypoints];
       
       FrameQuaternion waypointOrientation = new FrameQuaternion();
       FrameVector3D waypointAngularVelocity = new FrameVector3D();
@@ -89,7 +89,7 @@ public class MultipleWaypointsOrientationTrajectoryGeneratorVisualizer
          simpleTraj.getAngularVelocity(waypointAngularVelocity);
          testedTraj.appendWaypoint(timeAtWaypoint, waypointOrientation, waypointAngularVelocity);
          
-         waypointOrientationViz[i] = new YoFramePose("waypointOrientationViz" + i, worldFrame, registry);
+         waypointOrientationViz[i] = new YoFramePoseUsingYawPitchRoll("waypointOrientationViz" + i, worldFrame, registry);
          waypointOrientationViz[i].setOrientation(waypointOrientation);
          interpolatedPosition.interpolate(initialPosition, finalPosition, timeAtWaypoint / trajectoryTime);
          waypointOrientationViz[i].setPosition(interpolatedPosition);

@@ -13,14 +13,14 @@ import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.euclid.referenceFrame.tools.EuclidFrameRandomTools;
 import us.ihmc.euclid.tuple4D.Quaternion;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
-import us.ihmc.robotics.math.frames.YoFramePoint;
-import us.ihmc.robotics.math.frames.YoFrameVector;
 import us.ihmc.robotics.trajectories.providers.ConstantDoubleProvider;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
 import us.ihmc.yoVariables.providers.DoubleProvider;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.variable.YoFramePoint3D;
+import us.ihmc.yoVariables.variable.YoFrameVector3D;
 
 public class VelocityConstrainedPoseTrajectoryGeneratorVisualizer
 {
@@ -38,9 +38,9 @@ public class VelocityConstrainedPoseTrajectoryGeneratorVisualizer
    private final VelocityConstrainedPoseTrajectoryGenerator traj1;
    private final StraightLinePoseTrajectoryGenerator traj2;
 
-   private final YoFramePoint position = new YoFramePoint("position", worldFrame, registry);
-   private final YoFrameVector velocity = new YoFrameVector("velocity", worldFrame, registry);
-   private final YoFrameVector acceleration = new YoFrameVector("acceleration", worldFrame, registry);
+   private final YoFramePoint3D position = new YoFramePoint3D("position", worldFrame, registry);
+   private final YoFrameVector3D velocity = new YoFrameVector3D("velocity", worldFrame, registry);
+   private final YoFrameVector3D acceleration = new YoFrameVector3D("acceleration", worldFrame, registry);
 
    private final FramePoint3D tempPoint = new FramePoint3D();
    private final FrameVector3D tempVector = new FrameVector3D();
@@ -54,7 +54,7 @@ public class VelocityConstrainedPoseTrajectoryGeneratorVisualizer
    private Quaternion quatDelta = new Quaternion();
    private FrameVector3D vectorDelta = new FrameVector3D();
    double angle, omega;
-   private final YoFrameVector FDAngularVelocity = new YoFrameVector("FDAngularVelocity", worldFrame, registry);
+   private final YoFrameVector3D FDAngularVelocity = new YoFrameVector3D("FDAngularVelocity", worldFrame, registry);
    
    double FDdt;
    

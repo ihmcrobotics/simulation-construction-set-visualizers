@@ -21,8 +21,8 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicLineSegment;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.variable.YoFramePoint3D;
 import us.ihmc.yoVariables.variable.YoInteger;
-import us.ihmc.robotics.math.frames.YoFramePoint;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 
@@ -74,7 +74,7 @@ public class ExpandingPolytopeSilhouetteConstructorVisualizer
          polytopeEdgesViz[i] = lineSegmentViz;
       }
 
-      YoFramePoint wPosition = new YoFramePoint("wPosition", ReferenceFrame.getWorldFrame(), registry);
+      YoFramePoint3D wPosition = new YoFramePoint3D("wPosition", ReferenceFrame.getWorldFrame(), registry);
       YoGraphicPosition wPositionViz = new YoGraphicPosition("wPosition", wPosition, 0.02, YoAppearance.Gold());
       yoGraphicsListRegistry.registerYoGraphic("WPosition", wPositionViz);
 
@@ -104,7 +104,7 @@ public class ExpandingPolytopeSilhouetteConstructorVisualizer
          triangleClosestPoints[i].setPosition(closestPointToOrigin);
       }
 
-      YoFramePoint wFramePoint = new YoFramePoint("wFramePoint", ReferenceFrame.getWorldFrame(), registry);
+      YoFramePoint3D wFramePoint = new YoFramePoint3D("wFramePoint", ReferenceFrame.getWorldFrame(), registry);
 
       SimulationConstructionSet scs = new SimulationConstructionSet(robot);
       Graphics3DObject coordinateSystem = new Graphics3DObject();
@@ -126,7 +126,7 @@ public class ExpandingPolytopeSilhouetteConstructorVisualizer
       scs.cropBuffer();
    }
 
-   private static void visualizeForW(YoGraphicLineSegment[] silhouetteLineSegmentsViz, YoFramePoint wPosition, YoInteger numberOfSilhouetteEdges,
+   private static void visualizeForW(YoGraphicLineSegment[] silhouetteLineSegmentsViz, YoFramePoint3D wPosition, YoInteger numberOfSilhouetteEdges,
          ArrayList<ExpandingPolytopeEntry> triangles, Vector3D w)
    {
       for (YoGraphicLineSegment silhouetteLineSegmentViz : silhouetteLineSegmentsViz)

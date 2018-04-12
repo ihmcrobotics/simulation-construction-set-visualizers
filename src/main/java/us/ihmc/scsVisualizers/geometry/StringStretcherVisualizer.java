@@ -10,7 +10,6 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition.GraphicType;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.robotics.geometry.StringStretcher2d;
-import us.ihmc.robotics.math.frames.YoFramePoint;
 import us.ihmc.robotics.robotController.RobotController;
 import us.ihmc.simulationConstructionSetTools.util.inputdevices.SliderBoardConfigurationManager;
 import us.ihmc.simulationconstructionset.Robot;
@@ -18,6 +17,7 @@ import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.gui.tools.SimulationOverheadPlotterFactory;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.yoVariables.variable.YoBoolean;
+import us.ihmc.yoVariables.variable.YoFramePoint3D;
 
 public class StringStretcherVisualizer implements RobotController
 {
@@ -31,8 +31,8 @@ public class StringStretcherVisualizer implements RobotController
    private Point2D startPoint = new Point2D();
    private Point2D endPoint = new Point2D();
 
-   private final ArrayList<YoFramePoint> minPoints = new ArrayList<>();
-   private final ArrayList<YoFramePoint> maxPoints = new ArrayList<>();
+   private final ArrayList<YoFramePoint3D> minPoints = new ArrayList<>();
+   private final ArrayList<YoFramePoint3D> maxPoints = new ArrayList<>();
 
    private final Point2D minPoint = new Point2D();
    private final Point2D maxPoint = new Point2D();
@@ -57,13 +57,13 @@ public class StringStretcherVisualizer implements RobotController
 
       for (int i = 0; i < 2; i++)
       {
-         YoFramePoint yoMinPoint = new YoFramePoint("minPoint" + i, ReferenceFrame.getWorldFrame(), registry);
+         YoFramePoint3D yoMinPoint = new YoFramePoint3D("minPoint" + i, ReferenceFrame.getWorldFrame(), registry);
          yoMinPoint.set(0.25 * i + 0.1, yMinValues[i], 0.0);
          minPoints.add(yoMinPoint);
          YoGraphicPosition minPointGraphic = new YoGraphicPosition("minPoint" + i, yoMinPoint, 0.05, YoAppearance.Crimson());
          graphicsListRegistry.registerArtifact("minPoint" + i, minPointGraphic.createArtifact());
 
-         YoFramePoint yoMaxPoint = new YoFramePoint("maxPoint" + i, ReferenceFrame.getWorldFrame(), registry);
+         YoFramePoint3D yoMaxPoint = new YoFramePoint3D("maxPoint" + i, ReferenceFrame.getWorldFrame(), registry);
          yoMaxPoint.set(0.25 * i + 0.1, yMaxValues[i], 0.0);
          maxPoints.add(yoMaxPoint);
          YoGraphicPosition maxPointGraphic = new YoGraphicPosition("maxPoint" + i, yoMaxPoint, 0.05, YoAppearance.Red());

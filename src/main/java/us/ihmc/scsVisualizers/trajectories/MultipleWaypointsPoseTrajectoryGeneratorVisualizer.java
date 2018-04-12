@@ -13,9 +13,6 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicCoordinateSystem;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.robotics.geometry.RotationTools;
-import us.ihmc.robotics.math.frames.YoFramePoint;
-import us.ihmc.robotics.math.frames.YoFramePose;
-import us.ihmc.robotics.math.frames.YoFrameVector;
 import us.ihmc.robotics.math.trajectories.YoPolynomial;
 import us.ihmc.robotics.math.trajectories.waypoints.MultipleWaypointsPoseTrajectoryGenerator;
 import us.ihmc.robotics.referenceFrames.PoseReferenceFrame;
@@ -23,6 +20,9 @@ import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.variable.YoFramePoint3D;
+import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
+import us.ihmc.yoVariables.variable.YoFrameVector3D;
 
 public class MultipleWaypointsPoseTrajectoryGeneratorVisualizer
 {
@@ -38,9 +38,9 @@ public class MultipleWaypointsPoseTrajectoryGeneratorVisualizer
 
    private final MultipleWaypointsPoseTrajectoryGenerator trajectoryGenerator;
 
-   private final YoFramePoint position = new YoFramePoint("position", worldFrame, registry);
-   private final YoFrameVector velocity = new YoFrameVector("velocity", worldFrame, registry);
-   private final YoFrameVector acceleration = new YoFrameVector("acceleration", worldFrame, registry);
+   private final YoFramePoint3D position = new YoFramePoint3D("position", worldFrame, registry);
+   private final YoFrameVector3D velocity = new YoFrameVector3D("velocity", worldFrame, registry);
+   private final YoFrameVector3D acceleration = new YoFrameVector3D("acceleration", worldFrame, registry);
 
    private final FramePoint3D tempPoint = new FramePoint3D();
    private final FrameVector3D tempVector = new FrameVector3D();
@@ -131,12 +131,12 @@ public class MultipleWaypointsPoseTrajectoryGeneratorVisualizer
          t += timeBetweenWaypoints;
       }
       
-      YoFramePose yoCurrentPose = new YoFramePose("yoCurrentPose", worldFrame, registry);
+      YoFramePoseUsingYawPitchRoll yoCurrentPose = new YoFramePoseUsingYawPitchRoll("yoCurrentPose", worldFrame, registry);
       YoGraphicCoordinateSystem currentPoseGraphic = new YoGraphicCoordinateSystem("currentPose", yoCurrentPose, 0.5);
       yoGraphicsListRegistry.registerYoGraphic("currentPoseGraphic", currentPoseGraphic);
       
-      YoFrameVector yoLinearVelocity = new YoFrameVector("yoLinearVelocity", worldFrame, registry);
-      YoFrameVector yoAngularVelocity = new YoFrameVector("yoAngularVelocity", worldFrame, registry);
+      YoFrameVector3D yoLinearVelocity = new YoFrameVector3D("yoLinearVelocity", worldFrame, registry);
+      YoFrameVector3D yoAngularVelocity = new YoFrameVector3D("yoAngularVelocity", worldFrame, registry);
       
       
       trajectoryGenerator.initialize();

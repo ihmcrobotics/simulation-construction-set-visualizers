@@ -9,19 +9,19 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPolygon;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
-import us.ihmc.robotics.math.frames.YoFrameConvexPolygon2d;
-import us.ihmc.robotics.math.frames.YoFramePose;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.variable.YoFrameConvexPolygon2D;
+import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
 
 public class ChangingMeshGraphicsVisualizer
 {
    private final YoVariableRegistry registry = new YoVariableRegistry(getClass().getSimpleName());
    private final YoGraphicsListRegistry yoGraphicsListRegistry = new YoGraphicsListRegistry();
 
-   private final YoFrameConvexPolygon2d yoConvexPolygon2d = new YoFrameConvexPolygon2d("convexPolygon", ReferenceFrame.getWorldFrame(), 10, registry);
-   private YoFramePose framePose = new YoFramePose("pose", ReferenceFrame.getWorldFrame(), registry);
+   private final YoFrameConvexPolygon2D yoConvexPolygon2d = new YoFrameConvexPolygon2D("convexPolygon", ReferenceFrame.getWorldFrame(), 10, registry);
+   private YoFramePoseUsingYawPitchRoll framePose = new YoFramePoseUsingYawPitchRoll("pose", ReferenceFrame.getWorldFrame(), registry);
    private final YoGraphicPolygon graphicPolygon = new YoGraphicPolygon("graphicPolygon", yoConvexPolygon2d, framePose, 1.0, YoAppearance.Purple());
 
    private final YoGraphicPosition pointOne = new YoGraphicPosition("point1", "", registry, 0.01, YoAppearance.Red());

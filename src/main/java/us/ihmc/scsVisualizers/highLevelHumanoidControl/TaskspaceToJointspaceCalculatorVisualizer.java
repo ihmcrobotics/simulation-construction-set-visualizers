@@ -29,9 +29,9 @@ import us.ihmc.humanoidRobotics.frames.HumanoidReferenceFrames;
 import us.ihmc.robotModels.FullHumanoidRobotModel;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
+import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
 import us.ihmc.yoVariables.variable.YoInteger;
 import us.ihmc.robotics.math.filters.FilteredVelocityYoVariable;
-import us.ihmc.robotics.math.frames.YoFramePose;
 import us.ihmc.robotics.robotSide.RobotSide;
 import us.ihmc.robotics.screwTheory.OneDoFJoint;
 import us.ihmc.robotics.screwTheory.RigidBody;
@@ -52,9 +52,9 @@ public class TaskspaceToJointspaceCalculatorVisualizer
 
    private static final ReferenceFrame worldFrame = ReferenceFrame.getWorldFrame();
    private final YoVariableRegistry registry = new YoVariableRegistry(getClass().getSimpleName());
-   private final YoFramePose finalHandPose = new YoFramePose("finalHandPose", worldFrame, registry);
-   private final YoFramePose initialHandPose = new YoFramePose("initialHandPose", worldFrame, registry);
-   private final YoFramePose currentHandPose = new YoFramePose("currentHandPose", worldFrame, registry);
+   private final YoFramePoseUsingYawPitchRoll finalHandPose = new YoFramePoseUsingYawPitchRoll("finalHandPose", worldFrame, registry);
+   private final YoFramePoseUsingYawPitchRoll initialHandPose = new YoFramePoseUsingYawPitchRoll("initialHandPose", worldFrame, registry);
+   private final YoFramePoseUsingYawPitchRoll currentHandPose = new YoFramePoseUsingYawPitchRoll("currentHandPose", worldFrame, registry);
 
    private static final boolean WIGGLE_PELVIS_XYZ = true;
    private final double pelvisXYZNoise = 0.0005;

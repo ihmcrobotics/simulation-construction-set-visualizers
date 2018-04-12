@@ -12,9 +12,9 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicCoordinateSystem;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.humanoidRobotics.communication.subscribers.TimeStampedTransformBuffer;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
 import us.ihmc.yoVariables.variable.YoLong;
 import us.ihmc.robotics.kinematics.TimeStampedTransform3D;
-import us.ihmc.robotics.math.frames.YoFramePose;
 import us.ihmc.robotics.random.RandomGeometry;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
@@ -44,7 +44,7 @@ public class TimeStampedTransformBufferVisualizer
       
       TimeStampedTransformBuffer timeStampedPelvisPoseBuffer = new TimeStampedTransformBuffer(numberOfTransforms);
 
-      YoFramePose pelvisPose = new YoFramePose("pelvisPose", worldFrame, registry);
+      YoFramePoseUsingYawPitchRoll pelvisPose = new YoFramePoseUsingYawPitchRoll("pelvisPose", worldFrame, registry);
       YoGraphicCoordinateSystem pelvisPoseGraphics = new YoGraphicCoordinateSystem("pelvisPoseGraph", pelvisPose, 0.5, YoAppearance.Yellow());
       yoGraphicsListRegistry.registerYoGraphic("pelvisPoses", pelvisPoseGraphics);
       
@@ -56,7 +56,7 @@ public class TimeStampedTransformBufferVisualizer
          currentTransform.setRotation(RandomGeometry.nextQuaternion(random));
          timeStampedPelvisPoseBuffer.put(currentTransform, currentTimeStamp);
          
-         YoFramePose currentTransformYoFramePose = new YoFramePose("yoFramePose_" + i, worldFrame, registry);
+         YoFramePoseUsingYawPitchRoll currentTransformYoFramePose = new YoFramePoseUsingYawPitchRoll("yoFramePose_" + i, worldFrame, registry);
          
          FramePose3D tempFramePose = new FramePose3D(worldFrame, currentTransform);
          currentTransformYoFramePose.set(tempFramePose);

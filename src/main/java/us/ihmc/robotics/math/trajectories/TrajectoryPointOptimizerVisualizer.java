@@ -12,8 +12,8 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.variable.YoFramePoint3D;
 import us.ihmc.robotics.geometry.SpiralBasedAlgorithm;
-import us.ihmc.robotics.math.frames.YoFramePoint;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
@@ -113,16 +113,16 @@ public class TrajectoryPointOptimizerVisualizer
    {
       for (int i = 0; i < waypointPositions.size(); i++)
       {
-         YoFramePoint yoWaypoint = new YoFramePoint("waypoint" + i, worldFrame, registry);
+         YoFramePoint3D yoWaypoint = new YoFramePoint3D("waypoint" + i, worldFrame, registry);
          yoWaypoint.set(waypointPositions.get(i));
          graphicsListRegistry.registerYoGraphic("viz", new YoGraphicPosition("waypoint" + i + "Viz", yoWaypoint, 0.02, YoAppearance.White()));
       }
 
-      YoFramePoint yoStart = new YoFramePoint("start", worldFrame, registry);
+      YoFramePoint3D yoStart = new YoFramePoint3D("start", worldFrame, registry);
       yoStart.set(initialPosition);
       graphicsListRegistry.registerYoGraphic("viz", new YoGraphicPosition("start", yoStart, 0.02, YoAppearance.White()));
 
-      YoFramePoint yoEnd = new YoFramePoint("end", worldFrame, registry);
+      YoFramePoint3D yoEnd = new YoFramePoint3D("end", worldFrame, registry);
       yoEnd.set(finalPosition);
       graphicsListRegistry.registerYoGraphic("viz", new YoGraphicPosition("end", yoEnd, 0.02, YoAppearance.White()));
 

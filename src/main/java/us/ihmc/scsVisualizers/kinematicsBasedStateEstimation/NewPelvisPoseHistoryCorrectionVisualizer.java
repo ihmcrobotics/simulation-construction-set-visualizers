@@ -19,7 +19,6 @@ import us.ihmc.humanoidRobotics.communication.subscribers.PelvisPoseCorrectionCo
 import us.ihmc.humanoidRobotics.communication.subscribers.TimeStampedTransformBuffer;
 import us.ihmc.robotics.controllers.ControllerFailureException;
 import us.ihmc.robotics.kinematics.TimeStampedTransform3D;
-import us.ihmc.robotics.math.frames.YoFramePose;
 import us.ihmc.robotics.random.RandomGeometry;
 import us.ihmc.robotics.screwTheory.RigidBody;
 import us.ihmc.robotics.screwTheory.SixDoFJoint;
@@ -29,6 +28,7 @@ import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
 import us.ihmc.simulationconstructionset.util.simulationRunner.BlockingSimulationRunner.SimulationExceededMaximumTimeException;
 import us.ihmc.stateEstimation.humanoid.kinematicsBasedStateEstimation.NewPelvisPoseHistoryCorrection;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
 import us.ihmc.yoVariables.variable.YoLong;
 
 public class NewPelvisPoseHistoryCorrectionVisualizer
@@ -52,7 +52,7 @@ public class NewPelvisPoseHistoryCorrectionVisualizer
    private ExternalPelvisPoseCreator externalPelvisPoseCreator;
 
    private final FramePose3D pelvisPose = new FramePose3D(worldFrame);
-   private final YoFramePose yoPelvisPose;
+   private final YoFramePoseUsingYawPitchRoll yoPelvisPose;
    int numberOfPelvisWaypoints = 11;
    TimeStampedTransformBuffer pelvisWaypointsTransformPoseBufferInWorldFrame = new TimeStampedTransformBuffer(numberOfPelvisWaypoints);
 
@@ -60,12 +60,12 @@ public class NewPelvisPoseHistoryCorrectionVisualizer
    TimeStampedTransformBuffer icpBigOffsetTransformPoseBufferInPelvisFrame = new TimeStampedTransformBuffer(numberOfBigIcpOffsets);
    TimeStampedTransformBuffer allIcpTransformPoseBufferInWorldFrame = new TimeStampedTransformBuffer(70);
    private final FramePose3D icpPose = new FramePose3D(worldFrame);
-   private final YoFramePose yoIcpPose;
+   private final YoFramePoseUsingYawPitchRoll yoIcpPose;
 
    private NewPelvisPoseHistoryCorrection pelvisCorrector;
    private final FramePose3D correctedPelvisPoseInWorldFrame = new FramePose3D(worldFrame);
    private final RigidBodyTransform correctedPelvisTransformInWorldFrame = new RigidBodyTransform();
-   private final YoFramePose yoCorrectedPelvisPose;
+   private final YoFramePoseUsingYawPitchRoll yoCorrectedPelvisPose;
    
    public NewPelvisPoseHistoryCorrectionVisualizer() throws SimulationExceededMaximumTimeException, ControllerFailureException
    {
@@ -80,15 +80,15 @@ public class NewPelvisPoseHistoryCorrectionVisualizer
       generateBigIcpOffsets();
       generateAllIcpTransformsWithTheBigIcpOffsetsAsBasis();
 
-      yoPelvisPose = new YoFramePose("vizPelvisPose", worldFrame, registry);
+      yoPelvisPose = new YoFramePoseUsingYawPitchRoll("vizPelvisPose", worldFrame, registry);
       YoGraphicCoordinateSystem pelvisPoseGraphic = new YoGraphicCoordinateSystem("pelvisPoseGraphic", yoPelvisPose, 0.5, YoAppearance.Grey());
       yoGraphicsListRegistry.registerYoGraphic("pelvisPose", pelvisPoseGraphic);
 
-      yoIcpPose = new YoFramePose("vizIcpPose", worldFrame, registry);
+      yoIcpPose = new YoFramePoseUsingYawPitchRoll("vizIcpPose", worldFrame, registry);
       YoGraphicCoordinateSystem icpPoseGraphic = new YoGraphicCoordinateSystem("icpPoseGraphic", yoIcpPose, 0.5, YoAppearance.Red());
       yoGraphicsListRegistry.registerYoGraphic("icpPose", icpPoseGraphic);
 
-      yoCorrectedPelvisPose = new YoFramePose("vizCorrectedPelvisPose", worldFrame , registry);
+      yoCorrectedPelvisPose = new YoFramePoseUsingYawPitchRoll("vizCorrectedPelvisPose", worldFrame , registry);
       YoGraphicCoordinateSystem correctedPelvisPoseGraphic = new YoGraphicCoordinateSystem("correctedPelvisPoseGraphic", yoCorrectedPelvisPose, 0.8,YoAppearance.Yellow());
       yoGraphicsListRegistry.registerYoGraphic("correctedPelvis", correctedPelvisPoseGraphic);
       
