@@ -33,8 +33,9 @@ public class SoftTouchdownTrajectoryGeneratorVisualizer
 
    public SoftTouchdownTrajectoryGeneratorVisualizer()
    {
-      traj = new SoftTouchdownPositionTrajectoryGenerator("Traj", worldFrame, registry);
-      traj.initialize(0, new FramePoint3D(worldFrame, 1.0, 1.0, 1.0), new FrameVector3D(worldFrame, 0.0, 0.01, -0.1), new FrameVector3D(worldFrame, 0.0001, 0.0, -0.01));
+      traj = new SoftTouchdownPositionTrajectoryGenerator("Traj", registry);
+      traj.setLinearTrajectory(0, new FramePoint3D(worldFrame, 1.0, 1.0, 1.0), new FrameVector3D(worldFrame, 0.0, 0.01, -0.1), new FrameVector3D(worldFrame, 0.0001, 0.0, -0.01));
+      traj.initialize();
 
       SimulationConstructionSetParameters parameters = new SimulationConstructionSetParameters();
       parameters.setCreateGUI(true);
