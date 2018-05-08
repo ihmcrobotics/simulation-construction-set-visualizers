@@ -3,11 +3,11 @@ package us.ihmc.scsVisualizers.filters;
 import us.ihmc.robotics.math.filters.FirstOrderBandPassFilteredYoVariable;
 import us.ihmc.robotics.math.filters.FirstOrderFilteredYoVariable;
 import us.ihmc.robotics.math.filters.FirstOrderFilteredYoVariable.FirstOrderFilterType;
-import us.ihmc.simulationConstructionSet.util.RobotController;
 import us.ihmc.simulationConstructionSetTools.util.inputdevices.MidiSliderBoard;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
+import us.ihmc.simulationconstructionset.util.RobotController;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
 

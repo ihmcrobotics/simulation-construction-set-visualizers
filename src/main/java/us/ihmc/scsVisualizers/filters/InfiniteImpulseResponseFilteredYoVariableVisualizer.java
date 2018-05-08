@@ -6,10 +6,10 @@ import us.ihmc.robotics.math.filters.ButterworthFilteredYoVariable;
 import us.ihmc.robotics.math.filters.ButterworthFilteredYoVariable.ButterworthFilterType;
 import us.ihmc.robotics.math.filters.InfiniteImpulseResponseFilteredYoVariable;
 import us.ihmc.robotics.math.filters.RateLimitedYoVariable;
-import us.ihmc.simulationConstructionSet.util.RobotController;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
+import us.ihmc.simulationconstructionset.util.RobotController;
 import us.ihmc.yoVariables.registry.YoVariableRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
 
