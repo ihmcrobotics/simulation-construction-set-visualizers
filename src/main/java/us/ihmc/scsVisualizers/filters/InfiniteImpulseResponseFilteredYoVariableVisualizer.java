@@ -1,17 +1,17 @@
 package us.ihmc.scsVisualizers.filters;
 
 import us.ihmc.robotics.dataStructures.ComplexNumber;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
-import us.ihmc.yoVariables.variable.YoDouble;
 import us.ihmc.robotics.math.filters.AlphaFilteredYoVariable;
 import us.ihmc.robotics.math.filters.ButterworthFilteredYoVariable;
 import us.ihmc.robotics.math.filters.ButterworthFilteredYoVariable.ButterworthFilterType;
 import us.ihmc.robotics.math.filters.InfiniteImpulseResponseFilteredYoVariable;
 import us.ihmc.robotics.math.filters.RateLimitedYoVariable;
-import us.ihmc.robotics.robotController.RobotController;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
+import us.ihmc.simulationconstructionset.util.RobotController;
+import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.variable.YoDouble;
 
 /**
  * <p>Title: </p>
