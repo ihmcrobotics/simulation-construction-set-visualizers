@@ -22,7 +22,7 @@ ihmc {
 
 mainDependencies {
    compile group: 'us.ihmc', name: 'euclid', version: '0.8.2'
-   compile group: 'us.ihmc', name: 'ihmc-yovariables', version: '0.3.1'
+   compile group: 'us.ihmc', name: 'ihmc-yovariables', version: '0.3.2'
    compile "org.ejml:dense64:0.30"
    compile "org.ejml:core:0.30"
    compile "net.sf.trove4j:trove4j:3.0.3"
@@ -34,14 +34,14 @@ mainDependencies {
    compile group: "us.ihmc", name: "ihmc-humanoid-robotics", version: groupDependencyVersion
    compile group: "us.ihmc", name: "ihmc-humanoid-behaviors", version: groupDependencyVersion
    compile group: "us.ihmc", name: "ihmc-avatar-interfaces", version: groupDependencyVersion
-   compile group: "us.ihmc", name: "simulation-construction-set", version: "0.12.0"
+   compile group: "us.ihmc", name: "simulation-construction-set", version: "0.12.3"
    compile group: "us.ihmc", name: "ihmc-state-estimation", version: groupDependencyVersion
    compile group: "us.ihmc", name: "atlas", version: groupDependencyVersion
    compile group: "us.ihmc", name: "ihmc-java-toolkit", version: groupDependencyVersion
-   compile group: "us.ihmc", name: "ihmc-commons", version: "0.18.0"
+   compile group: "us.ihmc", name: "ihmc-commons", version: "0.20.0"
    compile group: "us.ihmc", name: "ihmc-robotics-toolkit", version: groupDependencyVersion
-   compile group: "us.ihmc", name: "ihmc-graphics-description", version: "0.12.1"
-   compile group: "us.ihmc", name: "ihmc-geometry", version: "0.12.0"
+   compile group: "us.ihmc", name: "ihmc-graphics-description", version: "0.12.4"
+   compile group: "us.ihmc", name: "ihmc-geometry", version: "0.12.2"
    compile group: "us.ihmc", name: "ihmc-simulation-toolkit", version: groupDependencyVersion
 }
 

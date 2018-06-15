@@ -1,8 +1,10 @@
 package us.ihmc.scsVisualizers.trajectories;
 
 import java.util.Random;
+import java.util.function.Supplier;
 
 import us.ihmc.commons.RandomNumbers;
+import us.ihmc.commons.lists.RecyclingArrayList;
 import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.euclid.tuple3D.Point3D;
@@ -11,8 +13,6 @@ import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
-import us.ihmc.robotics.lists.GenericTypeBuilder;
-import us.ihmc.robotics.lists.RecyclingArrayList;
 import us.ihmc.robotics.math.trajectories.waypoints.MultipleWaypointsTrajectoryGenerator;
 import us.ihmc.robotics.math.trajectories.waypoints.TrajectoryPoint1DCalculator;
 import us.ihmc.robotics.math.trajectories.waypoints.YoFrameEuclideanTrajectoryPoint;
@@ -45,11 +45,11 @@ public class TrajectoryPoint1DCalculatorVisualizer
       final YoGraphicsListRegistry yoGraphicsListRegistry = new YoGraphicsListRegistry();
       int numberOfWaypoints = 5;
 
-      GenericTypeBuilder<YoFrameEuclideanTrajectoryPoint> builder = new GenericTypeBuilder<YoFrameEuclideanTrajectoryPoint>()
+      Supplier<YoFrameEuclideanTrajectoryPoint> builder = new Supplier<YoFrameEuclideanTrajectoryPoint>()
       {
          private int i = 0;
          @Override
-         public YoFrameEuclideanTrajectoryPoint newInstance()
+         public YoFrameEuclideanTrajectoryPoint get()
          {
             String indexAsString = Integer.toString(i++);
             YoFrameEuclideanTrajectoryPoint ret = new YoFrameEuclideanTrajectoryPoint("waypointViz", indexAsString, registry, worldFrame);
