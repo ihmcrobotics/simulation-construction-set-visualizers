@@ -4,11 +4,13 @@ buildscript {
       mavenLocal()
    }
    dependencies {
-      classpath "us.ihmc:ihmc-build:0.14.0"
+      classpath "us.ihmc:ihmc-build:0.15.1"
+      classpath "us.ihmc:ihmc-ci-plugin:0.18.0"
       classpath "org.hidetake:gradle-ssh-plugin:2.1.1"
    }
 }
 apply plugin: "us.ihmc.ihmc-build"
+apply plugin: "us.ihmc.ihmc-ci-plugin"
 apply plugin: "org.hidetake.ssh"
 
 import org.gradle.api.GradleException
