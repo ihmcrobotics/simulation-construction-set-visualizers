@@ -421,7 +421,7 @@ public class SmoothCMPICPPlannerVisualizer
       cmpFinalTrack = new BagOfBalls(17, 0.010, "CMPFinal", YoAppearance.Yellow(), registry, graphicsListRegistry);
       estCoMTrack = new BagOfBalls(50, 0.004, "predictedCoM", YoAppearance.Green(), registry, graphicsListRegistry);
       swTrack = new BagOfBalls(50, 0.004, "swFoot", YoAppearance.Orange(), registry, graphicsListRegistry);
-      
+
       YoArtifactPosition desiredCMPArtifact = new YoArtifactPosition("desiredCMP", desiredCMP.getYoX(), desiredCMP.getYoY(), GraphicType.BALL_WITH_CROSS, Color.RED, 0.01);
       YoArtifactPosition desiredCoPArtifact = new YoArtifactPosition("desiredCoP", desiredCoP.getYoX(), desiredCoP.getYoY(), GraphicType.BALL, Color.BLUE, 0.01);
       graphicsListRegistry.registerArtifact("desiredCMP", desiredCMPArtifact);
@@ -1023,7 +1023,13 @@ public class SmoothCMPICPPlannerVisualizer
       AtlasSmoothCMPPlannerParameters planParametersNoMomentum = new AtlasSmoothCMPPlannerParameters(atlasPhysicalProperties)
       {
          @Override
-         public boolean planWithAngularMomentum()
+         public boolean planSwingAngularMomentum()
+         {
+            return false;
+         }
+
+         @Override
+         public boolean planTransferAngularMomentum()
          {
             return false;
          }
@@ -1031,7 +1037,13 @@ public class SmoothCMPICPPlannerVisualizer
       planParameters = new AtlasSmoothCMPPlannerParameters(atlasPhysicalProperties)
       {
          @Override
-         public boolean planWithAngularMomentum()
+         public boolean planSwingAngularMomentum()
+         {
+            return true;
+         }
+
+         @Override
+         public boolean planTransferAngularMomentum()
          {
             return true;
          }

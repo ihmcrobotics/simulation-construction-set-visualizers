@@ -510,7 +510,13 @@ public class CMPPlannerVisualizer
       planParameters = new AtlasSmoothCMPPlannerParameters(atlasPhysicalProperties)
       {
          @Override
-         public boolean planWithAngularMomentum()
+         public boolean planSwingAngularMomentum()
+         {
+            return true;
+         }
+
+         @Override
+         public boolean planTransferAngularMomentum()
          {
             return true;
          }
