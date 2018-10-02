@@ -70,7 +70,7 @@ public class YoGraphicPlanarRegionsListVisualizer
       YoVariableRegistry registry = new YoVariableRegistry("blop");
       final YoGraphicPlanarRegionsList graphic = new YoGraphicPlanarRegionsList("planarRegion", 1000, 14, true, 10, registry);
       graphic.submitPlanarRegionsListToRender(createPlanaRegionsList(), Color.green);
-      YoGraphicCoordinateSystem worldCoordinates = new YoGraphicCoordinateSystem("world", "", registry, 1.0);
+      YoGraphicCoordinateSystem worldCoordinates = new YoGraphicCoordinateSystem("world", "", registry, true, 1.0);
       YoGraphicPolygon polygon = createYoGraphicPolygon(registry);
       YoGraphicsListRegistry yoGraphicsListRegistry = new YoGraphicsListRegistry();
       yoGraphicsListRegistry.registerYoGraphic("test", graphic);
@@ -103,7 +103,7 @@ public class YoGraphicPlanarRegionsListVisualizer
       YoFrameConvexPolygon2D convexPolygon2d = new YoFrameConvexPolygon2D("poupou", ReferenceFrame.getWorldFrame(), 30, registry);
       ConvexPolygon2D polygon = new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(createCircle(new Point2D(1.0, 0.0), 0.1)));
       convexPolygon2d.set(polygon);
-      return new YoGraphicPolygon("poly", convexPolygon2d, "shnoup", "", registry, 1.0, YoAppearance.Red());
+      return new YoGraphicPolygon("poly", convexPolygon2d, "shnoup", "", registry, true, 1.0, YoAppearance.Red());
    }
 
    private static PlanarRegionsList createPlanaRegionsList()

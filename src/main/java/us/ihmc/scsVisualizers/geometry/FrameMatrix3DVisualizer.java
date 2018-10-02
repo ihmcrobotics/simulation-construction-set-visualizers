@@ -86,7 +86,7 @@ public class FrameMatrix3DVisualizer
       yoGraphicsListRegistry.registerYoGraphic(listName, new YoGraphicVector("original", zero, yoVectorOriginal, YoAppearance.Blue()));
       yoGraphicsListRegistry.registerYoGraphic(listName, new YoGraphicVector("transformedInWorld", zero, yoVectorTransformedInWorld, YoAppearance.AluminumMaterial()));
       yoGraphicsListRegistry.registerYoGraphic(listName, new YoGraphicVector("transformedInAFrame", zero, yoVectorTransformedInAFrame, YoAppearance.Chocolate()));
-      YoGraphicReferenceFrame aFrameViz = new YoGraphicReferenceFrame(aFrame, registry, 1.0);
+      YoGraphicReferenceFrame aFrameViz = new YoGraphicReferenceFrame(aFrame, registry, true, 1.0);
       yoGraphicsListRegistry.registerYoGraphic(listName, aFrameViz);
       scs.addYoGraphicsListRegistry(yoGraphicsListRegistry);
       return aFrameViz;

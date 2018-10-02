@@ -66,7 +66,7 @@ public class VelocityConstrainedPositionTrajectoryGeneratorVisualizer
       BagOfBalls balls2 = new BagOfBalls(bufferSize, 0.03, "trajBalls2", YoAppearance.DarkGoldenRod(), registry, yoGraphicsListRegistry);
       
       
-      YoGraphicReferenceFrame aFrameViz = new YoGraphicReferenceFrame(aFrame, registry, 0.3);
+      YoGraphicReferenceFrame aFrameViz = new YoGraphicReferenceFrame(aFrame, registry, true, 0.3);
       aFrameViz.update();
       yoGraphicsListRegistry.registerYoGraphic("aFrame", aFrameViz);
 //      yoGraphicsListRegistry.registerYoGraphic("traj3PositionViz", traj3PositionViz);

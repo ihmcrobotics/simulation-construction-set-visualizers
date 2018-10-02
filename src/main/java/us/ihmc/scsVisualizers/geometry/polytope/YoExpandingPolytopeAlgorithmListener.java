@@ -189,7 +189,7 @@ public class YoExpandingPolytopeAlgorithmListener implements ExpandingPolytopeAl
       YoGraphicPosition closestPointOnBViz = new YoGraphicPosition("closestPointOnBViz", closestPointOnB, 0.12, closestPointAppearance);
       yoGraphicsListRegistry.registerYoGraphic("SimplexPoints", closestPointOnBViz);
 
-      YoGraphicCoordinateSystem originViz = new YoGraphicCoordinateSystem("origin", "", registry, 1.0);
+      YoGraphicCoordinateSystem originViz = new YoGraphicCoordinateSystem("origin", "", registry, true, 1.0);
       yoGraphicsListRegistry.registerYoGraphic("SimplexPoints", originViz);
 
       scs = new SimulationConstructionSet(new Robot("ExpandingPolytopeVisualizer"));
