@@ -237,7 +237,7 @@ public class ICPPlanTimingVisualizer
 
       midFeetZUpFrame = new MidFrameZUpFrame("midFeetZupFrame", worldFrame, ankleZUpFrames.get(RobotSide.LEFT), ankleZUpFrames.get(RobotSide.RIGHT));
       midFeetZUpFrame.update();
-      bipedSupportPolygons = new BipedSupportPolygons(ankleZUpFrames, midFeetZUpFrame, ankleZUpFrames, registry, yoGraphicsListRegistry);
+      bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, ankleZUpFrames, registry, yoGraphicsListRegistry);
 
       footstepTestHelper = new FootstepTestHelper(contactableFeet);
    }
@@ -446,13 +446,6 @@ public class ICPPlanTimingVisualizer
             return exitCoPName;
          }
 
-         /**{@inheritDoc} */
-         @Override
-         public CoPPointName getEntryCoPName()
-         {
-            return entryCoPName;
-         }
-
          /** {@inheritDoc} */
          @Override
          public EnumMap<CoPPointName, Vector2D> getCoPOffsetsInFootFrame()
@@ -461,7 +454,7 @@ public class ICPPlanTimingVisualizer
             Vector2D exitOffset = new Vector2D(0.0, 0.025);
 
             EnumMap<CoPPointName, Vector2D> copOffsets = new EnumMap<>(CoPPointName.class);
-            copOffsets.put(entryCoPName, entryOffset);
+            copOffsets.put(CoPPointName.ENTRY_COP, entryOffset);
             copOffsets.put(exitCoPName, exitOffset);
 
             return copOffsets;
@@ -475,7 +468,7 @@ public class ICPPlanTimingVisualizer
             Vector2D exitBounds = new Vector2D(-0.04, 0.08);
 
             EnumMap<CoPPointName, Vector2D> copForwardOffsetBounds = new EnumMap<>(CoPPointName.class);
-            copForwardOffsetBounds.put(entryCoPName, entryBounds);
+            copForwardOffsetBounds.put(CoPPointName.ENTRY_COP, entryBounds);
             copForwardOffsetBounds.put(exitCoPName, exitBounds);
 
             return copForwardOffsetBounds;

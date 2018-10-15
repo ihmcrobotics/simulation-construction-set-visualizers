@@ -9,6 +9,7 @@ import us.ihmc.atlas.parameters.AtlasSmoothCMPPlannerParameters;
 import us.ihmc.commonWalkingControlModules.bipedSupportPolygons.BipedSupportPolygons;
 import us.ihmc.commonWalkingControlModules.bipedSupportPolygons.YoPlaneContactState;
 import us.ihmc.commonWalkingControlModules.capturePoint.smoothCMPBasedICPPlanner.CoPGeneration.CoPPointsInFoot;
+import us.ihmc.commonWalkingControlModules.capturePoint.smoothCMPBasedICPPlanner.CoPGeneration.FootstepData;
 import us.ihmc.commonWalkingControlModules.capturePoint.smoothCMPBasedICPPlanner.CoPGeneration.ReferenceCoPTrajectoryGenerator;
 import us.ihmc.commonWalkingControlModules.configurations.SmoothCMPPlannerParameters;
 import us.ihmc.commonWalkingControlModules.controllers.Updatable;
@@ -107,6 +108,9 @@ public class CoPPlannerVisualizer
    private final YoFramePoint3D desiredCoP;
    private final YoFrameVector3D desiredCoPVelocity;
 
+   private final YoInteger numberOfFootstepsRegisered;
+   private final ArrayList<FootstepData> upcomingFootstepData = new ArrayList<>();
+
    public CoPPlannerVisualizer()
    {
       setupCoPPlanner();
@@ -155,6 +159,8 @@ public class CoPPlannerVisualizer
             midFeetZUpFrame.update();
          }
       });
+
+      numberOfFootstepsRegisered = new YoInteger("numberOfFootstepsRegisered", registry);
 
       copTrack = new BagOfBalls(50, 0.01, "CoP", YoAppearance.AliceBlue(), registry, graphicsListRegistry);
       copWaypointViz = new BagOfBalls(50, 0.01, "WaypointViz", YoAppearance.Black(), registry, graphicsListRegistry);
@@ -238,18 +244,17 @@ public class CoPPlannerVisualizer
          if (inDoubleSupport.getBooleanValue())
          {
             if (currentStepCount == 0)
-               testCoPPlanner.computeReferenceCoPsStartingFromDoubleSupport(true, nextFootstep.getRobotSide().getOppositeSide());
+               testCoPPlanner.computeReferenceCoPsStartingFromDoubleSupport(true, nextFootstep.getRobotSide().getOppositeSide(), nextFootstep.getRobotSide());
             else if(currentStepCount == footsteps.size())
-               testCoPPlanner.computeReferenceCoPsStartingFromDoubleSupport(false, nextFootstep.getRobotSide());
+               testCoPPlanner.computeReferenceCoPsStartingFromDoubleSupport(false, nextFootstep.getRobotSide(), nextFootstep.getRobotSide().getOppositeSide());
             else
-               testCoPPlanner.computeReferenceCoPsStartingFromDoubleSupport(false, nextFootstep.getRobotSide().getOppositeSide());
+               testCoPPlanner.computeReferenceCoPsStartingFromDoubleSupport(false, nextFootstep.getRobotSide().getOppositeSide(), nextFootstep.getRobotSide());
 
-            testCoPPlanner.initializeForTransfer(yoTime.getDoubleValue());
             inDoubleSupport.set(false);
          }
          else if (nextFootstep != null)
          {
-            testCoPPlanner.initializeForSwing(yoTime.getDoubleValue());
+            testCoPPlanner.initializeForSwing();
             testCoPPlanner.computeReferenceCoPsStartingFromSingleSupport(nextFootstep.getRobotSide().getOppositeSide());
             inDoubleSupport.set(true);
 
@@ -267,7 +272,7 @@ public class CoPPlannerVisualizer
             CoPPointsInFoot copPoints = copList.get(i);
             for (int j = 0; j < copPoints.getCoPPointList().size(); j++)
             {
-               FramePoint3D tempPoint = new FramePoint3D(copPoints.getWaypointInWorldFrameReadOnly(j));
+               FramePoint3D tempPoint = new FramePoint3D(copPoints.getWaypointInWorld(j));
                tempPoint.add(0.0, 0.0, 0.05);
                copWaypointViz.setBall(tempPoint);
             }
@@ -323,9 +328,12 @@ public class CoPPlannerVisualizer
    private void registerFootsteps(int index)
    {
       testCoPPlanner.clear();
+      numberOfFootstepsRegisered.set(0);
+      upcomingFootstepData.clear();
       for (int i = index; i < footsteps.size(); i++)
       {
-         testCoPPlanner.addFootstepToPlan(footsteps.get(i), footstepTimings.get(i));
+         numberOfFootstepsRegisered.increment();
+         upcomingFootstepData.add(new FootstepData(footsteps.get(i), footstepTimings.get(i)));
       }
    }
 
@@ -434,7 +442,7 @@ public class CoPPlannerVisualizer
       }
       midFeetZUpFrame = new MidFootZUpGroundFrame("MidFeetZUpFrame", soleZUpFrames.get(RobotSide.LEFT), soleZUpFrames.get(RobotSide.RIGHT));
       midFeetZUpFrame.update();
-      bipedSupportPolygons = new BipedSupportPolygons(ankleZUpFrames, midFeetZUpFrame, soleZUpFrames, registry, graphicsListRegistry);
+      bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, soleZUpFrames, registry, graphicsListRegistry);
       footstepTestHelper = new FootstepTestHelper(contactableFeet);
       planParameters = new AtlasSmoothCMPPlannerParameters(atlasPhysicalProperties);
       YoInteger numberOfFootstepsToConsider = new YoInteger("numberOfFootstepsToConsider", registry);
@@ -473,7 +481,7 @@ public class CoPPlannerVisualizer
       int maxNumberOfFootstepsToConsider = planParameters.getNumberOfFootstepsToConsider();
       testCoPPlanner = new ReferenceCoPTrajectoryGenerator("TestCoPPlanner", maxNumberOfFootstepsToConsider, bipedSupportPolygons,
                                                            contactableFeet, numberOfFootstepsToConsider, swingDurations, transferDurations, touchdownDurations, swingSplitFractions,
-                                                           swingDurationShiftFractions, transferSplitFractions, registry);
+                                                           swingDurationShiftFractions, transferSplitFractions, numberOfFootstepsRegisered, upcomingFootstepData, registry);
       testCoPPlanner.initializeParameters(planParameters);
 
       YoGraphicsList yoGraphicsList = new YoGraphicsList("graphicsList");

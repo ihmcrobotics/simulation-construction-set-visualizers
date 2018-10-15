@@ -137,8 +137,7 @@ public class SmoothCMPICPPlannerVisualizer
    private final AtlasPhysicalProperties atlasPhysicalProperties = new AtlasPhysicalProperties();
    private List<Footstep> footsteps;
    private List<FootstepTiming> footstepTimings;
-   private BagOfBalls copTrack, cmpTrack, icpTrack, comTrack, icpInitialTrack, icpFinalTrack, comInitialTrack, comFinalTrack, cmpFinalTrack, swTrack,
-         estCoMTrack;
+   private BagOfBalls copTrack, cmpTrack, icpTrack, comTrack, icpInitialTrack, icpFinalTrack, comInitialTrack, comFinalTrack, cmpFinalTrack, swTrack, estCoMTrack;
    private BagOfBalls copTrackAMOff, cmpTrackAMOff, icpTrackAMOff, comTrackAMOff;
    private BagOfBalls oldICPTrack, oldCMPTrack, oldCoMTrack;
    private YoGraphicPosition cmpInitialTrack;
@@ -422,8 +421,10 @@ public class SmoothCMPICPPlannerVisualizer
       estCoMTrack = new BagOfBalls(50, 0.004, "predictedCoM", YoAppearance.Green(), registry, graphicsListRegistry);
       swTrack = new BagOfBalls(50, 0.004, "swFoot", YoAppearance.Orange(), registry, graphicsListRegistry);
 
-      YoArtifactPosition desiredCMPArtifact = new YoArtifactPosition("desiredCMP", desiredCMP.getYoX(), desiredCMP.getYoY(), GraphicType.BALL_WITH_CROSS, Color.RED, 0.01);
-      YoArtifactPosition desiredCoPArtifact = new YoArtifactPosition("desiredCoP", desiredCoP.getYoX(), desiredCoP.getYoY(), GraphicType.BALL, Color.BLUE, 0.01);
+      YoArtifactPosition desiredCMPArtifact = new YoArtifactPosition("desiredCMP", desiredCMP.getYoX(), desiredCMP.getYoY(), GraphicType.BALL_WITH_CROSS,
+                                                                     Color.RED, 0.01);
+      YoArtifactPosition desiredCoPArtifact = new YoArtifactPosition("desiredCoP", desiredCoP.getYoX(), desiredCoP.getYoY(), GraphicType.BALL, Color.BLUE,
+                                                                     0.01);
       graphicsListRegistry.registerArtifact("desiredCMP", desiredCMPArtifact);
       graphicsListRegistry.registerArtifact("desiredCoP", desiredCoPArtifact);
 
@@ -489,8 +490,9 @@ public class SmoothCMPICPPlannerVisualizer
       {
          nextFootsteps.clear();
          nextFootstepTimings.clear();
-         int numberOfNextSteps = footsteps.size() - currentStepCount < planParameters.getNumberOfFootstepsToConsider() ? footsteps.size() - currentStepCount
-               : planParameters.getNumberOfFootstepsToConsider();
+         int numberOfNextSteps = footsteps.size() - currentStepCount < planParameters.getNumberOfFootstepsToConsider() ?
+               footsteps.size() - currentStepCount :
+               planParameters.getNumberOfFootstepsToConsider();
          for (int i = 0; i < numberOfNextSteps; i++)
          {
             nextFootsteps.add(footsteps.get(currentStepCount + i));
@@ -521,7 +523,7 @@ public class SmoothCMPICPPlannerVisualizer
          if (inDoubleSupport.getBooleanValue())
          {
             RobotSide transferToSide = nextFootstep.getRobotSide().getOppositeSide();
-            if(currentStepCount == footsteps.size())
+            if (currentStepCount == footsteps.size())
             {
                icpPlanner.setTransferToSide(transferToSide.getOppositeSide());
                icpPlanner.initializeForStanding(yoTime.getDoubleValue());
@@ -534,7 +536,7 @@ public class SmoothCMPICPPlannerVisualizer
 
             if (SHOW_WITHOUT_ANGULAR_MOMENTUM)
             {
-               if(currentStepCount == footsteps.size())
+               if (currentStepCount == footsteps.size())
                {
                   icpPlannerAMOff.setTransferToSide(transferToSide.getOppositeSide());
                   icpPlannerAMOff.initializeForStanding(yoTime.getDoubleValue());
@@ -589,14 +591,14 @@ public class SmoothCMPICPPlannerVisualizer
             inDoubleSupport.set(true);
          }
 
-         List<CoPPointsInFoot> copList = icpPlanner.getCoPWaypoints();
+         List<CoPPointsInFoot> copList = icpPlanner.getReferenceCoPGenerator().getWaypoints();
          copWaypointViz.reset();
          for (int i = 0; i < copList.size(); i++)
          {
             CoPPointsInFoot copPoints = copList.get(i);
             for (int j = 0; j < copPoints.getCoPPointList().size(); j++)
             {
-               FramePoint3D tempPoint = new FramePoint3D(copPoints.getWaypointInWorldFrameReadOnly(j));
+               FramePoint3D tempPoint = new FramePoint3D(copPoints.getWaypointInWorld(j));
                tempPoint.add(0.0, 0.0, 0.05);
                copWaypointViz.setBall(tempPoint);
             }
@@ -645,8 +647,9 @@ public class SmoothCMPICPPlannerVisualizer
       icpPlanner.getDesiredCentroidalMomentumPivotPosition(desiredCMP);
       icpPlanner.getDesiredCapturePointPosition(desiredICP);
       icpPlanner.getDesiredCapturePointVelocity(desiredICPVelocity);
-      icpPlanner.getPredictedCenterOfMassPosition(predictedCoM, yoTime.getDoubleValue());
-      icpPlanner.getPredictedSwingFootPosition(predictedSwingFootLocation, yoTime.getDoubleValue());
+      // This is for the angular momentum prediction stuff
+      //      icpPlanner.getPredictedCenterOfMassPosition(predictedCoM, yoTime.getDoubleValue());
+      //      icpPlanner.getPredictedSwingFootPosition(predictedSwingFootLocation, yoTime.getDoubleValue());
 
       icpPlanner.getDesiredCenterOfMassPosition(desiredCoM);
       icpPlanner.getDesiredCenterOfMassVelocity(desiredCoMVelocity);
@@ -694,10 +697,10 @@ public class SmoothCMPICPPlannerVisualizer
          computeReactionForceFromCMPPosition(cdsDesiredCoM, cdsDesiredCMP, cdsDesiredReactionForce);
       }
 
-      icpDesiredInitialPositions = icpPlanner.getInitialDesiredCapturePointPositions();
-      icpDesiredFinalPositions = icpPlanner.getFinalDesiredCapturePointPositions();
-      comDesiredInitialPositions = icpPlanner.getInitialDesiredCenterOfMassPositions();
-      comDesiredFinalPositions = icpPlanner.getFinalDesiredCenterOfMassPositions();
+      icpDesiredInitialPositions = icpPlanner.getReferenceICPGenerator().getICPPositionDesiredInitialList();
+      icpDesiredFinalPositions = icpPlanner.getReferenceICPGenerator().getICPPositionDesiredFinalList();
+      comDesiredInitialPositions = icpPlanner.getReferenceCoMGenerator().getCoMPositionDesiredInitialList();
+      comDesiredFinalPositions = icpPlanner.getReferenceCoMGenerator().getCoMPositionDesiredFinalList();
       //      cmpDesiredFinalPositions = icpGenerator.getCMPPositionDesiredList();
 
       if (counter++ % simulatedTicksPerGraphicUpdate == 0)
@@ -765,7 +768,7 @@ public class SmoothCMPICPPlannerVisualizer
          comInitialTrack.reset();
          comFinalTrack.reset();
 
-         for (int i = 0; i < icpPlanner.getTotalNumberOfSegments(); i++)
+         for (int i = 0; i < icpPlanner.getReferenceICPGenerator().getTotalNumberOfSegments(); i++)
          {
             desiredICPInitial.set(icpDesiredInitialPositions.get(i));
             desiredICPInitial.setZ(0.10);
@@ -857,8 +860,8 @@ public class SmoothCMPICPPlannerVisualizer
          {
             footstep.setPredictedContactPoints(contactableFeet.get(footstep.getRobotSide()).getContactPoints2d());
          }
-         ReferenceFrame footFrame = ReferenceFrame.constructFrameWithUnchangingTranslationFromParent("FootstepFrame", worldFrame,
-                                                                                                     footstep.getFootstepPose().getPosition());
+         ReferenceFrame footFrame = ReferenceFrame
+               .constructFrameWithUnchangingTranslationFromParent("FootstepFrame", worldFrame, footstep.getFootstepPose().getPosition());
          tempFootPolygon.setIncludingFrame(footFrame, Vertex2DSupplier.asVertex2DSupplier(footstep.getPredictedContactPoints()));
          tempFootPolygon.changeFrameAndProjectToXYPlane(worldFrame);
          yoNextFootstepPolygon.get(i).set(tempFootPolygon);
@@ -940,7 +943,8 @@ public class SmoothCMPICPPlannerVisualizer
 
    private void generateRandomPredictedContactPoints(Footstep footstep)
    {
-      FrameConvexPolygon2D randomSupportPolygon = new FrameConvexPolygon2D(FrameVertex2DSupplier.asFrameVertex2DSupplier(contactableFeet.get(footstep.getRobotSide()).getContactPoints2d()));
+      FrameConvexPolygon2D randomSupportPolygon = new FrameConvexPolygon2D(
+            FrameVertex2DSupplier.asFrameVertex2DSupplier(contactableFeet.get(footstep.getRobotSide()).getContactPoints2d()));
       List<FramePoint2D> randomPredictedContactPointList = new ArrayList<>();
 
       double minX = 0.5 * randomSupportPolygon.getMinX();
@@ -980,18 +984,18 @@ public class SmoothCMPICPPlannerVisualizer
          double yToAnkle = 0.0;
          double zToAnkle = 0.084;
          List<Point2D> contactPointsInSoleFrame = new ArrayList<Point2D>();
-         contactPointsInSoleFrame.add(new Point2D(atlasPhysicalProperties.getFootLengthForControl() / 2.0,
-                                                  atlasPhysicalProperties.getToeWidthForControl() / 2.0));
-         contactPointsInSoleFrame.add(new Point2D(atlasPhysicalProperties.getFootLengthForControl() / 2.0,
-                                                  -atlasPhysicalProperties.getToeWidthForControl() / 2.0));
-         contactPointsInSoleFrame.add(new Point2D(-atlasPhysicalProperties.getFootLengthForControl() / 2.0,
-                                                  -atlasPhysicalProperties.getFootWidthForControl() / 2.0));
-         contactPointsInSoleFrame.add(new Point2D(-atlasPhysicalProperties.getFootLengthForControl() / 2.0,
-                                                  atlasPhysicalProperties.getFootWidthForControl() / 2.0));
+         contactPointsInSoleFrame
+               .add(new Point2D(atlasPhysicalProperties.getFootLengthForControl() / 2.0, atlasPhysicalProperties.getToeWidthForControl() / 2.0));
+         contactPointsInSoleFrame
+               .add(new Point2D(atlasPhysicalProperties.getFootLengthForControl() / 2.0, -atlasPhysicalProperties.getToeWidthForControl() / 2.0));
+         contactPointsInSoleFrame
+               .add(new Point2D(-atlasPhysicalProperties.getFootLengthForControl() / 2.0, -atlasPhysicalProperties.getFootWidthForControl() / 2.0));
+         contactPointsInSoleFrame
+               .add(new Point2D(-atlasPhysicalProperties.getFootLengthForControl() / 2.0, atlasPhysicalProperties.getFootWidthForControl() / 2.0));
          FootSpoof contactableFoot = new FootSpoof(sidePrefix + "Foot", xToAnkle, yToAnkle, zToAnkle, contactPointsInSoleFrame, 0.0);
          FramePose3D startingPose = new FramePose3D(worldFrame);
          startingPose.setToZero(worldFrame);
-         startingPose.setY(robotSide.negateIfRightSide(defaultStepWidth/2.0));
+         startingPose.setY(robotSide.negateIfRightSide(defaultStepWidth / 2.0));
          contactableFoot.setSoleFrame(startingPose);
          contactableFeet.put(robotSide, contactableFoot);
          currentFootPoses.put(robotSide, new YoFramePoseUsingYawPitchRoll(sidePrefix + "FootPose", worldFrame, registry));
@@ -1018,7 +1022,7 @@ public class SmoothCMPICPPlannerVisualizer
       }
       midFeetZUpFrame = new MidFootZUpGroundFrame("MidFeetZUpFrame", soleZUpFrames.get(RobotSide.LEFT), soleZUpFrames.get(RobotSide.RIGHT));
       midFeetZUpFrame.update();
-      bipedSupportPolygons = new BipedSupportPolygons(ankleZUpFrames, midFeetZUpFrame, soleZUpFrames, registry, graphicsListRegistry);
+      bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, soleZUpFrames, registry, graphicsListRegistry);
       footstepTestHelper = new FootstepTestHelper(contactableFeet);
       AtlasSmoothCMPPlannerParameters planParametersNoMomentum = new AtlasSmoothCMPPlannerParameters(atlasPhysicalProperties)
       {
@@ -1073,10 +1077,9 @@ public class SmoothCMPICPPlannerVisualizer
       transferSplitFraction.set(planParameters.getSwingSplitFraction());
       String namePrefix = "TestICPPlanner";
       int numberOfPointsPerFoot = planParameters.getNumberOfCoPWayPointsPerFoot();
-      icpPlanner = new SmoothCMPBasedICPPlanner(new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_NO_HANDS, RobotTarget.SCS, false)
-                                                                                                                                              .createFullRobotModel(),
-                                                bipedSupportPolygons, contactableFeet, numberOfFootstepsToConsider.getIntegerValue(),
-                                                registry, graphicsListRegistry, 9.81);
+      AtlasRobotModel atlasRobotModel = new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_NO_HANDS, RobotTarget.SCS, false);
+      icpPlanner = new SmoothCMPBasedICPPlanner(atlasRobotModel.createFullRobotModel(), bipedSupportPolygons, contactableFeet,
+                                                numberOfFootstepsToConsider.getIntegerValue(), null, yoTime, registry, graphicsListRegistry, 9.81);
       icpPlanner.initializeParameters(planParameters);
       icpPlanner.setFinalTransferDuration(1.0);
 
@@ -1101,12 +1104,6 @@ public class SmoothCMPICPPlannerVisualizer
             return exitCoPName;
          }
 
-         /**{@inheritDoc} */
-         @Override
-         public CoPPointName getEntryCoPName()
-         {
-            return entryCoPName;
-         }
 
          /** {@inheritDoc} */
          @Override
@@ -1116,7 +1113,7 @@ public class SmoothCMPICPPlannerVisualizer
             Vector2D exitOffset = new Vector2D(0.0, 0.025);
 
             EnumMap<CoPPointName, Vector2D> copOffsets = new EnumMap<>(CoPPointName.class);
-            copOffsets.put(entryCoPName, entryOffset);
+            copOffsets.put(CoPPointName.ENTRY_COP, entryOffset);
             copOffsets.put(exitCoPName, exitOffset);
 
             return copOffsets;
@@ -1130,7 +1127,7 @@ public class SmoothCMPICPPlannerVisualizer
             Vector2D exitBounds = new Vector2D(-0.04, 0.08);
 
             EnumMap<CoPPointName, Vector2D> copForwardOffsetBounds = new EnumMap<>(CoPPointName.class);
-            copForwardOffsetBounds.put(entryCoPName, entryBounds);
+            copForwardOffsetBounds.put(CoPPointName.ENTRY_COP, entryBounds);
             copForwardOffsetBounds.put(exitCoPName, exitBounds);
 
             return copForwardOffsetBounds;
@@ -1158,13 +1155,6 @@ public class SmoothCMPICPPlannerVisualizer
             return exitCoPName;
          }
 
-         /**{@inheritDoc} */
-         @Override
-         public CoPPointName getEntryCoPName()
-         {
-            return entryCoPName;
-         }
-
          /** {@inheritDoc} */
          @Override
          public EnumMap<CoPPointName, Vector2D> getCoPOffsetsInFootFrame()
@@ -1173,7 +1163,7 @@ public class SmoothCMPICPPlannerVisualizer
             Vector2D exitOffset = new Vector2D(0.0, 0.025);
 
             EnumMap<CoPPointName, Vector2D> copOffsets = new EnumMap<>(CoPPointName.class);
-            copOffsets.put(entryCoPName, entryOffset);
+            copOffsets.put(CoPPointName.ENTRY_COP, entryOffset);
             copOffsets.put(exitCoPName, exitOffset);
 
             return copOffsets;
@@ -1187,7 +1177,7 @@ public class SmoothCMPICPPlannerVisualizer
             Vector2D exitBounds = new Vector2D(-0.04, 0.08);
 
             EnumMap<CoPPointName, Vector2D> copForwardOffsetBounds = new EnumMap<>(CoPPointName.class);
-            copForwardOffsetBounds.put(entryCoPName, entryBounds);
+            copForwardOffsetBounds.put(CoPPointName.ENTRY_COP, entryBounds);
             copForwardOffsetBounds.put(exitCoPName, exitBounds);
 
             return copForwardOffsetBounds;
@@ -1210,10 +1200,9 @@ public class SmoothCMPICPPlannerVisualizer
       {
          YoVariableRegistry dummyRegistry = new YoVariableRegistry("ICPAMOff");
          YoGraphicsListRegistry dummyGrahpics = new YoGraphicsListRegistry();
-         icpPlannerAMOff = new SmoothCMPBasedICPPlanner(new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_DUAL_ROBOTIQ, RobotTarget.SCS, false)
-                                                                                                                                                      .createFullRobotModel(),
-                                                        bipedSupportPolygons, contactableFeet, numberOfFootstepsToConsider.getIntegerValue(),
-                                                        dummyRegistry, dummyGrahpics, 9.81);
+         icpPlannerAMOff = new SmoothCMPBasedICPPlanner(
+               new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_DUAL_ROBOTIQ, RobotTarget.SCS, false).createFullRobotModel(), bipedSupportPolygons,
+               contactableFeet, numberOfFootstepsToConsider.getIntegerValue(), null, yoTime, dummyRegistry, dummyGrahpics, 9.81);
          icpPlannerAMOff.initializeParameters(planParametersNoMomentum);
          icpPlannerAMOff.setFinalTransferDuration(1.0);
       }
@@ -1225,7 +1214,8 @@ public class SmoothCMPICPPlannerVisualizer
       graphicsListRegistry.registerArtifactList(artifactList);
    }
 
-   private void computeReactionForceFromCMPPosition(YoFramePoint3D desiredCoMPosition, YoFramePoint3D desiredCMPPosition, YoFrameVector3D desiredReactionForceToPack)
+   private void computeReactionForceFromCMPPosition(YoFramePoint3D desiredCoMPosition, YoFramePoint3D desiredCMPPosition,
+                                                    YoFrameVector3D desiredReactionForceToPack)
    {
       desiredReactionForceToPack.set(desiredCoMPosition);
       desiredReactionForceToPack.sub(desiredCMPPosition);

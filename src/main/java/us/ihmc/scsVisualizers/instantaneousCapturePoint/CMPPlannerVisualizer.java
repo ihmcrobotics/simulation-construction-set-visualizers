@@ -14,6 +14,7 @@ import us.ihmc.commonWalkingControlModules.bipedSupportPolygons.YoPlaneContactSt
 import us.ihmc.commonWalkingControlModules.capturePoint.smoothCMPBasedICPPlanner.AMGeneration.FootstepAngularMomentumPredictor;
 import us.ihmc.commonWalkingControlModules.capturePoint.smoothCMPBasedICPPlanner.CMPGeneration.ReferenceCMPTrajectoryGenerator;
 import us.ihmc.commonWalkingControlModules.capturePoint.smoothCMPBasedICPPlanner.CoPGeneration.CoPPointsInFoot;
+import us.ihmc.commonWalkingControlModules.capturePoint.smoothCMPBasedICPPlanner.CoPGeneration.FootstepData;
 import us.ihmc.commonWalkingControlModules.capturePoint.smoothCMPBasedICPPlanner.CoPGeneration.ReferenceCoPTrajectoryGenerator;
 import us.ihmc.commonWalkingControlModules.configurations.SmoothCMPPlannerParameters;
 import us.ihmc.commonWalkingControlModules.controllers.Updatable;
@@ -122,10 +123,13 @@ public class CMPPlannerVisualizer
    private final YoFrameVector3D predictedAngularMomentum;
    private final YoFrameVector3D predictedTorque;
 
+   private final List<FootstepData> upcomingFootstepData = new ArrayList<>();
+   private final YoInteger numberOfFootstepsRegistered;
+
    public CMPPlannerVisualizer()
    {
       omega0 = new YoDouble("Omega0", registry);
-      omega0.set(Math.sqrt(gravityZ/robotHeight));
+      omega0.set(Math.sqrt(gravityZ / robotHeight));
       setupPlanner();
       for (int i = 0; i < planParameters.getNumberOfFootstepsToConsider(); i++)
       {
@@ -140,6 +144,8 @@ public class CMPPlannerVisualizer
       predictedAngularMomentum = new YoFrameVector3D("predictedAngularMomentum", worldFrame, registry);
       predictedTorque = new YoFrameVector3D("predictedTorque", worldFrame, registry);
       desiredCoPVelocity = new YoFrameVector3D("desiredCoPVelocity", worldFrame, registry);
+
+      numberOfFootstepsRegistered = new YoInteger("numberOfFootstepsRegistered", registry);
 
       Graphics3DObject footstepGraphics = new Graphics3DObject();
       List<Point2D> contactPoints = new ArrayList<Point2D>();
@@ -230,8 +236,9 @@ public class CMPPlannerVisualizer
          nextFootsteps.clear();
          nextFootstepTimings.clear();
          registerFootsteps(currentStepCount);
-         int numberOfNextSteps = footsteps.size() - currentStepCount < planParameters.getNumberOfFootstepsToConsider() ? footsteps.size() - currentStepCount
-               : planParameters.getNumberOfFootstepsToConsider();
+         int numberOfNextSteps = footsteps.size() - currentStepCount < planParameters.getNumberOfFootstepsToConsider() ?
+               footsteps.size() - currentStepCount :
+               planParameters.getNumberOfFootstepsToConsider();
          for (int i = 0; i < numberOfNextSteps; i++)
          {
             nextFootsteps.add(footsteps.get(currentStepCount + i));
@@ -240,7 +247,7 @@ public class CMPPlannerVisualizer
          updateFootStepViz(nextFootsteps, nextFootstepTimings);
 
          Footstep nextFootstep = footsteps.get(footsteps.size() - 1);
-         if(currentStepCount != footsteps.size())
+         if (currentStepCount != footsteps.size())
             nextFootstep = nextFootsteps.get(0);
 
          if (inDoubleSupport.getBooleanValue())
@@ -259,25 +266,28 @@ public class CMPPlannerVisualizer
          {
             if (currentStepCount == 0)
             {
-               copGenerator.computeReferenceCoPsStartingFromDoubleSupport(true, nextFootstep.getRobotSide().getOppositeSide());
-               estAngMomGenerator.addFootstepCoPsToPlan(copGenerator.getWaypoints(), null, null, null, null, null, null, copGenerator.getNumberOfFootstepsRegistered());
-               estAngMomGenerator.computeReferenceAngularMomentumStartingFromDoubleSupport(true);
+               copGenerator.computeReferenceCoPsStartingFromDoubleSupport(true, nextFootstep.getRobotSide().getOppositeSide(), nextFootstep.getRobotSide());
+               estAngMomGenerator.addCopAndComSetpointsToPlan(copGenerator.getWaypoints(), null, null, null, null, null, null,
+                                                              copGenerator.getNumberOfFootstepsRegistered());
+               estAngMomGenerator.computeReferenceAngularMomentumStartingFromDoubleSupport(true, true);
             }
-            else if(currentStepCount == footsteps.size())
+            else if (currentStepCount == footsteps.size())
             {
-               copGenerator.computeReferenceCoPsStartingFromDoubleSupport(false, nextFootstep.getRobotSide());
-               estAngMomGenerator.addFootstepCoPsToPlan(copGenerator.getWaypoints(), null, null, null, null, null, null, copGenerator.getNumberOfFootstepsRegistered());
-               estAngMomGenerator.computeReferenceAngularMomentumStartingFromDoubleSupport(false);
+               copGenerator.computeReferenceCoPsStartingFromDoubleSupport(false, nextFootstep.getRobotSide(), nextFootstep.getRobotSide().getOppositeSide());
+               estAngMomGenerator.addCopAndComSetpointsToPlan(copGenerator.getWaypoints(), null, null, null, null, null, null,
+                                                              copGenerator.getNumberOfFootstepsRegistered());
+               estAngMomGenerator.computeReferenceAngularMomentumStartingFromDoubleSupport(false, false);
             }
             else
             {
-               copGenerator.computeReferenceCoPsStartingFromDoubleSupport(false, nextFootstep.getRobotSide().getOppositeSide());
-               estAngMomGenerator.addFootstepCoPsToPlan(copGenerator.getWaypoints(), null, null, null, null, null, null, copGenerator.getNumberOfFootstepsRegistered());
-               estAngMomGenerator.computeReferenceAngularMomentumStartingFromDoubleSupport(false);
+               copGenerator.computeReferenceCoPsStartingFromDoubleSupport(false, nextFootstep.getRobotSide().getOppositeSide(), nextFootstep.getRobotSide());
+               estAngMomGenerator.addCopAndComSetpointsToPlan(copGenerator.getWaypoints(), null, null, null, null, null, null,
+                                                              copGenerator.getNumberOfFootstepsRegistered());
+               estAngMomGenerator.computeReferenceAngularMomentumStartingFromDoubleSupport(false, false);
             }
 
             cmpGenerator.setNumberOfRegisteredSteps(copGenerator.getNumberOfFootstepsRegistered());
-            copGenerator.initializeForTransfer(yoTime.getDoubleValue());
+            //            copGenerator.initializeForTransfer(yoTime.getDoubleValue());
             estAngMomGenerator.initializeForDoubleSupport(yoTime.getDoubleValue(), false);
             cmpGenerator.initializeForTransfer(yoTime.getDoubleValue(), copGenerator.getTransferCoPTrajectories(), copGenerator.getSwingCoPTrajectories(),
                                                estAngMomGenerator.getTransferAngularMomentumTrajectories(),
@@ -288,10 +298,11 @@ public class CMPPlannerVisualizer
          {
             copGenerator.computeReferenceCoPsStartingFromSingleSupport(nextFootstep.getRobotSide().getOppositeSide());
             cmpGenerator.setNumberOfRegisteredSteps(copGenerator.getNumberOfFootstepsRegistered());
-            estAngMomGenerator.addFootstepCoPsToPlan(copGenerator.getWaypoints(), null, null, null, null, null, null, copGenerator.getNumberOfFootstepsRegistered());
+            estAngMomGenerator
+                  .addCopAndComSetpointsToPlan(copGenerator.getWaypoints(), null, null, null, null, null, null, copGenerator.getNumberOfFootstepsRegistered());
             estAngMomGenerator.computeReferenceAngularMomentumStartingFromSingleSupport();
 
-            copGenerator.initializeForSwing(yoTime.getDoubleValue());
+            copGenerator.initializeForSwing();
             estAngMomGenerator.initializeForSingleSupport(yoTime.getDoubleValue());
             cmpGenerator.initializeForSwing(yoTime.getDoubleValue(), copGenerator.getTransferCoPTrajectories(), copGenerator.getSwingCoPTrajectories(),
                                             estAngMomGenerator.getTransferAngularMomentumTrajectories(),
@@ -320,13 +331,13 @@ public class CMPPlannerVisualizer
             CoPPointsInFoot copPoints = copList.get(i);
             for (int j = 0; j < copPoints.getCoPPointList().size(); j++)
             {
-               FramePoint3D tempPoint = new FramePoint3D(copPoints.getWaypointInWorldFrameReadOnly(j));
+               FramePoint3D tempPoint = new FramePoint3D(copPoints.getWaypointInWorld(j));
                tempPoint.add(0.0, 0.0, 0.05);
                copWaypointViz.setBall(tempPoint);
             }
          }
          double totalTime = transferDurations.get(0).getDoubleValue();
-         if(currentStepCount != footsteps.size())
+         if (currentStepCount != footsteps.size())
             totalTime = inDoubleSupport.getBooleanValue() ? nextFootstepTimings.get(0).getSwingTime() : nextFootstepTimings.get(0).getTransferTime();
          for (double time = 0.0; time < totalTime; time += dt)
          {
@@ -337,7 +348,7 @@ public class CMPPlannerVisualizer
 
          for (RobotSide robotSide : RobotSide.values)
             contactStates.get(robotSide).setFullyConstrained();
-         if(currentStepCount == footsteps.size())
+         if (currentStepCount == footsteps.size())
             break;
          currentStepCount = inDoubleSupport.getBooleanValue() ? currentStepCount + 1 : currentStepCount;
       }
@@ -394,9 +405,12 @@ public class CMPPlannerVisualizer
       copGenerator.clear();
       estAngMomGenerator.clear();
       cmpGenerator.reset();
+      upcomingFootstepData.clear();
+      numberOfFootstepsRegistered.set(0);
       for (int i = index; i < footsteps.size(); i++)
       {
-         copGenerator.addFootstepToPlan(footsteps.get(i), footstepTimings.get(i));
+         numberOfFootstepsRegistered.increment();
+         upcomingFootstepData.add(new FootstepData(footsteps.get(i), footstepTimings.get(i)));
       }
    }
 
@@ -435,8 +449,8 @@ public class CMPPlannerVisualizer
          {
             footstep.setPredictedContactPoints(contactableFeet.get(footstep.getRobotSide()).getContactPoints2d());
          }
-         ReferenceFrame footFrame = ReferenceFrame.constructFrameWithUnchangingTranslationFromParent("FootstepFrame", worldFrame,
-                                                                                                     footstep.getFootstepPose().getPosition());
+         ReferenceFrame footFrame = ReferenceFrame
+               .constructFrameWithUnchangingTranslationFromParent("FootstepFrame", worldFrame, footstep.getFootstepPose().getPosition());
          tempFootPolygon.setIncludingFrame(footFrame, Vertex2DSupplier.asVertex2DSupplier(footstep.getPredictedContactPoints()));
          tempFootPolygon.changeFrameAndProjectToXYPlane(worldFrame);
          yoNextFootstepPolygon.get(i).set(tempFootPolygon);
@@ -467,14 +481,14 @@ public class CMPPlannerVisualizer
          double yToAnkle = 0.0;
          double zToAnkle = 0.084;
          List<Point2D> contactPointsInSoleFrame = new ArrayList<Point2D>();
-         contactPointsInSoleFrame.add(new Point2D(atlasPhysicalProperties.getFootLengthForControl() / 2.0,
-                                                  atlasPhysicalProperties.getToeWidthForControl() / 2.0));
-         contactPointsInSoleFrame.add(new Point2D(atlasPhysicalProperties.getFootLengthForControl() / 2.0,
-                                                  -atlasPhysicalProperties.getToeWidthForControl() / 2.0));
-         contactPointsInSoleFrame.add(new Point2D(-atlasPhysicalProperties.getFootLengthForControl() / 2.0,
-                                                  -atlasPhysicalProperties.getFootWidthForControl() / 2.0));
-         contactPointsInSoleFrame.add(new Point2D(-atlasPhysicalProperties.getFootLengthForControl() / 2.0,
-                                                  atlasPhysicalProperties.getFootWidthForControl() / 2.0));
+         contactPointsInSoleFrame
+               .add(new Point2D(atlasPhysicalProperties.getFootLengthForControl() / 2.0, atlasPhysicalProperties.getToeWidthForControl() / 2.0));
+         contactPointsInSoleFrame
+               .add(new Point2D(atlasPhysicalProperties.getFootLengthForControl() / 2.0, -atlasPhysicalProperties.getToeWidthForControl() / 2.0));
+         contactPointsInSoleFrame
+               .add(new Point2D(-atlasPhysicalProperties.getFootLengthForControl() / 2.0, -atlasPhysicalProperties.getFootWidthForControl() / 2.0));
+         contactPointsInSoleFrame
+               .add(new Point2D(-atlasPhysicalProperties.getFootLengthForControl() / 2.0, atlasPhysicalProperties.getFootWidthForControl() / 2.0));
          FootSpoof contactableFoot = new FootSpoof(sidePrefix + "Foot", xToAnkle, yToAnkle, zToAnkle, contactPointsInSoleFrame, 0.0);
          FramePose3D startingPose = new FramePose3D(worldFrame);
          startingPose.setToZero(worldFrame);
@@ -505,7 +519,7 @@ public class CMPPlannerVisualizer
       }
       midFeetZUpFrame = new MidFootZUpGroundFrame("MidFeetZUpFrame", soleZUpFrames.get(RobotSide.LEFT), soleZUpFrames.get(RobotSide.RIGHT));
       midFeetZUpFrame.update();
-      bipedSupportPolygons = new BipedSupportPolygons(ankleZUpFrames, midFeetZUpFrame, soleZUpFrames, registry, graphicsListRegistry);
+      bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, soleZUpFrames, registry, graphicsListRegistry);
       footstepTestHelper = new FootstepTestHelper(contactableFeet);
       planParameters = new AtlasSmoothCMPPlannerParameters(atlasPhysicalProperties)
       {
@@ -555,13 +569,16 @@ public class CMPPlannerVisualizer
 
       String namePrefix = "TestCMPPlanner";
       int maxNumberFootstepsToConsider = planParameters.getNumberOfFootstepsToConsider();
-      copGenerator = new ReferenceCoPTrajectoryGenerator(namePrefix, maxNumberFootstepsToConsider,
-                                                         bipedSupportPolygons, contactableFeet, numberOfFootstepsToConsider, swingDurations, transferDurations, touchdownDurations,
-                                                         swingSplitFractions, swingDurationShiftFractions, transferSplitFractions, registry);
-      cmpGenerator = new ReferenceCMPTrajectoryGenerator(namePrefix, maxNumberFootstepsToConsider, numberOfFootstepsToConsider, registry);
+      copGenerator = new ReferenceCoPTrajectoryGenerator(namePrefix, maxNumberFootstepsToConsider, bipedSupportPolygons, contactableFeet,
+                                                         numberOfFootstepsToConsider, swingDurations, transferDurations, touchdownDurations,
+                                                         swingSplitFractions, swingDurationShiftFractions, transferSplitFractions, numberOfFootstepsRegistered,
+                                                         upcomingFootstepData, registry);
+      cmpGenerator = new ReferenceCMPTrajectoryGenerator(namePrefix, maxNumberFootstepsToConsider, numberOfFootstepsToConsider, false, registry,
+                                                         graphicsListRegistry);
       cmpGenerator.setGroundReaction(180 * gravityZ);
-      estAngMomGenerator = new FootstepAngularMomentumPredictor(namePrefix, omega0, registry);
-      FullHumanoidRobotModel fullHumanoidRobotModel = new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_NO_HANDS, RobotTarget.SCS, false).createFullRobotModel();
+      estAngMomGenerator = new FootstepAngularMomentumPredictor(namePrefix, omega0, maxNumberFootstepsToConsider, registry);
+      FullHumanoidRobotModel fullHumanoidRobotModel = new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_NO_HANDS, RobotTarget.SCS, false)
+            .createFullRobotModel();
       estAngMomGenerator.initializeParameters(planParameters, fullHumanoidRobotModel.getTotalMass(), gravityZ);
       copGenerator.initializeParameters(planParameters);
 
