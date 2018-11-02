@@ -261,7 +261,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
 
             desiredHandLinearVelocity.changeFrame(handControlFrame);
             desiredHandAngularVelocity.changeFrame(handControlFrame);
-            desiredHandTwist.set(leftHandFrame, chestFrame, handControlFrame, desiredHandAngularVelocity, desiredHandLinearVelocity);
+            desiredHandTwist.setIncludingFrame(leftHandFrame, chestFrame, handControlFrame, desiredHandAngularVelocity, desiredHandLinearVelocity);
 
             taskspaceToJointspaceCalculator.compute(handPose, desiredHandTwist);
             taskspaceToJointspaceCalculator.getDesiredJointAnglesIntoOneDoFJoints(armJoints);

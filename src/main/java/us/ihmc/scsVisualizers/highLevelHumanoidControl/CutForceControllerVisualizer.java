@@ -481,7 +481,7 @@ public class CutForceControllerVisualizer
             desiredHandLinearVelocity.changeFrame(rightHandControlFrame);
             desiredHandAngularVelocity.scale(scaleFactor.getDoubleValue());
             desiredHandAngularVelocity.changeFrame(rightHandControlFrame);
-            desiredHandTwist.set(rightHandFrame, chestFrame, rightHandControlFrame, desiredHandAngularVelocity, desiredHandLinearVelocity);
+            desiredHandTwist.setIncludingFrame(rightHandFrame, chestFrame, rightHandControlFrame, desiredHandAngularVelocity, desiredHandLinearVelocity);
 
             rightHandTaskTojointSpaceCalculator.compute(handPose, desiredHandTwist);
             rightHandTaskTojointSpaceCalculator.getDesiredJointAnglesIntoOneDoFJoints(rightArmJoints);
