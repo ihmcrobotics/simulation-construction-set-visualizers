@@ -2,7 +2,6 @@ package us.ihmc.scsVisualizers.screwTools;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javafx.application.Application;
@@ -24,8 +23,8 @@ import us.ihmc.graphicsDescription.MeshDataGenerator;
 import us.ihmc.graphicsDescription.MeshDataHolder;
 import us.ihmc.javaFXToolkit.graphics.JavaFXMeshDataInterpreter;
 import us.ihmc.javaFXToolkit.scenes.View3DFactory;
+import us.ihmc.mecano.spatial.Twist;
 import us.ihmc.robotics.geometry.shapes.FrameEllipsoid3d;
-import us.ihmc.robotics.screwTheory.Twist;
 
 public class TwistVisualizer extends Application
 {
