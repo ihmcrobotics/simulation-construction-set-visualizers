@@ -24,6 +24,7 @@ import us.ihmc.graphicsDescription.MeshDataHolder;
 import us.ihmc.javaFXToolkit.graphics.JavaFXMeshDataInterpreter;
 import us.ihmc.javaFXToolkit.scenes.View3DFactory;
 import us.ihmc.mecano.spatial.Twist;
+import us.ihmc.mecano.spatial.interfaces.TwistReadOnly;
 import us.ihmc.robotics.geometry.shapes.FrameEllipsoid3d;
 
 public class TwistVisualizer extends Application
@@ -114,14 +115,14 @@ public class TwistVisualizer extends Application
       return twists.stream().map(twist -> createLinearVelocityVector(scale, color, twist)).collect(Collectors.toList());
    }
 
-   public MeshView createLinearVelocityVector(double scale, Color color, Twist twist)
+   public MeshView createLinearVelocityVector(double scale, Color color, TwistReadOnly twist)
    {
       FrameVector3D linearVelocity = new FrameVector3D();
       linearVelocity.setIncludingFrame(twist.getLinearPart());
       return createArrow(scale, color, linearVelocity);
    }
 
-   public MeshView createAngularVelocityVector(double scale, Color color, Twist twist)
+   public MeshView createAngularVelocityVector(double scale, Color color, TwistReadOnly twist)
    {
       FrameVector3D angularVelocity = new FrameVector3D();
       angularVelocity.setIncludingFrame(twist.getAngularPart());
