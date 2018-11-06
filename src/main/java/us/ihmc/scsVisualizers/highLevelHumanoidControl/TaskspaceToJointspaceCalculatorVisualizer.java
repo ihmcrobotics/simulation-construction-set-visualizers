@@ -264,7 +264,8 @@ public class TaskspaceToJointspaceCalculatorVisualizer
             desiredHandTwist.setIncludingFrame(leftHandFrame, chestFrame, handControlFrame, desiredHandAngularVelocity, desiredHandLinearVelocity);
 
             taskspaceToJointspaceCalculator.compute(handPose, desiredHandTwist);
-            taskspaceToJointspaceCalculator.getDesiredJointAnglesIntoOneDoFJoints(armJoints);
+            // FIXME
+//            taskspaceToJointspaceCalculator.getDesiredJointAnglesIntoOneDoFJoints(armJoints);
             ScrewTools.setJointPositions(armJoints, taskspaceToJointspaceCalculator.getDesiredJointAngles());
             ScrewTools.setVelocities(armJoints, taskspaceToJointspaceCalculator.getDesiredJointVelocities());
             ScrewTools.setJointAccelerations(armJoints, taskspaceToJointspaceCalculator.getDesiredJointAccelerations());

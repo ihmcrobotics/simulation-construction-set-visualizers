@@ -484,7 +484,8 @@ public class CutForceControllerVisualizer
             desiredHandTwist.setIncludingFrame(rightHandFrame, chestFrame, rightHandControlFrame, desiredHandAngularVelocity, desiredHandLinearVelocity);
 
             rightHandTaskTojointSpaceCalculator.compute(handPose, desiredHandTwist);
-            rightHandTaskTojointSpaceCalculator.getDesiredJointAnglesIntoOneDoFJoints(rightArmJoints);
+            // FIME
+//            rightHandTaskTojointSpaceCalculator.getDesiredJointAnglesIntoOneDoFJoints(rightArmJoints);
             ScrewTools.setJointPositions(rightArmJoints, rightHandTaskTojointSpaceCalculator.getDesiredJointAngles());
             ScrewTools.setVelocities(rightArmJoints, rightHandTaskTojointSpaceCalculator.getDesiredJointVelocities());
             ScrewTools.setJointAccelerations(rightArmJoints, rightHandTaskTojointSpaceCalculator.getDesiredJointAccelerations());
