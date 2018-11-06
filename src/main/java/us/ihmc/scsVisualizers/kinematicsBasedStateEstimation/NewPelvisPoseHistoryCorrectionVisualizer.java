@@ -103,7 +103,7 @@ public class NewPelvisPoseHistoryCorrectionVisualizer
          robotTransformInWorldFrame.set(pelvisTimeStampedTransform3D.getTransform3D());
          pelvisReferenceFrame.update();
 
-         sixDofPelvisJoint.setPositionAndRotation(pelvisTimeStampedTransform3D.getTransform3D());
+         sixDofPelvisJoint.setJointConfiguration(pelvisTimeStampedTransform3D.getTransform3D());
          sixDofPelvisJoint.updateFramesRecursively();
          pelvisPose.set(sixDofPelvisJoint.getJointTransform3D());
          yoPelvisPose.set(pelvisPose);

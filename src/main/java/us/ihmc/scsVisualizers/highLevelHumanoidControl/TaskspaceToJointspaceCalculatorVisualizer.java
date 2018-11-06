@@ -327,7 +327,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
 
       RigidBodyTransform transform = new RigidBodyTransform();
       pelvisPoseWithWiggle.get(transform);
-      fullRobotModel.getRootJoint().setPositionAndRotation(transform);
+      fullRobotModel.getRootJoint().setJointConfiguration(transform);
 
       if (NOISE_ON_BACK_JOINTS)
       {
