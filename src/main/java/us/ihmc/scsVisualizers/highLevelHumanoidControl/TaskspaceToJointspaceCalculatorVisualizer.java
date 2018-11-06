@@ -28,7 +28,7 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicCoordinateSystem;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.humanoidRobotics.frames.HumanoidReferenceFrames;
 import us.ihmc.mecano.multiBodySystem.OneDoFJoint;
-import us.ihmc.mecano.multiBodySystem.RigidBody;
+import us.ihmc.mecano.multiBodySystem.interfaces.RigidBodyBasics;
 import us.ihmc.mecano.spatial.Twist;
 import us.ihmc.robotModels.FullHumanoidRobotModel;
 import us.ihmc.robotics.math.filters.FilteredVelocityYoVariable;
@@ -133,8 +133,8 @@ public class TaskspaceToJointspaceCalculatorVisualizer
       initialPelvisPose.changeFrame(worldFrame);
       jointAnglesWriter = new JointAnglesWriter(robot, fullRobotModel);
 
-      RigidBody chest = fullRobotModel.getChest();
-      RigidBody leftHand = fullRobotModel.getHand(RobotSide.LEFT);
+      RigidBodyBasics chest = fullRobotModel.getChest();
+      RigidBodyBasics leftHand = fullRobotModel.getHand(RobotSide.LEFT);
       ReferenceFrame leftHandFrame = leftHand.getBodyFixedFrame();
       ReferenceFrame chestFrame = chest.getBodyFixedFrame();
 

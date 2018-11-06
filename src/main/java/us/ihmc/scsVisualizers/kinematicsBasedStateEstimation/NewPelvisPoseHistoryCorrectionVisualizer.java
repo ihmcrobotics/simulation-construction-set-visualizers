@@ -19,6 +19,7 @@ import us.ihmc.humanoidRobotics.communication.subscribers.PelvisPoseCorrectionCo
 import us.ihmc.humanoidRobotics.communication.subscribers.TimeStampedTransformBuffer;
 import us.ihmc.mecano.multiBodySystem.RigidBody;
 import us.ihmc.mecano.multiBodySystem.SixDoFJoint;
+import us.ihmc.mecano.multiBodySystem.interfaces.RigidBodyBasics;
 import us.ihmc.robotics.kinematics.TimeStampedTransform3D;
 import us.ihmc.robotics.random.RandomGeometry;
 import us.ihmc.simulationconstructionset.Robot;
@@ -335,7 +336,7 @@ public class NewPelvisPoseHistoryCorrectionVisualizer
             transformToParent.set(robotTransformInWorldFrame);
          }
       };
-      RigidBody rigidBody = new RigidBody("playback", pelvisReferenceFrame);
+      RigidBodyBasics rigidBody = new RigidBody("playback", pelvisReferenceFrame);
       sixDofPelvisJoint = new SixDoFJoint("playback", rigidBody);
    }
 

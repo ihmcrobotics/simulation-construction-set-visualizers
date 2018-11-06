@@ -25,7 +25,7 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicCoordinateSystem;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.humanoidRobotics.frames.HumanoidReferenceFrames;
 import us.ihmc.mecano.multiBodySystem.OneDoFJoint;
-import us.ihmc.mecano.multiBodySystem.RigidBody;
+import us.ihmc.mecano.multiBodySystem.interfaces.RigidBodyBasics;
 import us.ihmc.mecano.spatial.Twist;
 import us.ihmc.mecano.spatial.Wrench;
 import us.ihmc.robotModels.FullHumanoidRobotModel;
@@ -208,8 +208,8 @@ public class CutForceControllerVisualizer
 
 
 
-      RigidBody chest = fullRobotModel.getChest();
-      RigidBody rightHand = fullRobotModel.getHand(RobotSide.RIGHT);
+      RigidBodyBasics chest = fullRobotModel.getChest();
+      RigidBodyBasics rightHand = fullRobotModel.getHand(RobotSide.RIGHT);
       ReferenceFrame rightHandFrame = rightHand.getBodyFixedFrame();
       ReferenceFrame chestFrame = chest.getBodyFixedFrame();
       rightHandControlFrame = fullRobotModel.getHandControlFrame(RobotSide.RIGHT);
@@ -287,7 +287,7 @@ public class CutForceControllerVisualizer
       {
          WrenchCalculatorInterface scsSensor = wristSCSSensors.get(robotSide);
          String sensorName = scsSensor.getName();
-         RigidBody rigidBody = fullRobotModel.getOneDoFJointByName(scsSensor.getJoint().getName()).getSuccessor();
+         RigidBodyBasics rigidBody = fullRobotModel.getOneDoFJointByName(scsSensor.getJoint().getName()).getSuccessor();
          RigidBodyTransform transformFromSensorToParentJoint = new RigidBodyTransform();
          scsSensor.getTransformToParentJoint(transformFromSensorToParentJoint);
          ForceSensorDefinition forceSensorDefinition = new ForceSensorDefinition(sensorName, rigidBody, transformFromSensorToParentJoint);
