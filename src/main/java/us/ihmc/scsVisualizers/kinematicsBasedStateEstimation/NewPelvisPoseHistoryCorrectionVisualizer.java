@@ -105,12 +105,12 @@ public class NewPelvisPoseHistoryCorrectionVisualizer
 
          sixDofPelvisJoint.setJointConfiguration(pelvisTimeStampedTransform3D.getTransform3D());
          sixDofPelvisJoint.updateFramesRecursively();
-         pelvisPose.set(sixDofPelvisJoint.getJointTransform3D());
+         pelvisPose.set(sixDofPelvisJoint.getJointPose());
          yoPelvisPose.set(pelvisPose);
 
          pelvisCorrector.doControl(timeStamp);
 
-         correctedPelvisTransformInWorldFrame.set(sixDofPelvisJoint.getJointTransform3D());
+         sixDofPelvisJoint.getJointConfiguration(correctedPelvisTransformInWorldFrame);
          correctedPelvisPoseInWorldFrame.set(correctedPelvisTransformInWorldFrame);
          yoCorrectedPelvisPose.set(correctedPelvisPoseInWorldFrame);
 
