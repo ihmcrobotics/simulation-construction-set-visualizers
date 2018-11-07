@@ -30,6 +30,8 @@ import us.ihmc.humanoidRobotics.frames.HumanoidReferenceFrames;
 import us.ihmc.mecano.multiBodySystem.OneDoFJoint;
 import us.ihmc.mecano.multiBodySystem.interfaces.RigidBodyBasics;
 import us.ihmc.mecano.spatial.Twist;
+import us.ihmc.mecano.tools.JointStateType;
+import us.ihmc.mecano.tools.MultiBodySystemRandomTools;
 import us.ihmc.robotModels.FullHumanoidRobotModel;
 import us.ihmc.robotics.math.filters.FilteredVelocityYoVariable;
 import us.ihmc.robotics.robotSide.RobotSide;
@@ -206,7 +208,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
 
       startTime = System.currentTimeMillis();
 
-      ScrewTestTools.setRandomPositionsWithinJointLimits(armJoints, random);
+      MultiBodySystemRandomTools.nextStateWithinJointLimits(random, JointStateType.CONFIGURATION, armJoints);
       handPose.setToZero(handControlFrame);
       handPose.changeFrame(chestFrame);
       handPose.setPosition(1.3 * handPose.getX(), handPose.getY(), handPose.getZ());
@@ -223,7 +225,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
          straightLineTrajectory.setInitialPose(handPose);
 
          ScrewTools.getJointPositions(armJoints, jointAngles);
-         ScrewTestTools.setRandomPositionsWithinJointLimits(armJoints, random);
+         MultiBodySystemRandomTools.nextStateWithinJointLimits(random, JointStateType.CONFIGURATION, armJoints);
          handPose.setToZero(handControlFrame);
          handPose.changeFrame(chestFrame);
 //         handPose.setPosition(1.3 * handPose.getX(), handPose.getY(), handPose.getZ());
