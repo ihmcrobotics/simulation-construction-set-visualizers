@@ -170,7 +170,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
       taskspaceToJointspaceCalculator = new TaskspaceToJointspaceCalculator("leftHand", chest, leftHand, dt, registry);
       taskspaceToJointspaceCalculator.setupWithDefaultParameters();
 
-      armJoints = ScrewTools.createOneDoFJointPath(chest, leftHand);
+      armJoints = MultiBodySystemTools.createOneDoFJointPath(chest, leftHand);
 
       for (OneDoFJointBasics joint : armJoints)
       {
@@ -334,7 +334,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
 
       if (NOISE_ON_BACK_JOINTS)
       {
-         OneDoFJointBasics[] backJoints = ScrewTools.createOneDoFJointPath(fullRobotModel.getPelvis(), fullRobotModel.getChest());
+         OneDoFJointBasics[] backJoints = MultiBodySystemTools.createOneDoFJointPath(fullRobotModel.getPelvis(), fullRobotModel.getChest());
          double blop = 0.0;
          for (OneDoFJointBasics joint : backJoints)
          {

@@ -252,7 +252,7 @@ public class CutForceControllerVisualizer
 
 
 
-      rightArmJoints = ScrewTools.createOneDoFJointPath(chest, rightHand);
+      rightArmJoints = MultiBodySystemTools.createOneDoFJointPath(chest, rightHand);
 
       scs.startOnAThread();
       scs.tickAndUpdate();
