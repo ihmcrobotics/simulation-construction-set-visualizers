@@ -24,7 +24,7 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicCoordinateSystem;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.humanoidRobotics.frames.HumanoidReferenceFrames;
-import us.ihmc.mecano.multiBodySystem.OneDoFJoint;
+import us.ihmc.mecano.multiBodySystem.interfaces.OneDoFJointBasics;
 import us.ihmc.mecano.multiBodySystem.interfaces.RigidBodyBasics;
 import us.ihmc.mecano.spatial.Twist;
 import us.ihmc.mecano.spatial.Wrench;
@@ -80,7 +80,7 @@ public class CutForceControllerVisualizer
 
    private TaskspaceToJointspaceCalculator rightHandTaskTojointSpaceCalculator;
    private JointAnglesWriter jointAnglesWriter;
-   private OneDoFJoint[] rightArmJoints;
+   private OneDoFJointBasics[] rightArmJoints;
 
    private StraightLinePoseTrajectoryGenerator straightLineTrajectory;
 

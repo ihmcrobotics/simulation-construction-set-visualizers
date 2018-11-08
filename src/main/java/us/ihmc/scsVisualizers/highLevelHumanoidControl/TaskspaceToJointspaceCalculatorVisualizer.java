@@ -27,7 +27,7 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicCoordinateSystem;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.humanoidRobotics.frames.HumanoidReferenceFrames;
-import us.ihmc.mecano.multiBodySystem.OneDoFJoint;
+import us.ihmc.mecano.multiBodySystem.interfaces.OneDoFJointBasics;
 import us.ihmc.mecano.multiBodySystem.interfaces.RigidBodyBasics;
 import us.ihmc.mecano.spatial.Twist;
 import us.ihmc.mecano.tools.JointStateType;
@@ -82,7 +82,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
    private StraightLinePoseTrajectoryGenerator straightLineTrajectory;
    private CirclePoseTrajectoryGenerator circleTrajectory;
    private SimulationConstructionSet scs;
-   private OneDoFJoint[] armJoints;
+   private OneDoFJointBasics[] armJoints;
 
    private final FramePose3D handPose = new FramePose3D();
 
@@ -102,8 +102,8 @@ public class TaskspaceToJointspaceCalculatorVisualizer
    private final FrameVector3D desiredHandAngularVelocity = new FrameVector3D();
    private final Twist desiredHandTwist = new Twist();
 
-   private final LinkedHashMap<OneDoFJoint, FilteredVelocityYoVariable> qd_fds = new LinkedHashMap<>();
-   private final LinkedHashMap<OneDoFJoint, FilteredVelocityYoVariable> qdd_fds = new LinkedHashMap<>();
+   private final LinkedHashMap<OneDoFJointBasics, FilteredVelocityYoVariable> qd_fds = new LinkedHashMap<>();
+   private final LinkedHashMap<OneDoFJointBasics, FilteredVelocityYoVariable> qdd_fds = new LinkedHashMap<>();
 
    private int counter = 0;
    private final long startTime, endTime;
@@ -172,7 +172,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
 
       armJoints = ScrewTools.createOneDoFJointPath(chest, leftHand);
 
-      for (OneDoFJoint joint : armJoints)
+      for (OneDoFJointBasics joint : armJoints)
       {
          qd_fds.put(joint, new FilteredVelocityYoVariable("qd_fd_" + joint.getName(), "", 0.0, dt, registry));
          qdd_fds.put(joint, new FilteredVelocityYoVariable("qdd_fd_" + joint.getName(), "", 0.0, dt, registry));
@@ -272,7 +272,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
             MultiBodySystemTools.insertJointsState(armJoints, JointStateType.VELOCITY, taskspaceToJointspaceCalculator.getDesiredJointVelocities());
             MultiBodySystemTools.insertJointsState(armJoints, JointStateType.ACCELERATION, taskspaceToJointspaceCalculator.getDesiredJointAccelerations());
 
-            for (OneDoFJoint joint : armJoints)
+            for (OneDoFJointBasics joint : armJoints)
             {
                qd_fds.get(joint).update(joint.getQ());
                qdd_fds.get(joint).update(joint.getQd());
@@ -334,9 +334,9 @@ public class TaskspaceToJointspaceCalculatorVisualizer
 
       if (NOISE_ON_BACK_JOINTS)
       {
-         OneDoFJoint[] backJoints = ScrewTools.createOneDoFJointPath(fullRobotModel.getPelvis(), fullRobotModel.getChest());
+         OneDoFJointBasics[] backJoints = ScrewTools.createOneDoFJointPath(fullRobotModel.getPelvis(), fullRobotModel.getChest());
          double blop = 0.0;
-         for (OneDoFJoint joint : backJoints)
+         for (OneDoFJointBasics joint : backJoints)
          {
             double q = RandomNumbers.nextDouble(random, noiseAmplitudeForBackJoints);
             blop += 2.0;
