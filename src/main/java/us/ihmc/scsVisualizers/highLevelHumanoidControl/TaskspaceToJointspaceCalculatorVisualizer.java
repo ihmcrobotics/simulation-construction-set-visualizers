@@ -32,6 +32,7 @@ import us.ihmc.mecano.multiBodySystem.interfaces.RigidBodyBasics;
 import us.ihmc.mecano.spatial.Twist;
 import us.ihmc.mecano.tools.JointStateType;
 import us.ihmc.mecano.tools.MultiBodySystemRandomTools;
+import us.ihmc.mecano.tools.MultiBodySystemTools;
 import us.ihmc.robotModels.FullHumanoidRobotModel;
 import us.ihmc.robotics.math.filters.FilteredVelocityYoVariable;
 import us.ihmc.robotics.robotSide.RobotSide;
@@ -223,7 +224,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
          jointAnglesWriter.updateRobotConfigurationBasedOnFullRobotModel();
          straightLineTrajectory.setInitialPose(handPose);
 
-         ScrewTools.getJointPositions(armJoints, jointAngles);
+         MultiBodySystemTools.extractJointsState(armJoints, JointStateType.CONFIGURATION, jointAngles);
          MultiBodySystemRandomTools.nextStateWithinJointLimits(random, JointStateType.CONFIGURATION, armJoints);
          handPose.setToZero(handControlFrame);
          handPose.changeFrame(chestFrame);
@@ -231,7 +232,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
          handPose.changeFrame(worldFrame);
          finalHandPose.set(handPose);
          straightLineTrajectory.setFinalPose(handPose);
-         ScrewTools.setJointPositions(armJoints, jointAngles);
+         MultiBodySystemTools.insertJointsState(armJoints, JointStateType.CONFIGURATION, jointAngles);
          straightLineTrajectory.changeFrame(chestFrame);
          straightLineTrajectory.initialize();
 
@@ -239,7 +240,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
          if (!BENCHMARK)
             scs.tickAndUpdate();
 
-         ScrewTools.getJointPositions(armJoints, jointAngles);
+         MultiBodySystemTools.extractJointsState(armJoints, JointStateType.CONFIGURATION, jointAngles);
          taskspaceToJointspaceCalculator.initialize(jointAngles);
 
          double initialTime = yoTime.getDoubleValue();
@@ -267,9 +268,9 @@ public class TaskspaceToJointspaceCalculatorVisualizer
             taskspaceToJointspaceCalculator.compute(handPose, desiredHandTwist);
             // FIXME
 //            taskspaceToJointspaceCalculator.getDesiredJointAnglesIntoOneDoFJoints(armJoints);
-            ScrewTools.setJointPositions(armJoints, taskspaceToJointspaceCalculator.getDesiredJointAngles());
-            ScrewTools.setVelocities(armJoints, taskspaceToJointspaceCalculator.getDesiredJointVelocities());
-            ScrewTools.setJointAccelerations(armJoints, taskspaceToJointspaceCalculator.getDesiredJointAccelerations());
+            MultiBodySystemTools.insertJointsState(armJoints, JointStateType.CONFIGURATION, taskspaceToJointspaceCalculator.getDesiredJointAngles());
+            MultiBodySystemTools.insertJointsState(armJoints, JointStateType.VELOCITY, taskspaceToJointspaceCalculator.getDesiredJointVelocities());
+            MultiBodySystemTools.insertJointsState(armJoints, JointStateType.ACCELERATION, taskspaceToJointspaceCalculator.getDesiredJointAccelerations());
 
             for (OneDoFJoint joint : armJoints)
             {

@@ -28,6 +28,8 @@ import us.ihmc.mecano.multiBodySystem.OneDoFJoint;
 import us.ihmc.mecano.multiBodySystem.interfaces.RigidBodyBasics;
 import us.ihmc.mecano.spatial.Twist;
 import us.ihmc.mecano.spatial.Wrench;
+import us.ihmc.mecano.tools.JointStateType;
+import us.ihmc.mecano.tools.MultiBodySystemTools;
 import us.ihmc.robotModels.FullHumanoidRobotModel;
 import us.ihmc.robotics.robotSide.RobotSide;
 import us.ihmc.robotics.robotSide.SideDependentList;
@@ -486,9 +488,9 @@ public class CutForceControllerVisualizer
             rightHandTaskTojointSpaceCalculator.compute(handPose, desiredHandTwist);
             // FIME
 //            rightHandTaskTojointSpaceCalculator.getDesiredJointAnglesIntoOneDoFJoints(rightArmJoints);
-            ScrewTools.setJointPositions(rightArmJoints, rightHandTaskTojointSpaceCalculator.getDesiredJointAngles());
-            ScrewTools.setVelocities(rightArmJoints, rightHandTaskTojointSpaceCalculator.getDesiredJointVelocities());
-            ScrewTools.setJointAccelerations(rightArmJoints, rightHandTaskTojointSpaceCalculator.getDesiredJointAccelerations());
+            MultiBodySystemTools.insertJointsState(rightArmJoints, JointStateType.CONFIGURATION, rightHandTaskTojointSpaceCalculator.getDesiredJointAngles());
+            MultiBodySystemTools.insertJointsState(rightArmJoints, JointStateType.VELOCITY, rightHandTaskTojointSpaceCalculator.getDesiredJointVelocities());
+            MultiBodySystemTools.insertJointsState(rightArmJoints, JointStateType.ACCELERATION, rightHandTaskTojointSpaceCalculator.getDesiredJointAccelerations());
 
             // update the visualization of currentFramepose
             handPose.setToZero(rightHandControlFrame);
