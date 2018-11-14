@@ -24,14 +24,16 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicCoordinateSystem;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.humanoidRobotics.frames.HumanoidReferenceFrames;
+import us.ihmc.mecano.multiBodySystem.interfaces.OneDoFJointBasics;
+import us.ihmc.mecano.multiBodySystem.interfaces.RigidBodyBasics;
+import us.ihmc.mecano.spatial.Twist;
+import us.ihmc.mecano.spatial.Wrench;
+import us.ihmc.mecano.tools.JointStateType;
+import us.ihmc.mecano.tools.MultiBodySystemTools;
 import us.ihmc.robotModels.FullHumanoidRobotModel;
 import us.ihmc.robotics.robotSide.RobotSide;
 import us.ihmc.robotics.robotSide.SideDependentList;
-import us.ihmc.robotics.screwTheory.OneDoFJoint;
-import us.ihmc.robotics.screwTheory.RigidBody;
 import us.ihmc.robotics.screwTheory.ScrewTools;
-import us.ihmc.robotics.screwTheory.Twist;
-import us.ihmc.robotics.screwTheory.Wrench;
 import us.ihmc.robotics.sensors.ForceSensorDefinition;
 import us.ihmc.sensorProcessing.simulatedSensors.SDFPerfectSimulatedSensorReader;
 import us.ihmc.simulationConstructionSetTools.util.HumanoidFloatingRootJointRobot;
@@ -78,7 +80,7 @@ public class CutForceControllerVisualizer
 
    private TaskspaceToJointspaceCalculator rightHandTaskTojointSpaceCalculator;
    private JointAnglesWriter jointAnglesWriter;
-   private OneDoFJoint[] rightArmJoints;
+   private OneDoFJointBasics[] rightArmJoints;
 
    private StraightLinePoseTrajectoryGenerator straightLineTrajectory;
 
@@ -208,8 +210,8 @@ public class CutForceControllerVisualizer
 
 
 
-      RigidBody chest = fullRobotModel.getChest();
-      RigidBody rightHand = fullRobotModel.getHand(RobotSide.RIGHT);
+      RigidBodyBasics chest = fullRobotModel.getChest();
+      RigidBodyBasics rightHand = fullRobotModel.getHand(RobotSide.RIGHT);
       ReferenceFrame rightHandFrame = rightHand.getBodyFixedFrame();
       ReferenceFrame chestFrame = chest.getBodyFixedFrame();
       rightHandControlFrame = fullRobotModel.getHandControlFrame(RobotSide.RIGHT);
@@ -250,7 +252,7 @@ public class CutForceControllerVisualizer
 
 
 
-      rightArmJoints = ScrewTools.createOneDoFJointPath(chest, rightHand);
+      rightArmJoints = MultiBodySystemTools.createOneDoFJointPath(chest, rightHand);
 
       scs.startOnAThread();
       scs.tickAndUpdate();
@@ -287,7 +289,7 @@ public class CutForceControllerVisualizer
       {
          WrenchCalculatorInterface scsSensor = wristSCSSensors.get(robotSide);
          String sensorName = scsSensor.getName();
-         RigidBody rigidBody = fullRobotModel.getOneDoFJointByName(scsSensor.getJoint().getName()).getSuccessor();
+         RigidBodyBasics rigidBody = fullRobotModel.getOneDoFJointByName(scsSensor.getJoint().getName()).getSuccessor();
          RigidBodyTransform transformFromSensorToParentJoint = new RigidBodyTransform();
          scsSensor.getTransformToParentJoint(transformFromSensorToParentJoint);
          ForceSensorDefinition forceSensorDefinition = new ForceSensorDefinition(sensorName, rigidBody, transformFromSensorToParentJoint);
@@ -481,13 +483,14 @@ public class CutForceControllerVisualizer
             desiredHandLinearVelocity.changeFrame(rightHandControlFrame);
             desiredHandAngularVelocity.scale(scaleFactor.getDoubleValue());
             desiredHandAngularVelocity.changeFrame(rightHandControlFrame);
-            desiredHandTwist.set(rightHandFrame, chestFrame, rightHandControlFrame, desiredHandLinearVelocity, desiredHandAngularVelocity);
+            desiredHandTwist.setIncludingFrame(rightHandFrame, chestFrame, rightHandControlFrame, desiredHandAngularVelocity, desiredHandLinearVelocity);
 
             rightHandTaskTojointSpaceCalculator.compute(handPose, desiredHandTwist);
-            rightHandTaskTojointSpaceCalculator.getDesiredJointAnglesIntoOneDoFJoints(rightArmJoints);
-            ScrewTools.setJointPositions(rightArmJoints, rightHandTaskTojointSpaceCalculator.getDesiredJointAngles());
-            ScrewTools.setVelocities(rightArmJoints, rightHandTaskTojointSpaceCalculator.getDesiredJointVelocities());
-            ScrewTools.setJointAccelerations(rightArmJoints, rightHandTaskTojointSpaceCalculator.getDesiredJointAccelerations());
+            // FIME
+//            rightHandTaskTojointSpaceCalculator.getDesiredJointAnglesIntoOneDoFJoints(rightArmJoints);
+            MultiBodySystemTools.insertJointsState(rightArmJoints, JointStateType.CONFIGURATION, rightHandTaskTojointSpaceCalculator.getDesiredJointAngles());
+            MultiBodySystemTools.insertJointsState(rightArmJoints, JointStateType.VELOCITY, rightHandTaskTojointSpaceCalculator.getDesiredJointVelocities());
+            MultiBodySystemTools.insertJointsState(rightArmJoints, JointStateType.ACCELERATION, rightHandTaskTojointSpaceCalculator.getDesiredJointAccelerations());
 
             // update the visualization of currentFramepose
             handPose.setToZero(rightHandControlFrame);

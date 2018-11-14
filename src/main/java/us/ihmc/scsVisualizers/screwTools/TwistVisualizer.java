@@ -2,7 +2,6 @@ package us.ihmc.scsVisualizers.screwTools;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javafx.application.Application;
@@ -24,8 +23,9 @@ import us.ihmc.graphicsDescription.MeshDataGenerator;
 import us.ihmc.graphicsDescription.MeshDataHolder;
 import us.ihmc.javaFXToolkit.graphics.JavaFXMeshDataInterpreter;
 import us.ihmc.javaFXToolkit.scenes.View3DFactory;
+import us.ihmc.mecano.spatial.Twist;
+import us.ihmc.mecano.spatial.interfaces.TwistReadOnly;
 import us.ihmc.robotics.geometry.shapes.FrameEllipsoid3d;
-import us.ihmc.robotics.screwTheory.Twist;
 
 public class TwistVisualizer extends Application
 {
@@ -42,8 +42,8 @@ public class TwistVisualizer extends Application
       ellipsoidFrame = ReferenceFrame.constructFrameWithUnchangingTransformToParent("ellipsoidFrame", worldFrame, ellipsoidTransform);
       frameEllipsoid = new FrameEllipsoid3d(ellipsoidFrame, 0.2, 0.2, 0.3);
       ellipsoidCenterTwist.setToZero(ellipsoidFrame, worldFrame, ellipsoidFrame);
-      ellipsoidCenterTwist.setLinearPart(0.0, 0.0, 0.0);
-      ellipsoidCenterTwist.setAngularPart(-0.3, -0.3, 0.9);
+      ellipsoidCenterTwist.getLinearPart().set(0.0, 0.0, 0.0);
+      ellipsoidCenterTwist.getAngularPart().set(-0.3, -0.3, 0.9);
    }
 
    @Override
@@ -115,17 +115,17 @@ public class TwistVisualizer extends Application
       return twists.stream().map(twist -> createLinearVelocityVector(scale, color, twist)).collect(Collectors.toList());
    }
 
-   public MeshView createLinearVelocityVector(double scale, Color color, Twist twist)
+   public MeshView createLinearVelocityVector(double scale, Color color, TwistReadOnly twist)
    {
       FrameVector3D linearVelocity = new FrameVector3D();
-      twist.getLinearPart(linearVelocity);
+      linearVelocity.setIncludingFrame(twist.getLinearPart());
       return createArrow(scale, color, linearVelocity);
    }
 
-   public MeshView createAngularVelocityVector(double scale, Color color, Twist twist)
+   public MeshView createAngularVelocityVector(double scale, Color color, TwistReadOnly twist)
    {
       FrameVector3D angularVelocity = new FrameVector3D();
-      twist.getAngularPart(angularVelocity);
+      angularVelocity.setIncludingFrame(twist.getAngularPart());
       return createArrow(scale, color, angularVelocity);
    }
 

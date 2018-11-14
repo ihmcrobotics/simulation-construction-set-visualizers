@@ -27,14 +27,16 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicCoordinateSystem;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.humanoidRobotics.frames.HumanoidReferenceFrames;
+import us.ihmc.mecano.multiBodySystem.interfaces.OneDoFJointBasics;
+import us.ihmc.mecano.multiBodySystem.interfaces.RigidBodyBasics;
+import us.ihmc.mecano.spatial.Twist;
+import us.ihmc.mecano.tools.JointStateType;
+import us.ihmc.mecano.tools.MultiBodySystemRandomTools;
+import us.ihmc.mecano.tools.MultiBodySystemTools;
 import us.ihmc.robotModels.FullHumanoidRobotModel;
 import us.ihmc.robotics.math.filters.FilteredVelocityYoVariable;
 import us.ihmc.robotics.robotSide.RobotSide;
-import us.ihmc.robotics.screwTheory.OneDoFJoint;
-import us.ihmc.robotics.screwTheory.RigidBody;
-import us.ihmc.robotics.screwTheory.ScrewTestTools;
 import us.ihmc.robotics.screwTheory.ScrewTools;
-import us.ihmc.robotics.screwTheory.Twist;
 import us.ihmc.robotics.trajectories.providers.ConstantDoubleProvider;
 import us.ihmc.sensorProcessing.simulatedSensors.SDFPerfectSimulatedSensorReader;
 import us.ihmc.simulationConstructionSetTools.util.HumanoidFloatingRootJointRobot;
@@ -80,7 +82,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
    private StraightLinePoseTrajectoryGenerator straightLineTrajectory;
    private CirclePoseTrajectoryGenerator circleTrajectory;
    private SimulationConstructionSet scs;
-   private OneDoFJoint[] armJoints;
+   private OneDoFJointBasics[] armJoints;
 
    private final FramePose3D handPose = new FramePose3D();
 
@@ -100,8 +102,8 @@ public class TaskspaceToJointspaceCalculatorVisualizer
    private final FrameVector3D desiredHandAngularVelocity = new FrameVector3D();
    private final Twist desiredHandTwist = new Twist();
 
-   private final LinkedHashMap<OneDoFJoint, FilteredVelocityYoVariable> qd_fds = new LinkedHashMap<>();
-   private final LinkedHashMap<OneDoFJoint, FilteredVelocityYoVariable> qdd_fds = new LinkedHashMap<>();
+   private final LinkedHashMap<OneDoFJointBasics, FilteredVelocityYoVariable> qd_fds = new LinkedHashMap<>();
+   private final LinkedHashMap<OneDoFJointBasics, FilteredVelocityYoVariable> qdd_fds = new LinkedHashMap<>();
 
    private int counter = 0;
    private final long startTime, endTime;
@@ -133,8 +135,8 @@ public class TaskspaceToJointspaceCalculatorVisualizer
       initialPelvisPose.changeFrame(worldFrame);
       jointAnglesWriter = new JointAnglesWriter(robot, fullRobotModel);
 
-      RigidBody chest = fullRobotModel.getChest();
-      RigidBody leftHand = fullRobotModel.getHand(RobotSide.LEFT);
+      RigidBodyBasics chest = fullRobotModel.getChest();
+      RigidBodyBasics leftHand = fullRobotModel.getHand(RobotSide.LEFT);
       ReferenceFrame leftHandFrame = leftHand.getBodyFixedFrame();
       ReferenceFrame chestFrame = chest.getBodyFixedFrame();
 
@@ -168,9 +170,9 @@ public class TaskspaceToJointspaceCalculatorVisualizer
       taskspaceToJointspaceCalculator = new TaskspaceToJointspaceCalculator("leftHand", chest, leftHand, dt, registry);
       taskspaceToJointspaceCalculator.setupWithDefaultParameters();
 
-      armJoints = ScrewTools.createOneDoFJointPath(chest, leftHand);
+      armJoints = MultiBodySystemTools.createOneDoFJointPath(chest, leftHand);
 
-      for (OneDoFJoint joint : armJoints)
+      for (OneDoFJointBasics joint : armJoints)
       {
          qd_fds.put(joint, new FilteredVelocityYoVariable("qd_fd_" + joint.getName(), "", 0.0, dt, registry));
          qdd_fds.put(joint, new FilteredVelocityYoVariable("qdd_fd_" + joint.getName(), "", 0.0, dt, registry));
@@ -206,7 +208,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
 
       startTime = System.currentTimeMillis();
 
-      ScrewTestTools.setRandomPositionsWithinJointLimits(armJoints, random);
+      MultiBodySystemRandomTools.nextStateWithinJointLimits(random, JointStateType.CONFIGURATION, armJoints);
       handPose.setToZero(handControlFrame);
       handPose.changeFrame(chestFrame);
       handPose.setPosition(1.3 * handPose.getX(), handPose.getY(), handPose.getZ());
@@ -222,15 +224,15 @@ public class TaskspaceToJointspaceCalculatorVisualizer
          jointAnglesWriter.updateRobotConfigurationBasedOnFullRobotModel();
          straightLineTrajectory.setInitialPose(handPose);
 
-         ScrewTools.getJointPositions(armJoints, jointAngles);
-         ScrewTestTools.setRandomPositionsWithinJointLimits(armJoints, random);
+         MultiBodySystemTools.extractJointsState(armJoints, JointStateType.CONFIGURATION, jointAngles);
+         MultiBodySystemRandomTools.nextStateWithinJointLimits(random, JointStateType.CONFIGURATION, armJoints);
          handPose.setToZero(handControlFrame);
          handPose.changeFrame(chestFrame);
 //         handPose.setPosition(1.3 * handPose.getX(), handPose.getY(), handPose.getZ());
          handPose.changeFrame(worldFrame);
          finalHandPose.set(handPose);
          straightLineTrajectory.setFinalPose(handPose);
-         ScrewTools.setJointPositions(armJoints, jointAngles);
+         MultiBodySystemTools.insertJointsState(armJoints, JointStateType.CONFIGURATION, jointAngles);
          straightLineTrajectory.changeFrame(chestFrame);
          straightLineTrajectory.initialize();
 
@@ -238,7 +240,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
          if (!BENCHMARK)
             scs.tickAndUpdate();
 
-         ScrewTools.getJointPositions(armJoints, jointAngles);
+         MultiBodySystemTools.extractJointsState(armJoints, JointStateType.CONFIGURATION, jointAngles);
          taskspaceToJointspaceCalculator.initialize(jointAngles);
 
          double initialTime = yoTime.getDoubleValue();
@@ -261,15 +263,16 @@ public class TaskspaceToJointspaceCalculatorVisualizer
 
             desiredHandLinearVelocity.changeFrame(handControlFrame);
             desiredHandAngularVelocity.changeFrame(handControlFrame);
-            desiredHandTwist.set(leftHandFrame, chestFrame, handControlFrame, desiredHandLinearVelocity, desiredHandAngularVelocity);
+            desiredHandTwist.setIncludingFrame(leftHandFrame, chestFrame, handControlFrame, desiredHandAngularVelocity, desiredHandLinearVelocity);
 
             taskspaceToJointspaceCalculator.compute(handPose, desiredHandTwist);
-            taskspaceToJointspaceCalculator.getDesiredJointAnglesIntoOneDoFJoints(armJoints);
-            ScrewTools.setJointPositions(armJoints, taskspaceToJointspaceCalculator.getDesiredJointAngles());
-            ScrewTools.setVelocities(armJoints, taskspaceToJointspaceCalculator.getDesiredJointVelocities());
-            ScrewTools.setJointAccelerations(armJoints, taskspaceToJointspaceCalculator.getDesiredJointAccelerations());
+            // FIXME
+//            taskspaceToJointspaceCalculator.getDesiredJointAnglesIntoOneDoFJoints(armJoints);
+            MultiBodySystemTools.insertJointsState(armJoints, JointStateType.CONFIGURATION, taskspaceToJointspaceCalculator.getDesiredJointAngles());
+            MultiBodySystemTools.insertJointsState(armJoints, JointStateType.VELOCITY, taskspaceToJointspaceCalculator.getDesiredJointVelocities());
+            MultiBodySystemTools.insertJointsState(armJoints, JointStateType.ACCELERATION, taskspaceToJointspaceCalculator.getDesiredJointAccelerations());
 
-            for (OneDoFJoint joint : armJoints)
+            for (OneDoFJointBasics joint : armJoints)
             {
                qd_fds.get(joint).update(joint.getQ());
                qdd_fds.get(joint).update(joint.getQd());
@@ -327,13 +330,13 @@ public class TaskspaceToJointspaceCalculatorVisualizer
 
       RigidBodyTransform transform = new RigidBodyTransform();
       pelvisPoseWithWiggle.get(transform);
-      fullRobotModel.getRootJoint().setPositionAndRotation(transform);
+      fullRobotModel.getRootJoint().setJointConfiguration(transform);
 
       if (NOISE_ON_BACK_JOINTS)
       {
-         OneDoFJoint[] backJoints = ScrewTools.createOneDoFJointPath(fullRobotModel.getPelvis(), fullRobotModel.getChest());
+         OneDoFJointBasics[] backJoints = MultiBodySystemTools.createOneDoFJointPath(fullRobotModel.getPelvis(), fullRobotModel.getChest());
          double blop = 0.0;
-         for (OneDoFJoint joint : backJoints)
+         for (OneDoFJointBasics joint : backJoints)
          {
             double q = RandomNumbers.nextDouble(random, noiseAmplitudeForBackJoints);
             blop += 2.0;

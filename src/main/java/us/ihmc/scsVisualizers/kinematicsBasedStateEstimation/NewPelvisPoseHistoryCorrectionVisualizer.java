@@ -17,10 +17,11 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.humanoidRobotics.communication.packets.HumanoidMessageTools;
 import us.ihmc.humanoidRobotics.communication.subscribers.PelvisPoseCorrectionCommunicatorInterface;
 import us.ihmc.humanoidRobotics.communication.subscribers.TimeStampedTransformBuffer;
+import us.ihmc.mecano.multiBodySystem.RigidBody;
+import us.ihmc.mecano.multiBodySystem.SixDoFJoint;
+import us.ihmc.mecano.multiBodySystem.interfaces.RigidBodyBasics;
 import us.ihmc.robotics.kinematics.TimeStampedTransform3D;
 import us.ihmc.robotics.random.RandomGeometry;
-import us.ihmc.robotics.screwTheory.RigidBody;
-import us.ihmc.robotics.screwTheory.SixDoFJoint;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
@@ -102,14 +103,14 @@ public class NewPelvisPoseHistoryCorrectionVisualizer
          robotTransformInWorldFrame.set(pelvisTimeStampedTransform3D.getTransform3D());
          pelvisReferenceFrame.update();
 
-         sixDofPelvisJoint.setPositionAndRotation(pelvisTimeStampedTransform3D.getTransform3D());
+         sixDofPelvisJoint.setJointConfiguration(pelvisTimeStampedTransform3D.getTransform3D());
          sixDofPelvisJoint.updateFramesRecursively();
-         pelvisPose.set(sixDofPelvisJoint.getJointTransform3D());
+         pelvisPose.set(sixDofPelvisJoint.getJointPose());
          yoPelvisPose.set(pelvisPose);
 
          pelvisCorrector.doControl(timeStamp);
 
-         correctedPelvisTransformInWorldFrame.set(sixDofPelvisJoint.getJointTransform3D());
+         sixDofPelvisJoint.getJointConfiguration(correctedPelvisTransformInWorldFrame);
          correctedPelvisPoseInWorldFrame.set(correctedPelvisTransformInWorldFrame);
          yoCorrectedPelvisPose.set(correctedPelvisPoseInWorldFrame);
 
@@ -335,7 +336,7 @@ public class NewPelvisPoseHistoryCorrectionVisualizer
             transformToParent.set(robotTransformInWorldFrame);
          }
       };
-      RigidBody rigidBody = new RigidBody("playback", pelvisReferenceFrame);
+      RigidBodyBasics rigidBody = new RigidBody("playback", pelvisReferenceFrame);
       sixDofPelvisJoint = new SixDoFJoint("playback", rigidBody);
    }
 

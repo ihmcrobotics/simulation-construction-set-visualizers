@@ -8,11 +8,11 @@ import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
+import us.ihmc.mecano.multiBodySystem.RevoluteJoint;
+import us.ihmc.mecano.multiBodySystem.RigidBody;
+import us.ihmc.mecano.multiBodySystem.interfaces.RigidBodyBasics;
 import us.ihmc.robotics.math.trajectories.OneDoFJointWayPointTrajectoryGenerator;
 import us.ihmc.robotics.math.trajectories.providers.YoVariableDoubleProvider;
-import us.ihmc.robotics.screwTheory.RevoluteJoint;
-import us.ihmc.robotics.screwTheory.RigidBody;
-import us.ihmc.robotics.screwTheory.ScrewTools;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
@@ -51,8 +51,8 @@ public class OneDoFJointWayPointTrajectoryGeneratorVisualizer
          positions[i].set(i * 10.0 * random.nextDouble());
       }
 
-      RigidBody elevator = new RigidBody("elevator", ReferenceFrame.getWorldFrame());
-      RevoluteJoint joint = ScrewTools.addRevoluteJoint("joint", elevator, new RigidBodyTransform(), new Vector3D(0.0, 0.0, 1.0));
+      RigidBodyBasics elevator = new RigidBody("elevator", ReferenceFrame.getWorldFrame());
+      RevoluteJoint joint = new RevoluteJoint("joint", elevator, new RigidBodyTransform(), new Vector3D(0.0, 0.0, 1.0));
       trajectoryTimeProvider = new YoVariableDoubleProvider("trajectoryTime", registry);
       trajectoryTimeProvider.set(trajectoryTime);
       traj = new OneDoFJointWayPointTrajectoryGenerator("Blop", joint, trajectoryTimeProvider, 30, registry);
