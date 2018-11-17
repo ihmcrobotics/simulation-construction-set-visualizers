@@ -42,7 +42,7 @@ mainDependencies {
    compile group: "us.ihmc", name: "ihmc-java-toolkit", version: groupDependencyVersion
    compile group: "us.ihmc", name: "ihmc-commons", version: "0.24.0"
    compile group: "us.ihmc", name: "ihmc-robotics-toolkit", version: groupDependencyVersion
-   compile group: "us.ihmc", name: "ihmc-graphics-description", version: "0.12.6"
+   compile group: "us.ihmc", name: "ihmc-graphics-description", version: "0.12.7"
    compile group: "us.ihmc", name: "ihmc-geometry", version: "0.12.2"
    compile group: "us.ihmc", name: "ihmc-simulation-toolkit", version: groupDependencyVersion
 }
