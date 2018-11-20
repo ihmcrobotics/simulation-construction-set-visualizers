@@ -36,14 +36,14 @@ mainDependencies {
    compile group: "us.ihmc", name: "ihmc-humanoid-robotics", version: groupDependencyVersion
    compile group: "us.ihmc", name: "ihmc-humanoid-behaviors", version: groupDependencyVersion
    compile group: "us.ihmc", name: "ihmc-avatar-interfaces", version: groupDependencyVersion
-   compile group: "us.ihmc", name: "simulation-construction-set", version: "0.12.5"
+   compile group: "us.ihmc", name: "simulation-construction-set", version: "0.12.7"
    compile group: "us.ihmc", name: "ihmc-state-estimation", version: groupDependencyVersion
    compile group: "us.ihmc", name: "atlas", version: groupDependencyVersion
    compile group: "us.ihmc", name: "ihmc-java-toolkit", version: groupDependencyVersion
    compile group: "us.ihmc", name: "ihmc-commons", version: "0.24.0"
    compile group: "us.ihmc", name: "ihmc-robotics-toolkit", version: groupDependencyVersion
-   compile group: "us.ihmc", name: "ihmc-graphics-description", version: "0.12.6"
-   compile group: "us.ihmc", name: "ihmc-geometry", version: "0.12.2"
+   compile group: "us.ihmc", name: "ihmc-graphics-description", version: "0.12.7"
+   compile group: "us.ihmc", name: "ihmc-geometry", version: "0.12.4"
    compile group: "us.ihmc", name: "ihmc-simulation-toolkit", version: groupDependencyVersion
 }
 
