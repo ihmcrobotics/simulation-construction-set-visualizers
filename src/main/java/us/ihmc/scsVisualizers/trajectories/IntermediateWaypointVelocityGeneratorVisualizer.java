@@ -43,7 +43,7 @@ public class IntermediateWaypointVelocityGeneratorVisualizer
             registry);
       simpleTraj.initialize();
 
-      traj = new MultipleWaypointsPositionTrajectoryGenerator("testedTraj", 200, false, worldFrame, registry);
+      traj = new MultipleWaypointsPositionTrajectoryGenerator("testedTraj", 200, worldFrame, registry);
       traj.clear();
 
       IntermediateWaypointVelocityGenerator velocityGen;

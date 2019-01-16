@@ -71,16 +71,16 @@ public class MultipleWaypointsOrientationTrajectoryGeneratorVisualizer
 //      simpleTraj.setFinalOrientation(new FrameOrientation(worldFrame, 0.0, 0.0, 0.0));
       simpleTraj.initialize();
 
-      testedTraj = new MultipleWaypointsOrientationTrajectoryGenerator("testedTraj", 200, true, worldFrame, registry);
+      testedTraj = new MultipleWaypointsOrientationTrajectoryGenerator("testedTraj", 200, worldFrame, registry);
       testedTraj.clear();
-      
+
       int numberOfWaypoints = 5;
 
       waypointOrientationViz = new YoFramePoseUsingYawPitchRoll[numberOfWaypoints];
-      
+
       FrameQuaternion waypointOrientation = new FrameQuaternion();
       FrameVector3D waypointAngularVelocity = new FrameVector3D();
-      
+
       for (int i = 0; i < numberOfWaypoints; i++)
       {
          double timeAtWaypoint = numberOfWaypoints == 1 ? trajectoryTime / 2.0 : i * trajectoryTime / (numberOfWaypoints - 1.0);
@@ -88,7 +88,7 @@ public class MultipleWaypointsOrientationTrajectoryGeneratorVisualizer
          simpleTraj.getOrientation(waypointOrientation);
          simpleTraj.getAngularVelocity(waypointAngularVelocity);
          testedTraj.appendWaypoint(timeAtWaypoint, waypointOrientation, waypointAngularVelocity);
-         
+
          waypointOrientationViz[i] = new YoFramePoseUsingYawPitchRoll("waypointOrientationViz" + i, worldFrame, registry);
          waypointOrientationViz[i].setOrientation(waypointOrientation);
          interpolatedPosition.interpolate(initialPosition, finalPosition, timeAtWaypoint / trajectoryTime);
@@ -122,12 +122,12 @@ public class MultipleWaypointsOrientationTrajectoryGeneratorVisualizer
          timeVizAsPosition.set(interpolatedPosition);
          simpleTraj.getOrientation(tempOrientation);
          simpleTrajOrientationViz.set(tempOrientation);
-         
+
          simpleTraj.getAngularVelocity(tempVelocity);
          tempVelocity.normalize();
          simpleTrajVelocityDirectionViz.set(tempVelocity);
 
-         
+
          testedTraj.getAngularVelocity(tempVelocity);
          tempVelocity.normalize();
 

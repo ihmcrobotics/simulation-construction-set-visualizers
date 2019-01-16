@@ -38,9 +38,9 @@ public class MultipleWaypointsPositionTrajectoryGeneratorVisualizer
       simpleTraj = new StraightLinePositionTrajectoryGenerator("simpleTraj", worldFrame, trajectoryTimeProvider, initialPositionProvider, finalPositionProvider, registry);
       simpleTraj.initialize();
 
-      traj = new MultipleWaypointsPositionTrajectoryGenerator("testedTraj", 200, false, worldFrame, registry);
+      traj = new MultipleWaypointsPositionTrajectoryGenerator("testedTraj", 200, worldFrame, registry);
       traj.clear();
-      
+
       int numberOfWaypoints = 11;
 
       FramePoint3D waypointPosition = new FramePoint3D();
@@ -65,7 +65,7 @@ public class MultipleWaypointsPositionTrajectoryGeneratorVisualizer
       Graphics3DObject linkGraphics = new Graphics3DObject();
       linkGraphics.addCoordinateSystem(0.3);
       scs.addStaticLinkGraphics(linkGraphics);
-      
+
       for (double t = 0.0; t <= trajectoryTime; t += dt)
       {
          traj.compute(t);

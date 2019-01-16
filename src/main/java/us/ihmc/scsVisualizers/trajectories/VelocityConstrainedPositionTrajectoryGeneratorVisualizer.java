@@ -36,18 +36,16 @@ public class VelocityConstrainedPositionTrajectoryGeneratorVisualizer
 
    public VelocityConstrainedPositionTrajectoryGeneratorVisualizer()
    {
-      
       traj1 = new VelocityConstrainedPositionTrajectoryGenerator("traj1", worldFrame, registry);
-      traj2 = new VelocityConstrainedPositionTrajectoryGenerator("traj2", true, worldFrame, registry);
-      traj2.registerNewTrajectoryFrame(aFrame);
-      
+      traj2 = new VelocityConstrainedPositionTrajectoryGenerator("traj2", worldFrame, registry);
+
       FramePoint3D initialPosition = new FramePoint3D(worldFrame, 0.0, 0.0, 0.5);
       FrameVector3D initialVelocity = new FrameVector3D(worldFrame, 0.0, 0.0, 0.0);
       FramePoint3D finalPosition = new FramePoint3D(worldFrame, 1.0, 0.0, 0.5);
       FrameVector3D finalVelocity = new FrameVector3D(worldFrame, 0.1, 0.0, -1.0);
       traj1.setTrajectoryParameters(trajectoryTime, initialPosition, initialVelocity, finalPosition, finalVelocity);
       traj2.setTrajectoryParameters(trajectoryTime, initialPosition, initialVelocity, finalPosition, finalVelocity);
-      
+
       traj1.initialize();
       traj2.initialize();
       traj2.changeFrame(aFrame);
@@ -61,11 +59,11 @@ public class VelocityConstrainedPositionTrajectoryGeneratorVisualizer
       Graphics3DObject linkGraphics = new Graphics3DObject();
       linkGraphics.addCoordinateSystem(0.3);
       scs.addStaticLinkGraphics(linkGraphics);
-      
+
       BagOfBalls balls1 = new BagOfBalls(bufferSize, 0.03, "trajBalls1", YoAppearance.AliceBlue(), registry, yoGraphicsListRegistry);
       BagOfBalls balls2 = new BagOfBalls(bufferSize, 0.03, "trajBalls2", YoAppearance.DarkGoldenRod(), registry, yoGraphicsListRegistry);
-      
-      
+
+
       YoGraphicReferenceFrame aFrameViz = new YoGraphicReferenceFrame(aFrame, registry, true, 0.3);
       aFrameViz.update();
       yoGraphicsListRegistry.registerYoGraphic("aFrame", aFrameViz);
@@ -81,11 +79,11 @@ public class VelocityConstrainedPositionTrajectoryGeneratorVisualizer
          traj1.getPosition(temp);
          temp.changeFrame(worldFrame);
          balls1.setBall(temp);
-         
+
          traj2.getPosition(temp);
          temp.changeFrame(worldFrame);
          balls2.setBall(temp);
-         
+
          scs.tickAndUpdate();
       }
 
