@@ -57,8 +57,9 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
          public YoFrameEuclideanTrajectoryPoint get()
          {
             String indexAsString = Integer.toString(i++);
-            YoFrameEuclideanTrajectoryPoint ret = new YoFrameEuclideanTrajectoryPoint("waypointViz", indexAsString, registry, worldFrame);
-            yoGraphicsListRegistry.registerYoGraphic("viz", new YoGraphicPosition("waypointPosition" + indexAsString, ret.getPosition(), 0.025, YoAppearance.AliceBlue()));
+            YoFrameEuclideanTrajectoryPoint ret = new YoFrameEuclideanTrajectoryPoint("waypointViz", indexAsString, registry);
+            yoGraphicsListRegistry.registerYoGraphic("viz", new YoGraphicPosition("waypointPosition" + indexAsString, ret.getYoX(), ret.getYoY(), ret.getYoZ(),
+                                                                                  0.025, YoAppearance.AliceBlue()));
             return ret;
          }
       };
@@ -95,7 +96,7 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
       calculator.computeTrajectoryPointTimes(0.0, trajectoryTime);
       calculator.computeTrajectoryPointVelocities(true);
 
-      RecyclingArrayList<? extends EuclideanTrajectoryPointInterface<?>> waypoints = calculator.getTrajectoryPoints();
+      RecyclingArrayList<? extends EuclideanTrajectoryPointInterface> waypoints = calculator.getTrajectoryPoints();
 
       traj = new MultipleWaypointsPositionTrajectoryGenerator("traj", calculator.getNumberOfTrajectoryPoints(), ReferenceFrame.getWorldFrame(), registry);
       traj.appendWaypoints(waypoints);
@@ -107,7 +108,7 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
       {
          Point3D position3d = new Point3D();
          Vector3D linearVelocity3d = new Vector3D();
-         EuclideanTrajectoryPointInterface<?> waypoint = waypoints.get(i);
+         EuclideanTrajectoryPointInterface waypoint = waypoints.get(i);
          waypoint.getPosition(position3d);
          waypoint.getLinearVelocity(linearVelocity3d);
          trajectoryPointsViz.get(i).set(waypoint.getTime(), position3d, linearVelocity3d);
@@ -124,7 +125,7 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
       Graphics3DObject linkGraphics = new Graphics3DObject();
       linkGraphics.addCoordinateSystem(0.3);
       scs.addStaticLinkGraphics(linkGraphics);
-      
+
       scs.addYoGraphicsListRegistry(yoGraphicsListRegistry, true);
 
       for (double t = 0.0; t <= trajectoryTime; t += dt)
@@ -160,7 +161,7 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
       for (int i = 0; i < numberOfTrajectoryPoints; i++)
       {
          waypoints[i] = new Point3D();
-         waypoints[i].interpolate(startPoint, endPoint, i / (double)(numberOfTrajectoryPoints - 1.0));
+         waypoints[i].interpolate(startPoint, endPoint, i / (numberOfTrajectoryPoints - 1.0));
       }
       return waypoints;
    }

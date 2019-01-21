@@ -14,9 +14,9 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.robotics.math.trajectories.waypoints.MultipleWaypointsTrajectoryGenerator;
+import us.ihmc.robotics.math.trajectories.waypoints.SimpleTrajectoryPoint1DList;
 import us.ihmc.robotics.math.trajectories.waypoints.TrajectoryPoint1DCalculator;
 import us.ihmc.robotics.math.trajectories.waypoints.YoFrameEuclideanTrajectoryPoint;
-import us.ihmc.robotics.math.trajectories.waypoints.interfaces.OneDoFTrajectoryPointInterface;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
@@ -52,8 +52,9 @@ public class TrajectoryPoint1DCalculatorVisualizer
          public YoFrameEuclideanTrajectoryPoint get()
          {
             String indexAsString = Integer.toString(i++);
-            YoFrameEuclideanTrajectoryPoint ret = new YoFrameEuclideanTrajectoryPoint("waypointViz", indexAsString, registry, worldFrame);
-            yoGraphicsListRegistry.registerYoGraphic("viz", new YoGraphicPosition("waypointPosition" + indexAsString, ret.getPosition(), 0.025, YoAppearance.AliceBlue()));
+            YoFrameEuclideanTrajectoryPoint ret = new YoFrameEuclideanTrajectoryPoint("waypointViz", indexAsString, registry);
+            yoGraphicsListRegistry.registerYoGraphic("viz", new YoGraphicPosition("waypointPosition" + indexAsString, ret.getYoX(), ret.getYoY(), ret.getYoZ(),
+                                                                                  0.025, YoAppearance.AliceBlue()));
             return ret;
          }
       };
@@ -74,22 +75,22 @@ public class TrajectoryPoint1DCalculatorVisualizer
       calculator.computeTrajectoryPointTimes(0.0, trajectoryTime);
       calculator.computeTrajectoryPointVelocities(true);
 
-      RecyclingArrayList<? extends OneDoFTrajectoryPointInterface<?>> waypoints = calculator.getTrajectoryPoints();
+      SimpleTrajectoryPoint1DList trajectoryData = calculator.getTrajectoryData();
 
       traj = new MultipleWaypointsTrajectoryGenerator("traj", calculator.getNumberOfTrajectoryPoints(), registry);
-      traj.appendWaypoints(waypoints);
+      traj.appendWaypoints(trajectoryData);
       traj.initialize();
-      
+
       double xStart = -0.5;
       double xEnd = 0.5;
 
       for (int i = 0; i < numberOfWaypoints; i++)
       {
-         double alpha = waypoints.get(i).getTime() / trajectoryTime;
+         double alpha = trajectoryData.getTrajectoryPoint(i).getTime() / trajectoryTime;
          double x = (1.0 - alpha) * xStart + alpha * xEnd;
-         Point3D position3d = new Point3D(x, 0.0, waypoints.get(i).getPosition());
-         Vector3D linearVelocity3d = new Vector3D(0.0, 0.0, waypoints.get(i).getVelocity());
-         waypointsViz.get(i).set(waypoints.get(i).getTime(), position3d, linearVelocity3d);
+         Point3D position3d = new Point3D(x, 0.0, trajectoryData.getTrajectoryPoint(i).getPosition());
+         Vector3D linearVelocity3d = new Vector3D(0.0, 0.0, trajectoryData.getTrajectoryPoint(i).getVelocity());
+         waypointsViz.add().set(trajectoryData.getTrajectoryPoint(i).getTime(), position3d, linearVelocity3d);
       }
 
       SimulationConstructionSetParameters parameters = new SimulationConstructionSetParameters();
@@ -101,7 +102,7 @@ public class TrajectoryPoint1DCalculatorVisualizer
       Graphics3DObject linkGraphics = new Graphics3DObject();
       linkGraphics.addCoordinateSystem(0.3);
       scs.addStaticLinkGraphics(linkGraphics);
-      
+
       scs.addYoGraphicsListRegistry(yoGraphicsListRegistry, true);
 
       for (double t = 0.0; t <= trajectoryTime; t += dt)
@@ -112,12 +113,13 @@ public class TrajectoryPoint1DCalculatorVisualizer
          double currentX = (1.0 - alpha) * xStart + alpha * xEnd;
          currentPositionViz.set(currentX, 0.0, traj.getValue());
 
+         scs.setTime(t);
          scs.tickAndUpdate();
       }
 
       scs.startOnAThread();
       ThreadTools.sleepForever();
-      
+
    }
 
    public static void main(String[] args)
