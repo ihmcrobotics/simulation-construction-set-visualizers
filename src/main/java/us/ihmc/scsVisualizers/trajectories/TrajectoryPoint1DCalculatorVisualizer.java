@@ -13,10 +13,10 @@ import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
-import us.ihmc.robotics.math.trajectories.waypoints.MultipleWaypointsTrajectoryGenerator;
-import us.ihmc.robotics.math.trajectories.waypoints.SimpleTrajectoryPoint1DList;
-import us.ihmc.robotics.math.trajectories.waypoints.TrajectoryPoint1DCalculator;
 import us.ihmc.robotics.math.trajectories.waypoints.YoFrameEuclideanTrajectoryPoint;
+import us.ihmc.robotics.math.trajectories.waypoints.generators.MultipleWaypointsTrajectoryGenerator;
+import us.ihmc.robotics.math.trajectories.waypoints.generators.OneDoFTrajectoryPointCalculator;
+import us.ihmc.robotics.math.trajectories.waypoints.lists.OneDoFTrajectoryPointList;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
@@ -35,7 +35,7 @@ public class TrajectoryPoint1DCalculatorVisualizer
    private final int bufferSize = (int) (trajectoryTime / dt / recordFrequency + 2);
 
    private final MultipleWaypointsTrajectoryGenerator traj;
-   private final TrajectoryPoint1DCalculator calculator = new TrajectoryPoint1DCalculator();
+   private final OneDoFTrajectoryPointCalculator calculator = new OneDoFTrajectoryPointCalculator();
 
    private final YoFramePoint3D currentPositionViz = new YoFramePoint3D("currentPositionViz", worldFrame, registry);
    private final RecyclingArrayList<YoFrameEuclideanTrajectoryPoint> waypointsViz;
@@ -75,7 +75,7 @@ public class TrajectoryPoint1DCalculatorVisualizer
       calculator.computeTrajectoryPointTimes(0.0, trajectoryTime);
       calculator.computeTrajectoryPointVelocities(true);
 
-      SimpleTrajectoryPoint1DList trajectoryData = calculator.getTrajectoryData();
+      OneDoFTrajectoryPointList trajectoryData = calculator.getTrajectoryData();
 
       traj = new MultipleWaypointsTrajectoryGenerator("traj", calculator.getNumberOfTrajectoryPoints(), registry);
       traj.appendWaypoints(trajectoryData);
