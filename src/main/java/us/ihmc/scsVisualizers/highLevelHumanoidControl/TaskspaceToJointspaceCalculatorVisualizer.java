@@ -36,7 +36,6 @@ import us.ihmc.mecano.tools.MultiBodySystemTools;
 import us.ihmc.robotModels.FullHumanoidRobotModel;
 import us.ihmc.robotics.math.filters.FilteredVelocityYoVariable;
 import us.ihmc.robotics.robotSide.RobotSide;
-import us.ihmc.robotics.screwTheory.ScrewTools;
 import us.ihmc.robotics.trajectories.providers.ConstantDoubleProvider;
 import us.ihmc.sensorProcessing.simulatedSensors.SDFPerfectSimulatedSensorReader;
 import us.ihmc.simulationConstructionSetTools.util.HumanoidFloatingRootJointRobot;
@@ -155,8 +154,8 @@ public class TaskspaceToJointspaceCalculatorVisualizer
       }
       else
          yoGraphicsListRegistry = null;
-      straightLineTrajectory = new StraightLinePoseTrajectoryGenerator("straightLineTrajectory", true, worldFrame, registry, true, yoGraphicsListRegistry);
-      straightLineTrajectory.registerNewTrajectoryFrame(chestFrame);
+      straightLineTrajectory = new StraightLinePoseTrajectoryGenerator("straightLineTrajectory", worldFrame, registry, true, yoGraphicsListRegistry);
+      straightLineTrajectory.switchTrajectoryFrame(chestFrame);
 
       circleTrajectory = new CirclePoseTrajectoryGenerator("circleTrajectory", worldFrame, new ConstantDoubleProvider(trajectoryTime), registry, yoGraphicsListRegistry);
       straightLineTrajectory.setTrajectoryTime(trajectoryTime);

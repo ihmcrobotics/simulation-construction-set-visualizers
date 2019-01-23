@@ -6,7 +6,7 @@ import us.ihmc.euclid.referenceFrame.FrameVector3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.robotics.math.trajectories.StraightLinePositionTrajectoryGenerator;
-import us.ihmc.robotics.math.trajectories.waypoints.MultipleWaypointsPositionTrajectoryGenerator;
+import us.ihmc.robotics.math.trajectories.generators.MultipleWaypointsPositionTrajectoryGenerator;
 import us.ihmc.robotics.trajectories.providers.ConstantDoubleProvider;
 import us.ihmc.robotics.trajectories.providers.ConstantPositionProvider;
 import us.ihmc.robotics.trajectories.providers.PositionProvider;
@@ -38,9 +38,9 @@ public class MultipleWaypointsPositionTrajectoryGeneratorVisualizer
       simpleTraj = new StraightLinePositionTrajectoryGenerator("simpleTraj", worldFrame, trajectoryTimeProvider, initialPositionProvider, finalPositionProvider, registry);
       simpleTraj.initialize();
 
-      traj = new MultipleWaypointsPositionTrajectoryGenerator("testedTraj", 200, false, worldFrame, registry);
+      traj = new MultipleWaypointsPositionTrajectoryGenerator("testedTraj", 200, worldFrame, registry);
       traj.clear();
-      
+
       int numberOfWaypoints = 11;
 
       FramePoint3D waypointPosition = new FramePoint3D();
@@ -65,7 +65,7 @@ public class MultipleWaypointsPositionTrajectoryGeneratorVisualizer
       Graphics3DObject linkGraphics = new Graphics3DObject();
       linkGraphics.addCoordinateSystem(0.3);
       scs.addStaticLinkGraphics(linkGraphics);
-      
+
       for (double t = 0.0; t <= trajectoryTime; t += dt)
       {
          traj.compute(t);

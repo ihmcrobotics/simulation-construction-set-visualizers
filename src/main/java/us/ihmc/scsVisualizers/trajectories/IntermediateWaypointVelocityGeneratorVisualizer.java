@@ -10,7 +10,7 @@ import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.robotics.math.trajectories.IntermediateWaypointVelocityGenerator;
 import us.ihmc.robotics.math.trajectories.StraightLinePositionTrajectoryGenerator;
-import us.ihmc.robotics.math.trajectories.waypoints.MultipleWaypointsPositionTrajectoryGenerator;
+import us.ihmc.robotics.math.trajectories.generators.MultipleWaypointsPositionTrajectoryGenerator;
 import us.ihmc.robotics.trajectories.providers.ConstantDoubleProvider;
 import us.ihmc.robotics.trajectories.providers.ConstantPositionProvider;
 import us.ihmc.robotics.trajectories.providers.PositionProvider;
@@ -43,7 +43,7 @@ public class IntermediateWaypointVelocityGeneratorVisualizer
             registry);
       simpleTraj.initialize();
 
-      traj = new MultipleWaypointsPositionTrajectoryGenerator("testedTraj", 200, false, worldFrame, registry);
+      traj = new MultipleWaypointsPositionTrajectoryGenerator("testedTraj", 200, worldFrame, registry);
       traj.clear();
 
       IntermediateWaypointVelocityGenerator velocityGen;

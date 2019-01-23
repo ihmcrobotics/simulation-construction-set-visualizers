@@ -33,7 +33,6 @@ import us.ihmc.mecano.tools.MultiBodySystemTools;
 import us.ihmc.robotModels.FullHumanoidRobotModel;
 import us.ihmc.robotics.robotSide.RobotSide;
 import us.ihmc.robotics.robotSide.SideDependentList;
-import us.ihmc.robotics.screwTheory.ScrewTools;
 import us.ihmc.robotics.sensors.ForceSensorDefinition;
 import us.ihmc.sensorProcessing.simulatedSensors.SDFPerfectSimulatedSensorReader;
 import us.ihmc.simulationConstructionSetTools.util.HumanoidFloatingRootJointRobot;
@@ -96,7 +95,7 @@ public class CutForceControllerVisualizer
    private final YoFramePoseUsingYawPitchRoll rightWristSensorCoordinateSystemPose = new YoFramePoseUsingYawPitchRoll("rightWristSensorCoordinateSystem", worldFrame, registry);
    private final YoFramePoseUsingYawPitchRoll leftWristSensorCoordinateSystemPose = new YoFramePoseUsingYawPitchRoll("leftWristSensorCoordinateSystem", worldFrame, registry);
    private final YoFramePoseUsingYawPitchRoll leftHandControlCoordinateSystemPose = new YoFramePoseUsingYawPitchRoll("leftHandControlFrameCoordinateSystem", worldFrame, registry);
-   
+
    private final FramePose3D handPose = new FramePose3D();
 
    private final ArrayList<FramePose3D> wayPoints = new ArrayList<FramePose3D>();
@@ -113,9 +112,9 @@ public class CutForceControllerVisualizer
 
    private YoDouble coeffC1 = new YoDouble("coeffC1", registry);
    private YoDouble coeffC2 = new YoDouble("coeffC2", registry);
-   
+
    private final YoDouble quadraticForcecoeff = new YoDouble("quadraticcoeff", registry);
-   
+
 
    private final YoDouble scaledVelocity = new YoDouble("scaledVelocity", registry);
    private final YoDouble scaledTimeVariable = new YoDouble("scaledTime", registry);
@@ -216,10 +215,10 @@ public class CutForceControllerVisualizer
       ReferenceFrame chestFrame = chest.getBodyFixedFrame();
       rightHandControlFrame = fullRobotModel.getHandControlFrame(RobotSide.RIGHT);
       leftHandControlFrame = fullRobotModel.getHandControlFrame(RobotSide.LEFT);
-      
 
 
-      straightLineTrajectory = new StraightLinePoseTrajectoryGenerator("straightLineTrajectory", true, worldFrame, registry, true, yoGraphicsListRegistry);
+
+      straightLineTrajectory = new StraightLinePoseTrajectoryGenerator("straightLineTrajectory", worldFrame, registry, true, yoGraphicsListRegistry);
       straightLineTrajectory.showVisualization();
       //    straightLineTrajectory.registerNewTrajectoryFrame(chestFrame);
       straightLineTrajectory.setTrajectoryTime(TRAJECTORYTIME);
@@ -230,16 +229,16 @@ public class CutForceControllerVisualizer
       yoGraphicsListRegistry.registerYoGraphic("Viz", new YoGraphicCoordinateSystem("initialPose", initialHandPose, 0.1, YoAppearance.Blue()));
       yoGraphicsListRegistry.registerYoGraphic("Viz", new YoGraphicCoordinateSystem("currentPose", currentHandPose, 0.3, YoAppearance.Red()));
       yoGraphicsListRegistry.registerYoGraphic("Viz", new YoGraphicCoordinateSystem("desiredPose", finalHandPose, 0.1, YoAppearance.Green()));
-      
-      
+
+
       yoGraphicsListRegistry.registerYoGraphic("Viz", new YoGraphicCoordinateSystem("rightWristsensorFrame", rightWristSensorCoordinateSystemPose, 0.3, YoAppearance.Black()));
       yoGraphicsListRegistry.registerYoGraphic("Viz", new YoGraphicCoordinateSystem("leftWristsensorFrame", leftWristSensorCoordinateSystemPose, 0.3, YoAppearance.Black()));
       yoGraphicsListRegistry.registerYoGraphic("Viz", new YoGraphicCoordinateSystem("leftHandControlFrame", leftHandControlCoordinateSystemPose, 0.3, YoAppearance.Black()));
-      
-      
-      
-      
-      
+
+
+
+
+
       scs.addYoGraphicsListRegistry(yoGraphicsListRegistry);
       scs.addYoVariableRegistry(registry);
 
@@ -248,7 +247,7 @@ public class CutForceControllerVisualizer
       rightHandTaskTojointSpaceCalculator.setupWithDefaultParameters();
       rightHandTaskTojointSpaceCalculator.setControlFrameFixedInEndEffector(rightHandControlFrame);
       jointAnglesWriter =  new JointAnglesWriter(robot, fullRobotModel);
-      
+
 
 
 
@@ -271,7 +270,7 @@ public class CutForceControllerVisualizer
       /**
        * Simulation of Wrist sensors
        */
-            
+
       ArrayList<WrenchCalculatorInterface> forceSensors = new ArrayList<WrenchCalculatorInterface>();
       robot.getForceSensors(forceSensors);
       SideDependentList<WrenchCalculatorInterface> wristSCSSensors = new SideDependentList<>();
@@ -297,17 +296,17 @@ public class CutForceControllerVisualizer
       }
 
       //            final SideDependentList<ForceSensorData> wristSensors = new SideDependentList<ForceSensorData>();
-      //            
+      //
       //            for (RobotSide robotSide : RobotSide.values)
       //            {
       //               ForceSensorData forceSensorData = new ForceSensorData(wristSensorDefinitions.get(robotSide));
       //               wristSensors.put(robotSide, forceSensorData);
       //            }
-      //            
+      //
       rightWristFrame = wristSensorDefinitions.get(RobotSide.RIGHT).getSensorFrame();
       leftWristFrame = wristSensorDefinitions.get(RobotSide.LEFT).getSensorFrame();
       /**
-       * 
+       *
        */
 
       simulatedWristWrench = new Wrench(rightWristFrame, rightWristFrame);
@@ -405,17 +404,17 @@ public class CutForceControllerVisualizer
                   System.out.println("no valid tangent vector");
                }
                /**
-                * 
+                *
                 */
-               
-               
+
+
                tempVector.set(simulatedFx.getDoubleValue(), simulatedFy.getDoubleValue(), simulatedFz.getDoubleValue());
                currentFTang.set(tempVector.dot(tangentVectorInWorld));
-               oldDeltaF = deltaF.getDoubleValue(); 
+               oldDeltaF = deltaF.getDoubleValue();
                deltaF.set(currentFTang.getDoubleValue() - DESIRED_FTANG);
                deltaFDerivative.set((deltaF.getDoubleValue() - oldDeltaF) / (DTCONTROL * scaleFactor.getDoubleValue()));
-               
-               
+
+
                // TODO: Maybe ARW
                deltaFIntegrator.add(deltaF.getDoubleValue());
 
@@ -435,11 +434,11 @@ public class CutForceControllerVisualizer
                   c2 += f2 * c2 * epsilon;
                   coeffC1.set(Math.exp(lnC1));
                   coeffC2.set(c2);
-               }   
+               }
 
                vMPC.set(1.0 / coeffC2.getDoubleValue() * Math.log(Math.abs(DESIRED_FTANG) / coeffC1.getDoubleValue() + 1.0));
-               
-               
+
+
                // If necessary, add control
                //vMPC.add(pMPC * deltaF.getDoubleValue() + iMPC * deltaFIntegrator.getDoubleValue() + dMPC * deltaFDerivative.getDoubleValue());
 
@@ -499,17 +498,17 @@ public class CutForceControllerVisualizer
             handPose.setToZero(leftHandControlFrame);
             handPose.changeFrame(worldFrame);
             leftHandControlCoordinateSystemPose.set(handPose);
-            
+
             // update the visualization of the wristSensorFrames
             handPose.setToZero(rightWristFrame);
             handPose.changeFrame(worldFrame);
             rightWristSensorCoordinateSystemPose.set(handPose);
-           
+
             handPose.setToZero(leftWristFrame);
             handPose.changeFrame(worldFrame);
             leftWristSensorCoordinateSystemPose.set(handPose);
-            
-            
+
+
 
             jointAnglesWriter.updateRobotConfigurationBasedOnFullRobotModel();
             scs.tickAndUpdate();
