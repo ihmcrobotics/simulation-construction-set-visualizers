@@ -13,10 +13,10 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.robotics.geometry.SpiralBasedAlgorithm;
-import us.ihmc.robotics.math.trajectories.waypoints.YoFrameEuclideanTrajectoryPoint;
-import us.ihmc.robotics.math.trajectories.waypoints.generators.EuclideanTrajectoryPointCalculator;
-import us.ihmc.robotics.math.trajectories.waypoints.generators.MultipleWaypointsPositionTrajectoryGenerator;
-import us.ihmc.robotics.math.trajectories.waypoints.interfaces.EuclideanTrajectoryPointInterface;
+import us.ihmc.robotics.math.trajectories.generators.EuclideanTrajectoryPointCalculator;
+import us.ihmc.robotics.math.trajectories.generators.MultipleWaypointsPositionTrajectoryGenerator;
+import us.ihmc.robotics.math.trajectories.trajectorypoints.YoFrameEuclideanTrajectoryPoint;
+import us.ihmc.robotics.math.trajectories.trajectorypoints.interfaces.EuclideanTrajectoryPointBasics;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
@@ -96,7 +96,7 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
       calculator.computeTrajectoryPointTimes(0.0, trajectoryTime);
       calculator.computeTrajectoryPointVelocities(true);
 
-      RecyclingArrayList<? extends EuclideanTrajectoryPointInterface> waypoints = calculator.getTrajectoryPoints();
+      RecyclingArrayList<? extends EuclideanTrajectoryPointBasics> waypoints = calculator.getTrajectoryPoints();
 
       traj = new MultipleWaypointsPositionTrajectoryGenerator("traj", calculator.getNumberOfTrajectoryPoints(), ReferenceFrame.getWorldFrame(), registry);
       traj.appendWaypoints(waypoints);
@@ -108,7 +108,7 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
       {
          Point3D position3d = new Point3D();
          Vector3D linearVelocity3d = new Vector3D();
-         EuclideanTrajectoryPointInterface waypoint = waypoints.get(i);
+         EuclideanTrajectoryPointBasics waypoint = waypoints.get(i);
          waypoint.getPosition(position3d);
          waypoint.getLinearVelocity(linearVelocity3d);
          trajectoryPointsViz.get(i).set(waypoint.getTime(), position3d, linearVelocity3d);
