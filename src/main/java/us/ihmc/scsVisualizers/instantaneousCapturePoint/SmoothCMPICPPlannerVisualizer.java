@@ -1022,7 +1022,7 @@ public class SmoothCMPICPPlannerVisualizer
       }
       midFeetZUpFrame = new MidFootZUpGroundFrame("MidFeetZUpFrame", soleZUpFrames.get(RobotSide.LEFT), soleZUpFrames.get(RobotSide.RIGHT));
       midFeetZUpFrame.update();
-      bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, soleZUpFrames, registry, graphicsListRegistry);
+      bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, soleZUpFrames, soleFrames, registry, graphicsListRegistry);
       footstepTestHelper = new FootstepTestHelper(contactableFeet);
       AtlasSmoothCMPPlannerParameters planParametersNoMomentum = new AtlasSmoothCMPPlannerParameters(atlasPhysicalProperties)
       {
@@ -1078,7 +1078,7 @@ public class SmoothCMPICPPlannerVisualizer
       String namePrefix = "TestICPPlanner";
       int numberOfPointsPerFoot = planParameters.getNumberOfCoPWayPointsPerFoot();
       AtlasRobotModel atlasRobotModel = new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_NO_HANDS, RobotTarget.SCS, false);
-      icpPlanner = new SmoothCMPBasedICPPlanner(atlasRobotModel.createFullRobotModel(), bipedSupportPolygons, contactableFeet,
+      icpPlanner = new SmoothCMPBasedICPPlanner(atlasRobotModel.createFullRobotModel(), bipedSupportPolygons, soleZUpFrames, contactableFeet,
                                                 numberOfFootstepsToConsider.getIntegerValue(), null, yoTime, registry, graphicsListRegistry, 9.81);
       icpPlanner.initializeParameters(planParameters);
       icpPlanner.setFinalTransferDuration(1.0);
@@ -1186,12 +1186,14 @@ public class SmoothCMPICPPlannerVisualizer
 
       if (SHOW_OLD_PLANNER)
       {
-         heelToeICPPlanner = new ContinuousCMPBasedICPPlanner(bipedSupportPolygons, contactableFeet, numberOfPointsPerFoot, registry, graphicsListRegistry);
+         heelToeICPPlanner = new ContinuousCMPBasedICPPlanner(bipedSupportPolygons, contactableFeet, numberOfPointsPerFoot, midFeetZUpFrame, soleZUpFrames,
+                                                              registry, graphicsListRegistry);
          heelToeICPPlanner.initializeParameters(heelToeICPPlannerParameters);
          heelToeICPPlanner.setFinalTransferDuration(1.0);
          YoVariableRegistry dummyRegistry = new YoVariableRegistry("dummy");
          YoGraphicsListRegistry dummyGrahpics = new YoGraphicsListRegistry();
-         cdsICPPlanner = new ContinuousCMPBasedICPPlanner(bipedSupportPolygons, contactableFeet, numberOfPointsPerFoot, dummyRegistry, dummyGrahpics);
+         cdsICPPlanner = new ContinuousCMPBasedICPPlanner(bipedSupportPolygons, contactableFeet, numberOfPointsPerFoot, midFeetZUpFrame, soleZUpFrames,
+                                                          dummyRegistry, dummyGrahpics);
          cdsICPPlanner.initializeParameters(cdsICPPlannerParameters);
          cdsICPPlanner.setFinalTransferDuration(1.0);
       }
@@ -1200,9 +1202,10 @@ public class SmoothCMPICPPlannerVisualizer
       {
          YoVariableRegistry dummyRegistry = new YoVariableRegistry("ICPAMOff");
          YoGraphicsListRegistry dummyGrahpics = new YoGraphicsListRegistry();
-         icpPlannerAMOff = new SmoothCMPBasedICPPlanner(
-               new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_DUAL_ROBOTIQ, RobotTarget.SCS, false).createFullRobotModel(), bipedSupportPolygons,
-               contactableFeet, numberOfFootstepsToConsider.getIntegerValue(), null, yoTime, dummyRegistry, dummyGrahpics, 9.81);
+         icpPlannerAMOff = new SmoothCMPBasedICPPlanner(new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_DUAL_ROBOTIQ, RobotTarget.SCS,
+                                                                            false).createFullRobotModel(),
+                                                        bipedSupportPolygons, soleZUpFrames, contactableFeet, numberOfFootstepsToConsider.getIntegerValue(),
+                                                        null, yoTime, dummyRegistry, dummyGrahpics, 9.81);
          icpPlannerAMOff.initializeParameters(planParametersNoMomentum);
          icpPlannerAMOff.setFinalTransferDuration(1.0);
       }

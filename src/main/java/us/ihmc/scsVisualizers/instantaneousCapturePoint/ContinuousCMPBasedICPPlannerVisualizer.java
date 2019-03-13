@@ -777,15 +777,15 @@ public class ContinuousCMPBasedICPPlannerVisualizer
 
       midFeetZUpFrame = new MidFrameZUpFrame("midFeetZupFrame", worldFrame, soleZUpFrames.get(RobotSide.LEFT), soleZUpFrames.get(RobotSide.RIGHT));
       midFeetZUpFrame.update();
-      bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, soleZUpFrames, registry, yoGraphicsListRegistry);
+      bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, soleZUpFrames, soleFrames, registry, yoGraphicsListRegistry);
 
       footstepTestHelper = new FootstepTestHelper(contactableFeet);
 
       ICPPlannerParameters capturePointPlannerParameters = createICPPlannerParameters();
 
-      //      CapturePointPlannerAdapter icpPlanner = new CapturePointPlannerAdapter(capturePointPlannerParameters, registry, yoGraphicsListRegistry, dt, soleFrames, bipedSupportPolygons);
       ContinuousCMPBasedICPPlanner icpPlanner = new ContinuousCMPBasedICPPlanner(bipedSupportPolygons, contactableFeet,
-                                                                                 capturePointPlannerParameters.getNumberOfFootstepsToConsider(), registry, yoGraphicsListRegistry);
+                                                                                 capturePointPlannerParameters.getNumberOfFootstepsToConsider(),
+                                                                                 midFeetZUpFrame, soleZUpFrames, registry, yoGraphicsListRegistry);
       icpPlanner.initializeParameters(capturePointPlannerParameters);
       icpPlanner.setFinalTransferDuration(doubleSupportDuration);
       icpPlanner.setOmega0(omega0);

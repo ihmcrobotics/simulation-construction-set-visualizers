@@ -115,7 +115,7 @@ public class ICPPlanTimingVisualizer
       setupFeetFrames(yoGraphicsListRegistry);
 
       icpPlanner = new ContinuousCMPBasedICPPlanner(bipedSupportPolygons, contactableFeet, capturePointPlannerParameters.getNumberOfFootstepsToConsider(),
-                                                    registry, yoGraphicsListRegistry);
+                                                    midFeetZUpFrame, ankleZUpFrames, registry, yoGraphicsListRegistry);
       icpPlanner.initializeParameters(capturePointPlannerParameters);
       icpPlanner.setOmega0(3.0);
       icpPlanner.setFinalTransferDuration(1.0);
@@ -237,7 +237,7 @@ public class ICPPlanTimingVisualizer
 
       midFeetZUpFrame = new MidFrameZUpFrame("midFeetZupFrame", worldFrame, ankleZUpFrames.get(RobotSide.LEFT), ankleZUpFrames.get(RobotSide.RIGHT));
       midFeetZUpFrame.update();
-      bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, ankleZUpFrames, registry, yoGraphicsListRegistry);
+      bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, ankleZUpFrames, soleFrames, registry, yoGraphicsListRegistry);
 
       footstepTestHelper = new FootstepTestHelper(contactableFeet);
    }
