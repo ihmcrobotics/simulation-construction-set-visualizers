@@ -1,0 +1,5 @@
+root*false*false
+root.dummy*false*false
+root.TrajectoryPoint1DCalculatorVisualizer*false*false
+root.TrajectoryPoint1DCalculatorVisualizer.trajMultipleWaypointsTrajectoryGenerator*false*false
+root.TrajectoryPoint1DCalculatorVisualizer.trajMultipleWaypointsTrajectoryGenerator.trajSubTrajectoryCubicPolynomialTrajectoryGenerator*false*false

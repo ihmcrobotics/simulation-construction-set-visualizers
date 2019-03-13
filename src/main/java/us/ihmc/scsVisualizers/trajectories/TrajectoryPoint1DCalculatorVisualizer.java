@@ -69,11 +69,10 @@ public class TrajectoryPoint1DCalculatorVisualizer
       {
          position += RandomNumbers.nextDouble(random, 0.3);
 //         position = 0.5 * Math.sin(2.0 * Math.PI * i * trajectoryTime / (numberOfWaypoints - 1)) + 1.0;
-         calculator.appendTrajectoryPoint(Double.NaN, position, Double.NaN);
+         calculator.appendTrajectoryPoint(position);
       }
 
-      calculator.computeTrajectoryPointTimes(0.0, trajectoryTime);
-      calculator.computeTrajectoryPointVelocities(true);
+      calculator.compute(trajectoryTime);
 
       OneDoFTrajectoryPointList trajectoryData = calculator.getTrajectoryData();
 
