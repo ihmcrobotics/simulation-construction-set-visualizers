@@ -64,8 +64,7 @@ public class ICPPlanTimingVisualizer
 
    private final SideDependentList<FootSpoof> contactableFeet = new SideDependentList<>();
    private final SideDependentList<ReferenceFrame> soleFrames = new SideDependentList<>();
-   private final SideDependentList<ReferenceFrame> ankleFrames = new SideDependentList<>();
-   private final SideDependentList<ReferenceFrame> ankleZUpFrames = new SideDependentList<>();
+   private final SideDependentList<ReferenceFrame> soleZUpFrames = new SideDependentList<>();
    private ReferenceFrame midFeetZUpFrame;
 
    private final SideDependentList<FramePose3D> footPosesAtTouchdown = new SideDependentList<FramePose3D>(new FramePose3D(), new FramePose3D());
@@ -115,7 +114,7 @@ public class ICPPlanTimingVisualizer
       setupFeetFrames(yoGraphicsListRegistry);
 
       icpPlanner = new ContinuousCMPBasedICPPlanner(bipedSupportPolygons, contactableFeet, capturePointPlannerParameters.getNumberOfFootstepsToConsider(),
-                                                    midFeetZUpFrame, ankleZUpFrames, registry, yoGraphicsListRegistry);
+                                                    midFeetZUpFrame, soleZUpFrames, registry, yoGraphicsListRegistry);
       icpPlanner.initializeParameters(capturePointPlannerParameters);
       icpPlanner.setOmega0(3.0);
       icpPlanner.setFinalTransferDuration(1.0);
@@ -229,15 +228,13 @@ public class ICPPlanTimingVisualizer
       for (RobotSide robotSide : RobotSide.values)
       {
          FootSpoof contactableFoot = contactableFeet.get(robotSide);
-         ReferenceFrame ankleFrame = contactableFoot.getFrameAfterParentJoint();
-         ankleFrames.put(robotSide, ankleFrame);
-         ankleZUpFrames.put(robotSide, new ZUpFrame(worldFrame, ankleFrame, robotSide.getCamelCaseNameForStartOfExpression() + "ZUp"));
+         soleZUpFrames.put(robotSide, new ZUpFrame(worldFrame, contactableFoot.getSoleFrame(), robotSide.getCamelCaseNameForStartOfExpression() + "ZUp"));
          soleFrames.put(robotSide, contactableFoot.getSoleFrame());
       }
 
-      midFeetZUpFrame = new MidFrameZUpFrame("midFeetZupFrame", worldFrame, ankleZUpFrames.get(RobotSide.LEFT), ankleZUpFrames.get(RobotSide.RIGHT));
+      midFeetZUpFrame = new MidFrameZUpFrame("midFeetZupFrame", worldFrame, soleZUpFrames.get(RobotSide.LEFT), soleZUpFrames.get(RobotSide.RIGHT));
       midFeetZUpFrame.update();
-      bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, ankleZUpFrames, soleFrames, registry, yoGraphicsListRegistry);
+      bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, soleZUpFrames, soleFrames, registry, yoGraphicsListRegistry);
 
       footstepTestHelper = new FootstepTestHelper(contactableFeet);
    }
