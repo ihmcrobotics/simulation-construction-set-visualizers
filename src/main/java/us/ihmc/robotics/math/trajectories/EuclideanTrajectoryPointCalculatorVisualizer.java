@@ -13,10 +13,11 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.robotics.geometry.SpiralBasedAlgorithm;
-import us.ihmc.robotics.math.trajectories.generators.EuclideanTrajectoryPointCalculator;
+import us.ihmc.robotics.math.trajectories.generators.FrameEuclideanTrajectoryPointCalculator;
 import us.ihmc.robotics.math.trajectories.generators.MultipleWaypointsPositionTrajectoryGenerator;
 import us.ihmc.robotics.math.trajectories.trajectorypoints.YoFrameEuclideanTrajectoryPoint;
 import us.ihmc.robotics.math.trajectories.trajectorypoints.interfaces.EuclideanTrajectoryPointBasics;
+import us.ihmc.robotics.math.trajectories.trajectorypoints.lists.FrameEuclideanTrajectoryPointList;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
@@ -38,7 +39,7 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
    private final int recordFrequency = 1;
    private final int bufferSize = (int) (trajectoryTime / dt / recordFrequency + 2);
 
-   private final EuclideanTrajectoryPointCalculator calculator = new EuclideanTrajectoryPointCalculator();
+   private final FrameEuclideanTrajectoryPointCalculator calculator = new FrameEuclideanTrajectoryPointCalculator();
    private final MultipleWaypointsPositionTrajectoryGenerator traj;
 
    private final YoFramePoint3D currentPositionViz = new YoFramePoint3D("currentPositionViz", worldFrame, registry);
@@ -48,7 +49,7 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
    public EuclideanTrajectoryPointCalculatorVisualizer()
    {
       final YoGraphicsListRegistry yoGraphicsListRegistry = new YoGraphicsListRegistry();
-      int numberOfTrajectoryPoints = 60;
+      int numberOfTrajectoryPoints = 20;
 
       Supplier<YoFrameEuclideanTrajectoryPoint> builder = new Supplier<YoFrameEuclideanTrajectoryPoint>()
       {
@@ -86,17 +87,14 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
          throw new RuntimeException("Should not get there: " + waypointGenerator);
       }
 
-      calculator.enableWeightMethod(2.0, 1.0);
-
       for (int i = 0; i < numberOfTrajectoryPoints; i++)
       {
          calculator.appendTrajectoryPoint(waypointPositions[i]);
       }
 
-      calculator.computeTrajectoryPointTimes(0.0, trajectoryTime);
-      calculator.computeTrajectoryPointVelocities(true);
+      calculator.compute(trajectoryTime);
 
-      RecyclingArrayList<? extends EuclideanTrajectoryPointBasics> waypoints = calculator.getTrajectoryPoints();
+      FrameEuclideanTrajectoryPointList waypoints = calculator.getTrajectoryPoints();
 
       traj = new MultipleWaypointsPositionTrajectoryGenerator("traj", calculator.getNumberOfTrajectoryPoints(), ReferenceFrame.getWorldFrame(), registry);
       traj.appendWaypoints(waypoints);
@@ -108,10 +106,10 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
       {
          Point3D position3d = new Point3D();
          Vector3D linearVelocity3d = new Vector3D();
-         EuclideanTrajectoryPointBasics waypoint = waypoints.get(i);
+         EuclideanTrajectoryPointBasics waypoint = waypoints.getTrajectoryPoint(i);
          waypoint.getPosition(position3d);
          waypoint.getLinearVelocity(linearVelocity3d);
-         trajectoryPointsViz.get(i).set(waypoint.getTime(), position3d, linearVelocity3d);
+         trajectoryPointsViz.add().set(waypoint.getTime(), position3d, linearVelocity3d);
          relativeWaypointTimes[i].set(waypoint.getTime() - previousWaypointTime);
          previousWaypointTime = waypoint.getTime();
       }
