@@ -13,7 +13,7 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.robotics.geometry.SpiralBasedAlgorithm;
-import us.ihmc.robotics.math.trajectories.generators.FrameEuclideanTrajectoryPointCalculator;
+import us.ihmc.robotics.math.trajectories.generators.EuclideanTrajectoryPointCalculator;
 import us.ihmc.robotics.math.trajectories.generators.MultipleWaypointsPositionTrajectoryGenerator;
 import us.ihmc.robotics.math.trajectories.trajectorypoints.YoFrameEuclideanTrajectoryPoint;
 import us.ihmc.robotics.math.trajectories.trajectorypoints.interfaces.EuclideanTrajectoryPointBasics;
@@ -29,7 +29,11 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
 {
    private static final ReferenceFrame worldFrame = ReferenceFrame.getWorldFrame();
 
-   private enum WaypointGenerator {SPHERE, LINE};
+   private enum WaypointGenerator
+   {
+      SPHERE, LINE
+   };
+
    private final WaypointGenerator waypointGenerator = WaypointGenerator.LINE;
 
    private final YoVariableRegistry registry = new YoVariableRegistry(getClass().getSimpleName());
@@ -39,7 +43,7 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
    private final int recordFrequency = 1;
    private final int bufferSize = (int) (trajectoryTime / dt / recordFrequency + 2);
 
-   private final FrameEuclideanTrajectoryPointCalculator calculator = new FrameEuclideanTrajectoryPointCalculator();
+   private final EuclideanTrajectoryPointCalculator calculator = new EuclideanTrajectoryPointCalculator();
    private final MultipleWaypointsPositionTrajectoryGenerator traj;
 
    private final YoFramePoint3D currentPositionViz = new YoFramePoint3D("currentPositionViz", worldFrame, registry);
@@ -54,6 +58,7 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
       Supplier<YoFrameEuclideanTrajectoryPoint> builder = new Supplier<YoFrameEuclideanTrajectoryPoint>()
       {
          private int i = 0;
+
          @Override
          public YoFrameEuclideanTrajectoryPoint get()
          {
@@ -69,7 +74,6 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
       relativeWaypointTimes = new YoDouble[numberOfTrajectoryPoints];
       for (int i = 0; i < relativeWaypointTimes.length; i++)
          relativeWaypointTimes[i] = new YoDouble("relativeWaypointTime" + i, registry);
-
 
       yoGraphicsListRegistry.registerYoGraphic("viz", new YoGraphicPosition("currentPositionViz", currentPositionViz, 0.05, YoAppearance.Red()));
 
