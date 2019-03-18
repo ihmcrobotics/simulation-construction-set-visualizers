@@ -519,7 +519,7 @@ public class CMPPlannerVisualizer
       }
       midFeetZUpFrame = new MidFootZUpGroundFrame("MidFeetZUpFrame", soleZUpFrames.get(RobotSide.LEFT), soleZUpFrames.get(RobotSide.RIGHT));
       midFeetZUpFrame.update();
-      bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, soleZUpFrames, registry, graphicsListRegistry);
+      bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, soleZUpFrames, soleFrames, registry, graphicsListRegistry);
       footstepTestHelper = new FootstepTestHelper(contactableFeet);
       planParameters = new AtlasSmoothCMPPlannerParameters(atlasPhysicalProperties)
       {
@@ -572,7 +572,7 @@ public class CMPPlannerVisualizer
       copGenerator = new ReferenceCoPTrajectoryGenerator(namePrefix, maxNumberFootstepsToConsider, bipedSupportPolygons, contactableFeet,
                                                          numberOfFootstepsToConsider, swingDurations, transferDurations, touchdownDurations,
                                                          swingSplitFractions, swingDurationShiftFractions, transferSplitFractions, numberOfFootstepsRegistered,
-                                                         upcomingFootstepData, registry);
+                                                         upcomingFootstepData, soleZUpFrames, registry);
       cmpGenerator = new ReferenceCMPTrajectoryGenerator(namePrefix, maxNumberFootstepsToConsider, numberOfFootstepsToConsider, false, registry,
                                                          graphicsListRegistry);
       cmpGenerator.setGroundReaction(180 * gravityZ);

@@ -442,7 +442,7 @@ public class CoPPlannerVisualizer
       }
       midFeetZUpFrame = new MidFootZUpGroundFrame("MidFeetZUpFrame", soleZUpFrames.get(RobotSide.LEFT), soleZUpFrames.get(RobotSide.RIGHT));
       midFeetZUpFrame.update();
-      bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, soleZUpFrames, registry, graphicsListRegistry);
+      bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, soleZUpFrames, soleFrames, registry, graphicsListRegistry);
       footstepTestHelper = new FootstepTestHelper(contactableFeet);
       planParameters = new AtlasSmoothCMPPlannerParameters(atlasPhysicalProperties);
       YoInteger numberOfFootstepsToConsider = new YoInteger("numberOfFootstepsToConsider", registry);
@@ -479,9 +479,10 @@ public class CoPPlannerVisualizer
 
       int numberOfPointsInFoot = planParameters.getNumberOfCoPWayPointsPerFoot();
       int maxNumberOfFootstepsToConsider = planParameters.getNumberOfFootstepsToConsider();
-      testCoPPlanner = new ReferenceCoPTrajectoryGenerator("TestCoPPlanner", maxNumberOfFootstepsToConsider, bipedSupportPolygons,
-                                                           contactableFeet, numberOfFootstepsToConsider, swingDurations, transferDurations, touchdownDurations, swingSplitFractions,
-                                                           swingDurationShiftFractions, transferSplitFractions, numberOfFootstepsRegisered, upcomingFootstepData, registry);
+      testCoPPlanner = new ReferenceCoPTrajectoryGenerator("TestCoPPlanner", maxNumberOfFootstepsToConsider, bipedSupportPolygons, contactableFeet,
+                                                           numberOfFootstepsToConsider, swingDurations, transferDurations, touchdownDurations,
+                                                           swingSplitFractions, swingDurationShiftFractions, transferSplitFractions, numberOfFootstepsRegisered,
+                                                           upcomingFootstepData, soleZUpFrames, registry);
       testCoPPlanner.initializeParameters(planParameters);
 
       YoGraphicsList yoGraphicsList = new YoGraphicsList("graphicsList");
