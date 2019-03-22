@@ -2,6 +2,7 @@ package us.ihmc.scsVisualizers.geometry;
 
 import java.util.Random;
 
+import us.ihmc.euclid.referenceFrame.FrameMatrix3D;
 import us.ihmc.euclid.referenceFrame.FramePose3D;
 import us.ihmc.euclid.referenceFrame.FrameVector3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
