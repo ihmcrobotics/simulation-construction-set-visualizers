@@ -916,9 +916,8 @@ public class SmoothCMPICPPlannerVisualizer
       transferDuration.set(defaultTransferTime);
       transferSplitFraction.set(planParameters.getSwingSplitFraction());
       AtlasRobotModel atlasRobotModel = new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_NO_HANDS, RobotTarget.SCS, false);
-      icpPlanner = new SmoothCMPBasedICPPlanner(atlasRobotModel.createFullRobotModel(), bipedSupportPolygons, soleZUpFrames, contactableFeet,
-                                                numberOfFootstepsToConsider.getIntegerValue(), null, yoTime, registry, graphicsListRegistry, 9.81);
-      icpPlanner.initializeParameters(planParameters);
+      icpPlanner = new SmoothCMPBasedICPPlanner(atlasRobotModel.createFullRobotModel(), bipedSupportPolygons, soleZUpFrames, contactableFeet, null, yoTime,
+                                                registry, graphicsListRegistry, 9.81, planParameters);
       icpPlanner.setFinalTransferDuration(1.0);
 
       if (SHOW_WITHOUT_ANGULAR_MOMENTUM)
@@ -927,9 +926,8 @@ public class SmoothCMPICPPlannerVisualizer
          YoGraphicsListRegistry dummyGrahpics = new YoGraphicsListRegistry();
          icpPlannerAMOff = new SmoothCMPBasedICPPlanner(new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_DUAL_ROBOTIQ, RobotTarget.SCS,
                                                                             false).createFullRobotModel(),
-                                                        bipedSupportPolygons, soleZUpFrames, contactableFeet, numberOfFootstepsToConsider.getIntegerValue(),
-                                                        null, yoTime, dummyRegistry, dummyGrahpics, 9.81);
-         icpPlannerAMOff.initializeParameters(planParametersNoMomentum);
+                                                        bipedSupportPolygons, soleZUpFrames, contactableFeet, null, yoTime, dummyRegistry, dummyGrahpics, 9.81,
+                                                        planParametersNoMomentum);
          icpPlannerAMOff.setFinalTransferDuration(1.0);
       }
 
