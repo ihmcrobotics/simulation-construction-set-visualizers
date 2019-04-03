@@ -3,7 +3,6 @@ package us.ihmc.scsVisualizers.instantaneousCapturePoint;
 import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.List;
 import java.util.Random;
 
@@ -18,15 +17,11 @@ import us.ihmc.atlas.parameters.AtlasSmoothCMPPlannerParameters;
 import us.ihmc.avatar.drcRobot.RobotTarget;
 import us.ihmc.commonWalkingControlModules.bipedSupportPolygons.BipedSupportPolygons;
 import us.ihmc.commonWalkingControlModules.bipedSupportPolygons.YoPlaneContactState;
-import us.ihmc.commonWalkingControlModules.capturePoint.ContinuousCMPBasedICPPlanner;
 import us.ihmc.commonWalkingControlModules.capturePoint.smoothCMPBasedICPPlanner.SmoothCMPBasedICPPlanner;
 import us.ihmc.commonWalkingControlModules.capturePoint.smoothCMPBasedICPPlanner.CoPGeneration.CoPPointsInFoot;
-import us.ihmc.commonWalkingControlModules.configurations.CoPPointName;
-import us.ihmc.commonWalkingControlModules.configurations.ContinuousCMPICPPlannerParameters;
 import us.ihmc.commonWalkingControlModules.configurations.SmoothCMPPlannerParameters;
 import us.ihmc.commonWalkingControlModules.controllers.Updatable;
 import us.ihmc.commonWalkingControlModules.desiredFootStep.footstepGenerator.FootstepTestHelper;
-import us.ihmc.commons.PrintTools;
 import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.euclid.geometry.interfaces.Vertex2DSupplier;
 import us.ihmc.euclid.referenceFrame.FrameConvexPolygon2D;
@@ -40,7 +35,6 @@ import us.ihmc.euclid.referenceFrame.interfaces.FramePoint3DReadOnly;
 import us.ihmc.euclid.referenceFrame.interfaces.FrameVertex2DSupplier;
 import us.ihmc.euclid.referenceFrame.tools.EuclidFrameRandomTools;
 import us.ihmc.euclid.tuple2D.Point2D;
-import us.ihmc.euclid.tuple2D.Vector2D;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.euclid.tuple4D.Quaternion;
 import us.ihmc.graphicsDescription.Graphics3DObject;
@@ -63,6 +57,7 @@ import us.ihmc.humanoidBehaviors.behaviors.scripts.engine.ScriptObject;
 import us.ihmc.humanoidRobotics.footstep.FootSpoof;
 import us.ihmc.humanoidRobotics.footstep.Footstep;
 import us.ihmc.humanoidRobotics.footstep.FootstepTiming;
+import us.ihmc.log.LogTools;
 import us.ihmc.mecano.multiBodySystem.interfaces.RigidBodyBasics;
 import us.ihmc.robotics.geometry.ConvexPolygonTools;
 import us.ihmc.robotics.referenceFrames.MidFootZUpGroundFrame;
@@ -84,7 +79,6 @@ import us.ihmc.yoVariables.variable.YoInteger;
 
 public class SmoothCMPICPPlannerVisualizer
 {
-   private static final boolean SHOW_OLD_PLANNER = false;
    private static final boolean SHOW_WITHOUT_ANGULAR_MOMENTUM = false;
 
    private static final double mass = 0.1;
@@ -130,35 +124,19 @@ public class SmoothCMPICPPlannerVisualizer
    private SmoothCMPBasedICPPlanner icpPlanner;
    private SmoothCMPBasedICPPlanner icpPlannerAMOff;
 
-   private ContinuousCMPBasedICPPlanner heelToeICPPlanner;
-   private ContinuousCMPBasedICPPlanner cdsICPPlanner;
-
    private FootstepTestHelper footstepTestHelper;
    private final AtlasPhysicalProperties atlasPhysicalProperties = new AtlasPhysicalProperties();
    private List<Footstep> footsteps;
    private List<FootstepTiming> footstepTimings;
-   private BagOfBalls copTrack, cmpTrack, icpTrack, comTrack, icpInitialTrack, icpFinalTrack, comInitialTrack, comFinalTrack, cmpFinalTrack, swTrack, estCoMTrack;
+   private BagOfBalls copTrack, cmpTrack, icpTrack, comTrack, icpInitialTrack, icpFinalTrack, comInitialTrack, comFinalTrack, estCoMTrack;
    private BagOfBalls copTrackAMOff, cmpTrackAMOff, icpTrackAMOff, comTrackAMOff;
-   private BagOfBalls oldICPTrack, oldCMPTrack, oldCoMTrack;
    private YoGraphicPosition cmpInitialTrack;
    private YoGraphicPosition icpTerminalTrack;
    private BagOfBalls copWaypointViz;
-   private BagOfBalls cmpWaypointViz;
 
    private final int simulatedTicksPerGraphicUpdate = 2;
 
    private final YoBoolean isStanding = new YoBoolean("isStanding", registry);
-
-   private final YoFramePoint3D heelToeDesiredICP;
-   private final YoFramePoint3D heelToeDesiredCoM;
-   private final YoFramePoint3D heelToeDesiredCMP;
-   private final YoFrameVector3D heelToeDesiredICPVelocity;
-   private final YoFrameVector3D heelToeDesiredCMPVelocity;
-   private final YoFramePoint3D cdsDesiredICP;
-   private final YoFramePoint3D cdsDesiredCoM;
-   private final YoFramePoint3D cdsDesiredCMP;
-   private final YoFrameVector3D cdsDesiredICPVelocity;
-   private final YoFrameVector3D cdsDesiredCMPVelocity;
 
    private final YoFramePoint3D desiredCoP;
    private final YoFramePoint3D desiredCMP;
@@ -168,7 +146,6 @@ public class SmoothCMPICPPlannerVisualizer
    private final YoFramePoint3D desiredCoM;
    private final YoFrameVector3D desiredCoMVelocity;
    private final YoFrameVector3D desiredCoMAcceleration;
-   private final YoFrameVector3D desiredCoPVelocity;
 
    private final YoFramePoint3D desiredCoPAMOff;
    private final YoFramePoint3D desiredCMPAMOff;
@@ -184,27 +161,16 @@ public class SmoothCMPICPPlannerVisualizer
    private final YoFrameVector3D desiredReactionForceAMOff;
    private final YoGraphicVector desiredReactionForceGraphicAMOff;
 
-   private final YoGraphicVector heelToeDesiredReactionForceGraphic;
-   private final YoGraphicVector cdsDesiredReactionForceGraphic;
-
-   private final YoFrameVector3D heelToeDesiredReactionForce;
-   private final YoFrameVector3D cdsDesiredReactionForce;
-
    private final YoFrameVector3D desiredReactionForceNewton;
-   private final YoGraphicVector desiredReactionForceGraphicNewton;
 
-   private FramePoint3D desiredCMPInitial;
-   private FramePoint3D desiredICPTerminal;
    private FramePoint3D desiredICPInitial;
    private FramePoint3D desiredICPFinal;
    private FramePoint3D desiredCoMInitial;
    private FramePoint3D desiredCoMFinal;
-   private FramePoint3D desiredCMPFinal;
    private List<? extends FramePoint3DReadOnly> icpDesiredInitialPositions;
    private List<? extends FramePoint3DReadOnly> icpDesiredFinalPositions;
    private List<? extends FramePoint3DReadOnly> comDesiredInitialPositions;
    private List<? extends FramePoint3DReadOnly> comDesiredFinalPositions;
-   private List<? extends FramePoint3DReadOnly> cmpDesiredFinalPositions;
 
    private List<YoGraphicLineSegment> icpLineSegments = new ArrayList<>();
 
@@ -226,11 +192,6 @@ public class SmoothCMPICPPlannerVisualizer
 
       omega0.set(omega);
       icpPlanner.setOmega0(omega0.getDoubleValue());
-      if (SHOW_OLD_PLANNER)
-      {
-         heelToeICPPlanner.setOmega0(omega0.getDoubleValue());
-         cdsICPPlanner.setOmega0(omega0.getDoubleValue());
-      }
       if (SHOW_WITHOUT_ANGULAR_MOMENTUM)
       {
          icpPlannerAMOff.setOmega0(omega0.getDoubleValue());
@@ -241,49 +202,6 @@ public class SmoothCMPICPPlannerVisualizer
          YoFrameConvexPolygon2D nextFootPolygon = new YoFrameConvexPolygon2D("nextFootstep" + i, "", worldFrame, 4, registry);
          yoNextFootstepPolygon.add(nextFootPolygon);
          graphicsListRegistry.registerArtifact("upcomingFootsteps", new YoArtifactPolygon("nextFootstep" + i, nextFootPolygon, Color.blue, false));
-      }
-
-      if (SHOW_OLD_PLANNER)
-      {
-         heelToeDesiredCoM = new YoFramePoint3D("heelToeDesiredCoM", worldFrame, registry);
-         heelToeDesiredICP = new YoFramePoint3D("heelToeDesiredICP", worldFrame, registry);
-         heelToeDesiredCMP = new YoFramePoint3D("heelToeDesiredCMP", worldFrame, registry);
-         heelToeDesiredICPVelocity = new YoFrameVector3D("heelToeDesiredICPVelocity", worldFrame, registry);
-         heelToeDesiredCMPVelocity = new YoFrameVector3D("heelToeDesiredCMPVelocity", worldFrame, registry);
-
-         cdsDesiredCoM = new YoFramePoint3D("cdsDesiredCoM", worldFrame, registry);
-         cdsDesiredICP = new YoFramePoint3D("cdsDesiredICP", worldFrame, registry);
-         cdsDesiredCMP = new YoFramePoint3D("cdsDesiredCMP", worldFrame, registry);
-         cdsDesiredICPVelocity = new YoFrameVector3D("cdsDesiredICPVelocity", worldFrame, registry);
-         cdsDesiredCMPVelocity = new YoFrameVector3D("cdsDesiredCMPVelocity", worldFrame, registry);
-
-         heelToeDesiredReactionForce = new YoFrameVector3D("heelToeDesiredReactionForce", worldFrame, registry);
-         heelToeDesiredReactionForceGraphic = new YoGraphicVector("heelToeDesiredReactionForceViz", heelToeDesiredCMP, heelToeDesiredReactionForce,
-                                                                  YoAppearance.Orange());
-         cdsDesiredReactionForce = new YoFrameVector3D("cdsToeDesiredReactionForce", worldFrame, registry);
-         cdsDesiredReactionForceGraphic = new YoGraphicVector("cdsToeDesiredReactionForceViz", cdsDesiredCMP, cdsDesiredReactionForce,
-                                                              YoAppearance.Darkorange());
-         graphicsListRegistry.registerYoGraphic("Heel Toe Desired Reaction Force", heelToeDesiredReactionForceGraphic);
-         graphicsListRegistry.registerYoGraphic("CDS Desired Reaction Force", cdsDesiredReactionForceGraphic);
-      }
-      else
-      {
-         heelToeDesiredCoM = null;
-         heelToeDesiredICP = null;
-         heelToeDesiredCMP = null;
-         heelToeDesiredICPVelocity = null;
-         heelToeDesiredCMPVelocity = null;
-
-         cdsDesiredCoM = null;
-         cdsDesiredICP = null;
-         cdsDesiredCMP = null;
-         cdsDesiredICPVelocity = null;
-         cdsDesiredCMPVelocity = null;
-
-         heelToeDesiredReactionForce = null;
-         heelToeDesiredReactionForceGraphic = null;
-         cdsDesiredReactionForce = null;
-         cdsDesiredReactionForceGraphic = null;
       }
 
       if (SHOW_WITHOUT_ANGULAR_MOMENTUM)
@@ -323,14 +241,10 @@ public class SmoothCMPICPPlannerVisualizer
       desiredCoM = new YoFramePoint3D("desiredCoM", worldFrame, registry);
       desiredCoMVelocity = new YoFrameVector3D("desiredCoMVelocity", worldFrame, registry);
       desiredCoMAcceleration = new YoFrameVector3D("desiredCoMAcceleration", worldFrame, registry);
-      desiredCMPInitial = new FramePoint3D();
-      desiredICPTerminal = new FramePoint3D();
       desiredICPInitial = new FramePoint3D();
       desiredICPFinal = new FramePoint3D();
       desiredCoMInitial = new FramePoint3D();
       desiredCoMFinal = new FramePoint3D();
-      desiredCMPFinal = new FramePoint3D();
-      desiredCoPVelocity = new YoFrameVector3D("desiredCoPVelocity", worldFrame, registry);
 
       desiredReactionForce = new YoFrameVector3D("desiredReactionForce", worldFrame, registry);
       desiredReactionForceGraphic = new YoGraphicVector("desiredReactionForceViz", desiredCoP, desiredReactionForce, YoAppearance.Blue());
@@ -338,12 +252,10 @@ public class SmoothCMPICPPlannerVisualizer
       //graphicsListRegistry.registerYoGraphic("Desired Reaction Force", desiredReactionForceGraphic);
 
       desiredReactionForceNewton = new YoFrameVector3D("desiredReactionForceNewton", worldFrame, registry);
-      desiredReactionForceGraphicNewton = new YoGraphicVector("desiredReactionForceNewtonViz", desiredCoP, desiredReactionForceNewton, YoAppearance.Purple());
       //graphicsListRegistry.registerYoGraphic("Desired Reaction Force Newton", desiredReactionForceGraphicNewton);
 
-      icpDesiredInitialPositions = new ArrayList();
-      icpDesiredFinalPositions = new ArrayList();
-      cmpDesiredFinalPositions = new ArrayList();
+      icpDesiredInitialPositions = new ArrayList<>();
+      icpDesiredFinalPositions = new ArrayList<>();
 
       for (int i = 0; i < 50; ++i)
       {
@@ -398,11 +310,6 @@ public class SmoothCMPICPPlannerVisualizer
          }
       });
 
-      oldCMPTrack = new BagOfBalls(50, 0.002, "OldeCMP", YoAppearance.PapayaWhip(), registry, graphicsListRegistry);
-      oldICPTrack = new BagOfBalls(50, 0.0015, "OldICP", YoAppearance.Orange(), YoGraphicPosition.GraphicType.BALL_WITH_ROTATED_CROSS, registry,
-                                   graphicsListRegistry);
-      oldCoMTrack = new BagOfBalls(50, 0.0015, "OldCoM", YoAppearance.Black(), registry, graphicsListRegistry);
-
       copTrackAMOff = new BagOfBalls(50, 0.003, "CoPAMOff", YoAppearance.AliceBlue(), registry, graphicsListRegistry);
       cmpTrackAMOff = new BagOfBalls(50, 0.003, "eCMPAMOff", YoAppearance.Purple(), registry, graphicsListRegistry);
       icpTrackAMOff = new BagOfBalls(50, 0.001, "ICPAMOff", YoAppearance.Yellow(), YoGraphicPosition.GraphicType.BALL_WITH_CROSS, registry,
@@ -417,9 +324,7 @@ public class SmoothCMPICPPlannerVisualizer
       icpFinalTrack = new BagOfBalls(50, 0.004, "ICPFinal", YoAppearance.Red(), registry, graphicsListRegistry);
       comInitialTrack = new BagOfBalls(50, 0.004, "CoMInitial", YoAppearance.Blue(), registry, graphicsListRegistry);
       comFinalTrack = new BagOfBalls(50, 0.004, "CoMFinal", YoAppearance.Green(), registry, graphicsListRegistry);
-      cmpFinalTrack = new BagOfBalls(17, 0.010, "CMPFinal", YoAppearance.Yellow(), registry, graphicsListRegistry);
       estCoMTrack = new BagOfBalls(50, 0.004, "predictedCoM", YoAppearance.Green(), registry, graphicsListRegistry);
-      swTrack = new BagOfBalls(50, 0.004, "swFoot", YoAppearance.Orange(), registry, graphicsListRegistry);
 
       YoArtifactPosition desiredCMPArtifact = new YoArtifactPosition("desiredCMP", desiredCMP.getYoX(), desiredCMP.getYoY(), GraphicType.BALL_WITH_CROSS,
                                                                      Color.RED, 0.01);
@@ -434,7 +339,6 @@ public class SmoothCMPICPPlannerVisualizer
       graphicsListRegistry.registerYoGraphic("ICP", icpTerminalTrack);
 
       copWaypointViz = new BagOfBalls(registry, graphicsListRegistry);
-      cmpWaypointViz = new BagOfBalls(50, 0.015, "CMP", YoAppearance.Green(), registry, graphicsListRegistry);
       SimulationConstructionSetParameters scsParameters = new SimulationConstructionSetParameters(true, BUFFER_SIZE);
       Robot robot = new Robot("Dummy");
       yoTime = robot.getYoTime();
@@ -453,7 +357,7 @@ public class SmoothCMPICPPlannerVisualizer
       scs.startOnAThread();
       simulate(footsteps, footstepTimings);
       ThreadTools.sleepForever();
-      PrintTools.debug("Sleeping forever");
+      LogTools.debug("Sleeping forever");
    }
 
    private List<FootstepTiming> getFootstepTimings()
@@ -548,14 +452,6 @@ public class SmoothCMPICPPlannerVisualizer
                }
             }
 
-            if (SHOW_OLD_PLANNER)
-            {
-               heelToeICPPlanner.setTransferToSide(transferToSide);
-               heelToeICPPlanner.initializeForTransfer(yoTime.getDoubleValue());
-               cdsICPPlanner.setTransferToSide(transferToSide);
-               cdsICPPlanner.initializeForTransfer(yoTime.getDoubleValue());
-            }
-
             inDoubleSupport.set(false);
          }
          else if (nextFootstep != null)
@@ -568,14 +464,6 @@ public class SmoothCMPICPPlannerVisualizer
             {
                icpPlannerAMOff.setSupportLeg(supportSide);
                icpPlannerAMOff.initializeForSingleSupport(yoTime.getDoubleValue());
-            }
-
-            if (SHOW_OLD_PLANNER)
-            {
-               heelToeICPPlanner.setSupportLeg(supportSide);
-               heelToeICPPlanner.initializeForSingleSupport(yoTime.getDoubleValue());
-               cdsICPPlanner.setSupportLeg(supportSide);
-               cdsICPPlanner.initializeForSingleSupport(yoTime.getDoubleValue());
             }
 
             FootSpoof footSpoof = contactableFeet.get(supportSide.getOppositeSide());
@@ -674,29 +562,6 @@ public class SmoothCMPICPPlannerVisualizer
          computeReactionForceFromCMPPosition(desiredCoMAMOff, desiredCMPAMOff, desiredReactionForceAMOff);
       }
 
-      if (SHOW_OLD_PLANNER)
-      {
-         heelToeICPPlanner.compute(yoTime.getDoubleValue());
-         heelToeICPPlanner.getDesiredCapturePointPosition(heelToeDesiredICP);
-         heelToeICPPlanner.getDesiredCenterOfMassPosition(heelToeDesiredCoM);
-         heelToeICPPlanner.getDesiredCentroidalMomentumPivotPosition(heelToeDesiredCMP);
-
-         heelToeICPPlanner.getDesiredCapturePointVelocity(heelToeDesiredICPVelocity);
-         heelToeICPPlanner.getDesiredCentroidalMomentumPivotVelocity(heelToeDesiredCMPVelocity);
-
-         computeReactionForceFromCMPPosition(heelToeDesiredCoM, heelToeDesiredCMP, heelToeDesiredReactionForce);
-
-         cdsICPPlanner.compute(yoTime.getDoubleValue());
-         cdsICPPlanner.getDesiredCapturePointPosition(cdsDesiredICP);
-         cdsICPPlanner.getDesiredCenterOfMassPosition(cdsDesiredCoM);
-         cdsICPPlanner.getDesiredCentroidalMomentumPivotPosition(cdsDesiredCMP);
-
-         cdsICPPlanner.getDesiredCapturePointVelocity(cdsDesiredICPVelocity);
-         cdsICPPlanner.getDesiredCentroidalMomentumPivotVelocity(cdsDesiredCMPVelocity);
-
-         computeReactionForceFromCMPPosition(cdsDesiredCoM, cdsDesiredCMP, cdsDesiredReactionForce);
-      }
-
       icpDesiredInitialPositions = icpPlanner.getReferenceICPGenerator().getICPPositionDesiredInitialList();
       icpDesiredFinalPositions = icpPlanner.getReferenceICPGenerator().getICPPositionDesiredFinalList();
       comDesiredInitialPositions = icpPlanner.getReferenceCoMGenerator().getCoMPositionDesiredInitialList();
@@ -720,21 +585,6 @@ public class SmoothCMPICPPlannerVisualizer
          FramePoint3D desiredCoM = new FramePoint3D(this.desiredCoM);
          desiredCoM.setZ(0.15);
          comTrack.setBallLoop(desiredCoM);
-
-         if (SHOW_OLD_PLANNER)
-         {
-            FramePoint3D oldDesiredCMP = new FramePoint3D(this.heelToeDesiredCMP);
-            oldDesiredCMP.setZ(0.05);
-            oldCMPTrack.setBallLoop(oldDesiredCMP);
-
-            FramePoint3D oldDesiredICP = new FramePoint3D(this.heelToeDesiredICP);
-            oldDesiredICP.setZ(0.05);
-            oldICPTrack.setBallLoop(oldDesiredICP);
-
-            FramePoint3D oldDesiredCoM = new FramePoint3D(this.heelToeDesiredCoM);
-            oldDesiredCoM.setZ(0.075);
-            oldCoMTrack.setBallLoop(oldDesiredCoM);
-         }
 
          if (SHOW_WITHOUT_ANGULAR_MOMENTUM)
          {
@@ -800,11 +650,6 @@ public class SmoothCMPICPPlannerVisualizer
    private void registerFootsteps(List<Footstep> footsteps, List<FootstepTiming> footstepTimings)
    {
       icpPlanner.clearPlan();
-      if (SHOW_OLD_PLANNER)
-      {
-         heelToeICPPlanner.clearPlan();
-         cdsICPPlanner.clearPlan();
-      }
       if (SHOW_WITHOUT_ANGULAR_MOMENTUM)
       {
          icpPlannerAMOff.clearPlan();
@@ -813,11 +658,6 @@ public class SmoothCMPICPPlannerVisualizer
       for (int i = 0; i < footsteps.size(); i++)
       {
          icpPlanner.addFootstepToPlan(footsteps.get(i), footstepTimings.get(i));
-         if (SHOW_OLD_PLANNER)
-         {
-            heelToeICPPlanner.addFootstepToPlan(footsteps.get(i), footstepTimings.get(i));
-            cdsICPPlanner.addFootstepToPlan(footsteps.get(i), footstepTimings.get(i));
-         }
          if (SHOW_WITHOUT_ANGULAR_MOMENTUM)
          {
             icpPlannerAMOff.addFootstepToPlan(footsteps.get(i), footstepTimings.get(i));
@@ -1075,128 +915,10 @@ public class SmoothCMPICPPlannerVisualizer
       YoDouble transferSplitFraction = new YoDouble("transferSplitFraction" + i, registry);
       transferDuration.set(defaultTransferTime);
       transferSplitFraction.set(planParameters.getSwingSplitFraction());
-      String namePrefix = "TestICPPlanner";
-      int numberOfPointsPerFoot = planParameters.getNumberOfCoPWayPointsPerFoot();
       AtlasRobotModel atlasRobotModel = new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_NO_HANDS, RobotTarget.SCS, false);
-      icpPlanner = new SmoothCMPBasedICPPlanner(atlasRobotModel.createFullRobotModel(), bipedSupportPolygons, soleZUpFrames, contactableFeet,
-                                                numberOfFootstepsToConsider.getIntegerValue(), null, yoTime, registry, graphicsListRegistry, 9.81);
-      icpPlanner.initializeParameters(planParameters);
+      icpPlanner = new SmoothCMPBasedICPPlanner(atlasRobotModel.createFullRobotModel(), bipedSupportPolygons, soleZUpFrames, contactableFeet, null, yoTime,
+                                                registry, graphicsListRegistry, 9.81, planParameters);
       icpPlanner.setFinalTransferDuration(1.0);
-
-      ContinuousCMPICPPlannerParameters heelToeICPPlannerParameters = new ContinuousCMPICPPlannerParameters()
-      {
-         @Override
-         public int getNumberOfFootstepsToConsider()
-         {
-            return 4;
-         }
-
-         @Override
-         public int getNumberOfCoPWayPointsPerFoot()
-         {
-            return 2;
-         }
-
-         /**{@inheritDoc} */
-         @Override
-         public CoPPointName getExitCoPName()
-         {
-            return exitCoPName;
-         }
-
-
-         /** {@inheritDoc} */
-         @Override
-         public EnumMap<CoPPointName, Vector2D> getCoPOffsetsInFootFrame()
-         {
-            Vector2D entryOffset = new Vector2D(0.0, -0.005);
-            Vector2D exitOffset = new Vector2D(0.0, 0.025);
-
-            EnumMap<CoPPointName, Vector2D> copOffsets = new EnumMap<>(CoPPointName.class);
-            copOffsets.put(CoPPointName.ENTRY_COP, entryOffset);
-            copOffsets.put(exitCoPName, exitOffset);
-
-            return copOffsets;
-         }
-
-         /** {@inheritDoc} */
-         @Override
-         public EnumMap<CoPPointName, Vector2D> getCoPForwardOffsetBoundsInFoot()
-         {
-            Vector2D entryBounds = new Vector2D(0.0, 0.03);
-            Vector2D exitBounds = new Vector2D(-0.04, 0.08);
-
-            EnumMap<CoPPointName, Vector2D> copForwardOffsetBounds = new EnumMap<>(CoPPointName.class);
-            copForwardOffsetBounds.put(CoPPointName.ENTRY_COP, entryBounds);
-            copForwardOffsetBounds.put(exitCoPName, exitBounds);
-
-            return copForwardOffsetBounds;
-         }
-      };
-
-      ContinuousCMPICPPlannerParameters cdsICPPlannerParameters = new ContinuousCMPICPPlannerParameters()
-      {
-         @Override
-         public int getNumberOfFootstepsToConsider()
-         {
-            return 4;
-         }
-
-         @Override
-         public int getNumberOfCoPWayPointsPerFoot()
-         {
-            return 1;
-         }
-
-         /**{@inheritDoc} */
-         @Override
-         public CoPPointName getExitCoPName()
-         {
-            return exitCoPName;
-         }
-
-         /** {@inheritDoc} */
-         @Override
-         public EnumMap<CoPPointName, Vector2D> getCoPOffsetsInFootFrame()
-         {
-            Vector2D entryOffset = new Vector2D(0.0, -0.005);
-            Vector2D exitOffset = new Vector2D(0.0, 0.025);
-
-            EnumMap<CoPPointName, Vector2D> copOffsets = new EnumMap<>(CoPPointName.class);
-            copOffsets.put(CoPPointName.ENTRY_COP, entryOffset);
-            copOffsets.put(exitCoPName, exitOffset);
-
-            return copOffsets;
-         }
-
-         /** {@inheritDoc} */
-         @Override
-         public EnumMap<CoPPointName, Vector2D> getCoPForwardOffsetBoundsInFoot()
-         {
-            Vector2D entryBounds = new Vector2D(0.0, 0.03);
-            Vector2D exitBounds = new Vector2D(-0.04, 0.08);
-
-            EnumMap<CoPPointName, Vector2D> copForwardOffsetBounds = new EnumMap<>(CoPPointName.class);
-            copForwardOffsetBounds.put(CoPPointName.ENTRY_COP, entryBounds);
-            copForwardOffsetBounds.put(exitCoPName, exitBounds);
-
-            return copForwardOffsetBounds;
-         }
-      };
-
-      if (SHOW_OLD_PLANNER)
-      {
-         heelToeICPPlanner = new ContinuousCMPBasedICPPlanner(bipedSupportPolygons, contactableFeet, numberOfPointsPerFoot, midFeetZUpFrame, soleZUpFrames,
-                                                              registry, graphicsListRegistry);
-         heelToeICPPlanner.initializeParameters(heelToeICPPlannerParameters);
-         heelToeICPPlanner.setFinalTransferDuration(1.0);
-         YoVariableRegistry dummyRegistry = new YoVariableRegistry("dummy");
-         YoGraphicsListRegistry dummyGrahpics = new YoGraphicsListRegistry();
-         cdsICPPlanner = new ContinuousCMPBasedICPPlanner(bipedSupportPolygons, contactableFeet, numberOfPointsPerFoot, midFeetZUpFrame, soleZUpFrames,
-                                                          dummyRegistry, dummyGrahpics);
-         cdsICPPlanner.initializeParameters(cdsICPPlannerParameters);
-         cdsICPPlanner.setFinalTransferDuration(1.0);
-      }
 
       if (SHOW_WITHOUT_ANGULAR_MOMENTUM)
       {
@@ -1204,9 +926,8 @@ public class SmoothCMPICPPlannerVisualizer
          YoGraphicsListRegistry dummyGrahpics = new YoGraphicsListRegistry();
          icpPlannerAMOff = new SmoothCMPBasedICPPlanner(new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_DUAL_ROBOTIQ, RobotTarget.SCS,
                                                                             false).createFullRobotModel(),
-                                                        bipedSupportPolygons, soleZUpFrames, contactableFeet, numberOfFootstepsToConsider.getIntegerValue(),
-                                                        null, yoTime, dummyRegistry, dummyGrahpics, 9.81);
-         icpPlannerAMOff.initializeParameters(planParametersNoMomentum);
+                                                        bipedSupportPolygons, soleZUpFrames, contactableFeet, null, yoTime, dummyRegistry, dummyGrahpics, 9.81,
+                                                        planParametersNoMomentum);
          icpPlannerAMOff.setFinalTransferDuration(1.0);
       }
 
