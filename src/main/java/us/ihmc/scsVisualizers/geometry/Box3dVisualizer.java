@@ -125,7 +125,7 @@ public class Box3dVisualizer
 
    private void doATick()
    {
-      box.setPose(yoBoxPose.getPosition(), yoBoxPose.getOrientation().getFrameOrientation());
+      box.setPose(yoBoxPose);
       box.setSize(yoBoxSize.getX(), yoBoxSize.getY(), yoBoxSize.getZ());
       for (int i = 0; i < boxVertices.length; i++)
       {
@@ -139,9 +139,9 @@ public class Box3dVisualizer
       Point3D point = new Point3D(yoBox2Pose.getPosition());
       box2.getPosition(point);
       yoBox2Pose.setPosition(point);
-      RotationMatrix matrix3dCopy = new RotationMatrix(yoBox2Pose.getOrientation().getFrameOrientation());
+      RotationMatrix matrix3dCopy = new RotationMatrix(yoBox2Pose.getOrientation());
       box2.getOrientation(matrix3dCopy);
-      yoBox2Pose.getOrientation().set(matrix3dCopy);
+      yoBox2Pose.setOrientation(matrix3dCopy);
       yoBox2Size.set(box2.getSizeX(), box.getSizeY(), box.getSizeZ());
       for (int i = 0; i < box2Vertices.length; i++)
       {
