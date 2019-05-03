@@ -291,7 +291,8 @@ public class CutForceControllerVisualizer
          RigidBodyBasics rigidBody = fullRobotModel.getOneDoFJointByName(scsSensor.getJoint().getName()).getSuccessor();
          RigidBodyTransform transformFromSensorToParentJoint = new RigidBodyTransform();
          scsSensor.getTransformToParentJoint(transformFromSensorToParentJoint);
-         ForceSensorDefinition forceSensorDefinition = new ForceSensorDefinition(sensorName, rigidBody, transformFromSensorToParentJoint);
+         ReferenceFrame sensorFrame = ForceSensorDefinition.createSensorFrame(sensorName, rigidBody, transformFromSensorToParentJoint);
+         ForceSensorDefinition forceSensorDefinition = new ForceSensorDefinition(sensorName, rigidBody, sensorFrame);
          wristSensorDefinitions.put(robotSide, forceSensorDefinition);
       }
 
