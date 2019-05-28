@@ -100,7 +100,6 @@ public class CoPPlannerVisualizer
 
    private List<YoDouble> swingDurations = new ArrayList<>();
    private List<YoDouble> transferDurations = new ArrayList<>();
-   private List<YoDouble> touchdownDurations = new ArrayList<>();
    private List<YoDouble> swingSplitFractions = new ArrayList<>();
    private List<YoDouble> swingDurationShiftFractions = new ArrayList<>();
    private List<YoDouble> transferSplitFractions = new ArrayList<>();
@@ -452,11 +451,9 @@ public class CoPPlannerVisualizer
       {
          YoDouble swingDuration = new YoDouble("swingDuration" + i, registry);
          YoDouble transferDuration = new YoDouble("transferDuration" + i, registry);
-         YoDouble touchdownDuration = new YoDouble("touchdownDuration" + i, registry);
          swingDuration.set(defaultSwingTime);
          transferDuration.set(defaultTransferTime);
          swingDurations.add(swingDuration);
-         touchdownDurations.add(touchdownDuration);
          transferDurations.add(transferDuration);
 
          YoDouble swingSplitFraction = new YoDouble("swingSplitFraction" + i, registry);
@@ -480,8 +477,8 @@ public class CoPPlannerVisualizer
       int numberOfPointsInFoot = planParameters.getNumberOfCoPWayPointsPerFoot();
       int maxNumberOfFootstepsToConsider = planParameters.getNumberOfFootstepsToConsider();
       testCoPPlanner = new ReferenceCoPTrajectoryGenerator("TestCoPPlanner", maxNumberOfFootstepsToConsider, bipedSupportPolygons, contactableFeet,
-                                                           numberOfFootstepsToConsider, swingDurations, transferDurations, touchdownDurations,
-                                                           swingSplitFractions, swingDurationShiftFractions, transferSplitFractions, numberOfFootstepsRegisered,
+                                                           numberOfFootstepsToConsider, swingDurations, transferDurations, swingSplitFractions,
+                                                           swingDurationShiftFractions, transferSplitFractions, numberOfFootstepsRegisered,
                                                            upcomingFootstepData, soleZUpFrames, registry);
       testCoPPlanner.initializeParameters(planParameters);
 
