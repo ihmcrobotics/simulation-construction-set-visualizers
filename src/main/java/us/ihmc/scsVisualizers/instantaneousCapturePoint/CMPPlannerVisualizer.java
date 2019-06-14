@@ -110,7 +110,6 @@ public class CMPPlannerVisualizer
    private final int simulatedTicksPerGraphicUpdate = 2;
 
    private List<YoDouble> swingDurations = new ArrayList<>();
-   private List<YoDouble> touchdownDurations = new ArrayList<>();
    private List<YoDouble> transferDurations = new ArrayList<>();
    private List<YoDouble> swingSplitFractions = new ArrayList<>();
    private List<YoDouble> swingDurationShiftFractions = new ArrayList<>();
@@ -542,12 +541,10 @@ public class CMPPlannerVisualizer
       {
          YoDouble swingDuration = new YoDouble("swingDuration" + i, registry);
          YoDouble transferDuration = new YoDouble("transferDuration" + i, registry);
-         YoDouble touchdownDuration = new YoDouble("touchdownDuration" + i, registry);
          swingDuration.set(defaultSwingTime);
          transferDuration.set(defaultTransferTime);
          swingDurations.add(swingDuration);
          transferDurations.add(transferDuration);
-         touchdownDurations.add(touchdownDuration);
 
          YoDouble swingSplitFraction = new YoDouble("swingSplitFraction" + i, registry);
          YoDouble swingDurationShiftFraction = new YoDouble("swingDurationShiftFraction" + i, registry);
@@ -570,9 +567,9 @@ public class CMPPlannerVisualizer
       String namePrefix = "TestCMPPlanner";
       int maxNumberFootstepsToConsider = planParameters.getNumberOfFootstepsToConsider();
       copGenerator = new ReferenceCoPTrajectoryGenerator(namePrefix, maxNumberFootstepsToConsider, bipedSupportPolygons, contactableFeet,
-                                                         numberOfFootstepsToConsider, swingDurations, transferDurations, touchdownDurations,
-                                                         swingSplitFractions, swingDurationShiftFractions, transferSplitFractions, numberOfFootstepsRegistered,
-                                                         upcomingFootstepData, soleZUpFrames, registry);
+                                                         numberOfFootstepsToConsider, swingDurations, transferDurations, swingSplitFractions,
+                                                         swingDurationShiftFractions, transferSplitFractions, numberOfFootstepsRegistered, upcomingFootstepData,
+                                                         soleZUpFrames, registry);
       cmpGenerator = new ReferenceCMPTrajectoryGenerator(namePrefix, maxNumberFootstepsToConsider, numberOfFootstepsToConsider, false, registry,
                                                          graphicsListRegistry);
       cmpGenerator.setGroundReaction(180 * gravityZ);
