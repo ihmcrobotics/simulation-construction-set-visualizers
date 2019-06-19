@@ -5,7 +5,7 @@ import java.util.Random;
 import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.euclid.matrix.RotationMatrix;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
-import us.ihmc.euclid.shape.Box3D;
+import us.ihmc.euclid.shape.primitives.Box3D;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.euclid.tuple4D.Quaternion;
@@ -125,22 +125,20 @@ public class Box3dVisualizer
 
    private void doATick()
    {
-      box.setPose(yoBoxPose);
+      box.getPose().set(yoBoxPose);
       box.setSize(yoBoxSize.getX(), yoBoxSize.getY(), yoBoxSize.getZ());
       for (int i = 0; i < boxVertices.length; i++)
       {
          box.getVertex(i, boxVertices[i]);
          yoBoxVertices[i].set(boxVertices[i]);
       }
-      isInside.set(box.isInsideOrOnSurface(isInsidePoint));
+      isInside.set(box.isPointInside(isInsidePoint));
       
       box2.set(box);
-      box2.appendTransform(boxTransform);
-      Point3D point = new Point3D(yoBox2Pose.getPosition());
-      box2.getPosition(point);
+      box2.getPose().multiply(boxTransform);
+      Point3D point = new Point3D(box2.getPosition());
       yoBox2Pose.setPosition(point);
-      RotationMatrix matrix3dCopy = new RotationMatrix(yoBox2Pose.getOrientation());
-      box2.getOrientation(matrix3dCopy);
+      RotationMatrix matrix3dCopy = new RotationMatrix(box2.getOrientation());
       yoBox2Pose.setOrientation(matrix3dCopy);
       yoBox2Size.set(box2.getSizeX(), box.getSizeY(), box.getSizeZ());
       for (int i = 0; i < box2Vertices.length; i++)
