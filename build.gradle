@@ -34,7 +34,7 @@ mainDependencies {
    compile group: "us.ihmc", name: "ihmc-state-estimation", version: "source"
    compile group: "us.ihmc", name: "atlas", version: "source"
    compile group: "us.ihmc", name: "ihmc-java-toolkit", version: "source"
-   compile group: "us.ihmc", name: "ihmc-commons", version: "0.25.4"
+   compile group: "us.ihmc", name: "ihmc-commons", version: "0.26.6"
    compile group: "us.ihmc", name: "ihmc-robotics-toolkit", version: "source"
    compile group: "us.ihmc", name: "ihmc-graphics-description", version: "0.12.12"
    compile group: "us.ihmc", name: "ihmc-geometry", version: "0.12.5"
