@@ -56,6 +56,7 @@ import us.ihmc.humanoidBehaviors.behaviors.scripts.engine.ScriptFileLoader;
 import us.ihmc.humanoidBehaviors.behaviors.scripts.engine.ScriptObject;
 import us.ihmc.humanoidRobotics.footstep.FootSpoof;
 import us.ihmc.humanoidRobotics.footstep.Footstep;
+import us.ihmc.humanoidRobotics.footstep.FootstepShiftFractions;
 import us.ihmc.humanoidRobotics.footstep.FootstepTiming;
 import us.ihmc.log.LogTools;
 import us.ihmc.mecano.multiBodySystem.interfaces.RigidBodyBasics;
@@ -88,6 +89,12 @@ public class SmoothCMPICPPlannerVisualizer
    private final double defaultInitialTransferTime = 1.0; //0.1;
    private final double desiredVelocity = 0.62; //0.5;
    private final double defaultStepWidth = 0.25;
+
+   private final double defaultSwingDurationShiftFraction = 0.85;
+   private final double defaultSwingSplitFraction = 0.5;
+   private final double defaultTransferSplitFraction = 0.5;
+   private final double defaultTransferWeightDistribution = 0.5;
+
    private static final int BUFFER_SIZE = 16000;
 
    private final static int numberOfSteps = 5;
@@ -128,6 +135,7 @@ public class SmoothCMPICPPlannerVisualizer
    private final AtlasPhysicalProperties atlasPhysicalProperties = new AtlasPhysicalProperties();
    private List<Footstep> footsteps;
    private List<FootstepTiming> footstepTimings;
+   private List<FootstepShiftFractions> footstepShiftFractions;
    private BagOfBalls copTrack, cmpTrack, icpTrack, comTrack, icpInitialTrack, icpFinalTrack, comInitialTrack, comFinalTrack, estCoMTrack;
    private BagOfBalls copTrackAMOff, cmpTrackAMOff, icpTrackAMOff, comTrackAMOff;
    private YoGraphicPosition cmpInitialTrack;
@@ -285,6 +293,7 @@ public class SmoothCMPICPPlannerVisualizer
       }
 
       footstepTimings = getFootstepTimings();
+      footstepShiftFractions = getFootstepShiftFractions();
 
       updatables.add(new Updatable()
       {
@@ -355,7 +364,7 @@ public class SmoothCMPICPPlannerVisualizer
       simulationOverheadPlotterFactory.addYoGraphicsListRegistries(graphicsListRegistry);
       simulationOverheadPlotterFactory.createOverheadPlotter();
       scs.startOnAThread();
-      simulate(footsteps, footstepTimings);
+      simulate(footsteps, footstepTimings, footstepShiftFractions);
       ThreadTools.sleepForever();
       LogTools.debug("Sleeping forever");
    }
@@ -371,7 +380,18 @@ public class SmoothCMPICPPlannerVisualizer
       return timings;
    }
 
-   private void simulate(List<Footstep> footsteps, List<FootstepTiming> timings)
+   private List<FootstepShiftFractions> getFootstepShiftFractions()
+   {
+      List<FootstepShiftFractions> shiftFractions = new ArrayList<>(footsteps.size());
+      shiftFractions.add(new FootstepShiftFractions(defaultSwingDurationShiftFraction, defaultSwingSplitFraction, defaultTransferSplitFraction, defaultTransferWeightDistribution));
+      for (int i = 1; i < footsteps.size(); i++)
+      {
+         shiftFractions.add(new FootstepShiftFractions(defaultSwingDurationShiftFraction, defaultSwingSplitFraction, defaultTransferSplitFraction, defaultTransferWeightDistribution));
+      }
+      return shiftFractions;
+   }
+
+   private void simulate(List<Footstep> footsteps, List<FootstepTiming> timings, List<FootstepShiftFractions> shiftFractions)
    {
       int currentStepCount = 0;
       YoBoolean inDoubleSupport = new YoBoolean("InDoubleSupport", registry);
@@ -403,7 +423,7 @@ public class SmoothCMPICPPlannerVisualizer
             nextFootstepTimings.add(timings.get(currentStepCount + i));
          }
          updateFootStepViz(nextFootsteps, nextFootstepTimings);
-         registerFootsteps(nextFootsteps, nextFootstepTimings);
+         registerFootsteps(nextFootsteps, nextFootstepTimings, shiftFractions);
 
          Footstep nextFootstep = footsteps.get(footsteps.size() - 1);
          if (!(currentStepCount == footsteps.size() && inDoubleSupport.getBooleanValue()))
@@ -647,7 +667,7 @@ public class SmoothCMPICPPlannerVisualizer
          updatable.update(yoTime.getDoubleValue());
    }
 
-   private void registerFootsteps(List<Footstep> footsteps, List<FootstepTiming> footstepTimings)
+   private void registerFootsteps(List<Footstep> footsteps, List<FootstepTiming> footstepTimings, List<FootstepShiftFractions> footstepShiftFractions)
    {
       icpPlanner.clearPlan();
       if (SHOW_WITHOUT_ANGULAR_MOMENTUM)
@@ -657,10 +677,10 @@ public class SmoothCMPICPPlannerVisualizer
 
       for (int i = 0; i < footsteps.size(); i++)
       {
-         icpPlanner.addFootstepToPlan(footsteps.get(i), footstepTimings.get(i));
+         icpPlanner.addFootstepToPlan(footsteps.get(i), footstepTimings.get(i), footstepShiftFractions.get(i));
          if (SHOW_WITHOUT_ANGULAR_MOMENTUM)
          {
-            icpPlannerAMOff.addFootstepToPlan(footsteps.get(i), footstepTimings.get(i));
+            icpPlannerAMOff.addFootstepToPlan(footsteps.get(i), footstepTimings.get(i), footstepShiftFractions.get(i));
          }
       }
    }

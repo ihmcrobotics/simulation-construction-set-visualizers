@@ -114,6 +114,8 @@ public class CMPPlannerVisualizer
    private List<YoDouble> swingSplitFractions = new ArrayList<>();
    private List<YoDouble> swingDurationShiftFractions = new ArrayList<>();
    private List<YoDouble> transferSplitFractions = new ArrayList<>();
+   private List<YoDouble> weightDistributions = new ArrayList<>();
+   private YoDouble finalTransferWeightDistribution;
 
    private final YoFramePoint3D desiredCoP;
    private final YoFramePoint3D desiredCMP;
@@ -555,6 +557,9 @@ public class CMPPlannerVisualizer
          swingSplitFractions.add(swingSplitFraction);
          swingDurationShiftFractions.add(swingDurationShiftFraction);
          transferSplitFractions.add(transferSplitFraction);
+         YoDouble weightDistribution = new YoDouble("weightDistribution" + i, registry);
+         weightDistribution.set(0.5);
+         weightDistributions.add(weightDistribution);
       }
       int i = numberOfFootstepsToConsider.getIntegerValue();
       YoDouble transferDuration = new YoDouble("transferDuration" + i, registry);
@@ -564,11 +569,14 @@ public class CMPPlannerVisualizer
       transferDurations.add(transferDuration);
       transferSplitFractions.add(transferSplitFraction);
 
+      finalTransferWeightDistribution = new YoDouble("finalTransferWeightDistribution", registry);
+      finalTransferWeightDistribution.set(0.5);
+
       String namePrefix = "TestCMPPlanner";
       int maxNumberFootstepsToConsider = planParameters.getNumberOfFootstepsToConsider();
       copGenerator = new ReferenceCoPTrajectoryGenerator(namePrefix, maxNumberFootstepsToConsider, bipedSupportPolygons, contactableFeet,
                                                          numberOfFootstepsToConsider, swingDurations, transferDurations, swingSplitFractions,
-                                                         swingDurationShiftFractions, transferSplitFractions, numberOfFootstepsRegistered, upcomingFootstepData,
+                                                         swingDurationShiftFractions, transferSplitFractions, weightDistributions, finalTransferWeightDistribution, numberOfFootstepsRegistered, upcomingFootstepData,
                                                          soleZUpFrames, registry);
       cmpGenerator = new ReferenceCMPTrajectoryGenerator(namePrefix, maxNumberFootstepsToConsider, numberOfFootstepsToConsider, false, registry,
                                                          graphicsListRegistry);
