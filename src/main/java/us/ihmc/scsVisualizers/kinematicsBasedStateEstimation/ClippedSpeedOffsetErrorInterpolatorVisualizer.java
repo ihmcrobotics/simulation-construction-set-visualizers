@@ -143,7 +143,7 @@ public class ClippedSpeedOffsetErrorInterpolatorVisualizer
       yoGraphicsListRegistry.registerYoGraphic("outputs", interpolatedPoseGraphic);
 
       alphaFilterBreakFrequency.set(0.6);
-      ClippedSpeedOffsetErrorInterpolator interpolator = new ClippedSpeedOffsetErrorInterpolator(registry, referenceFrameToBeCorrected, alphaFilterBreakFrequency,0.001, false);
+      ClippedSpeedOffsetErrorInterpolator interpolator = new ClippedSpeedOffsetErrorInterpolator(registry, referenceFrameToBeCorrected, 0.001);
       referenceFrameToBeCorrectedWaypointsTransformPoseBufferInWorldFrame.findTransform(0, timeStampedTransform );
       referenceFrameToBeCorrectedTransform.set(timeStampedTransform.getTransform3D());
       referenceFrameToBeCorrected.update();
