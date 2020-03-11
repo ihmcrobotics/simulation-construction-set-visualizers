@@ -6,6 +6,7 @@ import java.util.List;
 
 import us.ihmc.atlas.parameters.AtlasPhysicalProperties;
 import us.ihmc.atlas.parameters.AtlasSmoothCMPPlannerParameters;
+import us.ihmc.avatar.drcRobot.RobotTarget;
 import us.ihmc.commonWalkingControlModules.bipedSupportPolygons.BipedSupportPolygons;
 import us.ihmc.commonWalkingControlModules.bipedSupportPolygons.YoPlaneContactState;
 import us.ihmc.commonWalkingControlModules.capturePoint.smoothCMPBasedICPPlanner.CoPGeneration.CoPPointsInFoot;
@@ -445,7 +446,7 @@ public class CoPPlannerVisualizer
       midFeetZUpFrame.update();
       bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, soleZUpFrames, soleFrames, registry, graphicsListRegistry);
       footstepTestHelper = new FootstepTestHelper(contactableFeet);
-      planParameters = new AtlasSmoothCMPPlannerParameters(atlasPhysicalProperties);
+      planParameters = new AtlasSmoothCMPPlannerParameters(atlasPhysicalProperties, RobotTarget.SCS);
       YoInteger numberOfFootstepsToConsider = new YoInteger("numberOfFootstepsToConsider", registry);
       numberOfFootstepsToConsider.set(planParameters.getNumberOfFootstepsToConsider());
 

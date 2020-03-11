@@ -884,7 +884,7 @@ public class SmoothCMPICPPlannerVisualizer
       midFeetZUpFrame.update();
       bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, soleZUpFrames, soleFrames, registry, graphicsListRegistry);
       footstepTestHelper = new FootstepTestHelper(contactableFeet);
-      AtlasSmoothCMPPlannerParameters planParametersNoMomentum = new AtlasSmoothCMPPlannerParameters(atlasPhysicalProperties)
+      AtlasSmoothCMPPlannerParameters planParametersNoMomentum = new AtlasSmoothCMPPlannerParameters(atlasPhysicalProperties, RobotTarget.SCS)
       {
          @Override
          public boolean planSwingAngularMomentum()
@@ -898,7 +898,7 @@ public class SmoothCMPICPPlannerVisualizer
             return false;
          }
       };
-      planParameters = new AtlasSmoothCMPPlannerParameters(atlasPhysicalProperties)
+      planParameters = new AtlasSmoothCMPPlannerParameters(atlasPhysicalProperties, RobotTarget.SCS)
       {
          @Override
          public boolean planSwingAngularMomentum()

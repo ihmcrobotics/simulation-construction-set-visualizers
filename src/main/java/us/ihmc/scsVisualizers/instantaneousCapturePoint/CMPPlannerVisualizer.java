@@ -522,7 +522,7 @@ public class CMPPlannerVisualizer
       midFeetZUpFrame.update();
       bipedSupportPolygons = new BipedSupportPolygons(midFeetZUpFrame, soleZUpFrames, soleFrames, registry, graphicsListRegistry);
       footstepTestHelper = new FootstepTestHelper(contactableFeet);
-      planParameters = new AtlasSmoothCMPPlannerParameters(atlasPhysicalProperties)
+      planParameters = new AtlasSmoothCMPPlannerParameters(atlasPhysicalProperties, RobotTarget.SCS)
       {
          @Override
          public boolean planSwingAngularMomentum()
