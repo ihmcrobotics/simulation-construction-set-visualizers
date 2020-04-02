@@ -126,7 +126,7 @@ public class Box3dVisualizer
    private void doATick()
    {
       box.getPose().set(yoBoxPose);
-      box.setSize(yoBoxSize.getX(), yoBoxSize.getY(), yoBoxSize.getZ());
+      box.getSize().set(yoBoxSize.getX(), yoBoxSize.getY(), yoBoxSize.getZ());
       for (int i = 0; i < boxVertices.length; i++)
       {
          box.getVertex(i, boxVertices[i]);
