@@ -110,14 +110,14 @@ public class YoGraphicPlanarRegionsListVisualizer
    {
 
       RigidBodyTransform transformToWorld = new RigidBodyTransform();
-      transformToWorld.setTranslation(0.0, 0.0, 0.2);
+      transformToWorld.getTranslation().set(0.0, 0.0, 0.2);
       List<ConvexPolygon2D> polygons1 = new ArrayList<>();
       polygons1.add(new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(createCircle(0.1))));
       polygons1.add(new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(createCircle(new Point2D(0.5, -0.2), 0.35))));
       polygons1.add(new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(createCircle(new Point2D(-0.5, -0.1), 0.4))));
       PlanarRegion planarRegion1 = new PlanarRegion(transformToWorld, polygons1);
       transformToWorld.setRotationRollAndZeroTranslation(0.3 * Math.PI);
-      transformToWorld.setTranslation(0.0, 0.3, 0.1);
+      transformToWorld.getTranslation().set(0.0, 0.3, 0.1);
       PlanarRegion planarRegion2 = new PlanarRegion(transformToWorld, new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(createCircle(0.3))));
       Random random = new Random(45L);
       transformToWorld = EuclidCoreRandomTools.nextRigidBodyTransform(random);

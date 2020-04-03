@@ -36,8 +36,8 @@ public class TwistVisualizer extends Application
 
    public TwistVisualizer()
    {
-      ellipsoidTransform.setTranslation(0.3, 0.3, 0.4);
-      ellipsoidTransform.setRotationYawPitchRoll(0.5, 0.5 * Math.PI-0.5, 0.0);
+      ellipsoidTransform.getTranslation().set(0.3, 0.3, 0.4);
+      ellipsoidTransform.getRotation().setYawPitchRoll(0.5, 0.5 * Math.PI-0.5, 0.0);
       ellipsoidFrame = ReferenceFrame.constructFrameWithUnchangingTransformToParent("ellipsoidFrame", worldFrame, ellipsoidTransform);
       frameEllipsoid = new FrameEllipsoid3D(ellipsoidFrame, 0.2, 0.2, 0.3);
       ellipsoidCenterTwist.setToZero(ellipsoidFrame, worldFrame, ellipsoidFrame);
@@ -95,7 +95,7 @@ public class TwistVisualizer extends Application
             double surfaceY = yRadius * sinLongitude * cosLatitude;
             double surfaceZ = zRadius * sinLatitude;
             RigidBodyTransform transformFromSurfaceToCenter = new RigidBodyTransform();
-            transformFromSurfaceToCenter.setTranslation(surfaceX, surfaceY, surfaceZ);
+            transformFromSurfaceToCenter.getTranslation().set(surfaceX, surfaceY, surfaceZ);
             String frameName = "surfaceFrameLong" + longitudeIndex + "Latitude" + latitudeIndex;
             ReferenceFrame frameOnSurface = ReferenceFrame.constructFrameWithUnchangingTransformToParent(frameName, ellipsoidFrame, transformFromSurfaceToCenter);
             Twist surfaceTwist = new Twist(ellipsoidCenterTwist);

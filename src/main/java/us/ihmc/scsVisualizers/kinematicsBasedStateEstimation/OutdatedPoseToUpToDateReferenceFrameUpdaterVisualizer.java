@@ -80,9 +80,8 @@ public class OutdatedPoseToUpToDateReferenceFrameUpdaterVisualizer
       {
          RigidBodyTransform currentUpToDateTransform = new RigidBodyTransform();
          long currentTimeStamp = (long) (i * (lastTimeStamp - firstTimeStamp) / numberOfUpToDateTransforms + firstTimeStamp);
-         currentUpToDateTransform.setTranslation((double) (20.0 / numberOfUpToDateTransforms * i) - 5.0,
-               RandomNumbers.nextDouble(random, -1.5, 1.5), RandomNumbers.nextDouble(random, 0.1, 2.0));
-         currentUpToDateTransform.setRotation(RandomGeometry.nextQuaternion(random));
+         currentUpToDateTransform.getTranslation().set((double) (20.0 / numberOfUpToDateTransforms * i) - 5.0, RandomNumbers.nextDouble(random, -1.5, 1.5), RandomNumbers.nextDouble(random, 0.1, 2.0));
+         currentUpToDateTransform.getRotation().set(RandomGeometry.nextQuaternion(random));
          upToDateTimeStampedTransformPoseBuffer.put(currentUpToDateTransform, currentTimeStamp);
          outdatedPoseToUpToDateReferenceFrameUpdater.putStateEstimatorTransformInBuffer(currentUpToDateTransform, currentTimeStamp);
 
@@ -115,8 +114,8 @@ public class OutdatedPoseToUpToDateReferenceFrameUpdaterVisualizer
 
          RigidBodyTransform upToDateTransformInPast_Translation = new RigidBodyTransform(upToDateTimeStampedTransformInPast.getTransform3D());
          RigidBodyTransform upToDateTransformInPast_Rotation = new RigidBodyTransform(upToDateTransformInPast_Translation);
-         upToDateTransformInPast_Translation.setRotationToZero();
-         upToDateTransformInPast_Rotation.setTranslationToZero();
+         upToDateTransformInPast_Translation.getRotation().setToZero();
+         upToDateTransformInPast_Rotation.getTranslation().setToZero();
          
          finalErrorTransform.multiply(upToDateTransformInPast_Translation);
          finalErrorTransform.multiply(offsetTranslationTransform);

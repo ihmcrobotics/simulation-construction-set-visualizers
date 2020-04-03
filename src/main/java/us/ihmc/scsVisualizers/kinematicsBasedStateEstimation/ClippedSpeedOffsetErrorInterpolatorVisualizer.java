@@ -93,7 +93,7 @@ public class ClippedSpeedOffsetErrorInterpolatorVisualizer
       referenceFrameToBeCorrectedWaypointsTransformPoseBufferInWorldFrame.findTransform(0, timeStampedTransform );
       referenceFrameToBeCorrectedTransform.set(timeStampedTransform.getTransform3D());
       referenceFrameToBeCorrectedTransform.getTranslation(referenceFrameToBeCorrectedTransform_Translation);
-      referenceFrameToBeCorrectedTransform.getRotation(referenceFrameToBeCorrectedTransform_Rotation);
+      referenceFrameToBeCorrectedTransform_Rotation.set(referenceFrameToBeCorrectedTransform.getRotation());
       referenceFrameToBeCorrected.update();
       
       referenceFrameToBeCorrectedPose.setToZero(referenceFrameToBeCorrected);
@@ -164,7 +164,7 @@ public class ClippedSpeedOffsetErrorInterpolatorVisualizer
 
          ////////////////update startPose and goalPose////
          referenceFrameToBeCorrectedTransform.getTranslation(referenceFrameToBeCorrectedTransform_Translation);
-         referenceFrameToBeCorrectedTransform.getRotation(referenceFrameToBeCorrectedTransform_Rotation);
+         referenceFrameToBeCorrectedTransform_Rotation.set(referenceFrameToBeCorrectedTransform.getRotation());
          
          startPoseTransform.setIdentity();
          startPoseTransform.multiply(new RigidBodyTransform(new Quaternion(), referenceFrameToBeCorrectedTransform_Translation));
@@ -251,8 +251,8 @@ public class ClippedSpeedOffsetErrorInterpolatorVisualizer
    private void putReferenceFrameToBeCorrectedWaypointInTransformBuffer(long timeStamp, Vector3D translation, Quaternion rotation)
    {
       RigidBodyTransform temporaryReferenceFrameToBeCorrectedTransformInWorldFrame = new RigidBodyTransform();  
-      temporaryReferenceFrameToBeCorrectedTransformInWorldFrame.setTranslation(translation);
-      temporaryReferenceFrameToBeCorrectedTransformInWorldFrame.setRotation(rotation);
+      temporaryReferenceFrameToBeCorrectedTransformInWorldFrame.getTranslation().set(translation);
+      temporaryReferenceFrameToBeCorrectedTransformInWorldFrame.getRotation().set(rotation);
       referenceFrameToBeCorrectedWaypointsTransformPoseBufferInWorldFrame.put(temporaryReferenceFrameToBeCorrectedTransformInWorldFrame, timeStamp);
    }
    
