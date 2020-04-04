@@ -92,7 +92,7 @@ public class ClippedSpeedOffsetErrorInterpolatorVisualizer
       
       referenceFrameToBeCorrectedWaypointsTransformPoseBufferInWorldFrame.findTransform(0, timeStampedTransform );
       referenceFrameToBeCorrectedTransform.set(timeStampedTransform.getTransform3D());
-      referenceFrameToBeCorrectedTransform.getTranslation(referenceFrameToBeCorrectedTransform_Translation);
+      referenceFrameToBeCorrectedTransform_Translation.set(referenceFrameToBeCorrectedTransform.getTranslation());
       referenceFrameToBeCorrectedTransform_Rotation.set(referenceFrameToBeCorrectedTransform.getRotation());
       referenceFrameToBeCorrected.update();
       
@@ -163,7 +163,7 @@ public class ClippedSpeedOffsetErrorInterpolatorVisualizer
          yoInterpolatedPose.set(interpolatedPose);
 
          ////////////////update startPose and goalPose////
-         referenceFrameToBeCorrectedTransform.getTranslation(referenceFrameToBeCorrectedTransform_Translation);
+         referenceFrameToBeCorrectedTransform_Translation.set(referenceFrameToBeCorrectedTransform.getTranslation());
          referenceFrameToBeCorrectedTransform_Rotation.set(referenceFrameToBeCorrectedTransform.getRotation());
          
          startPoseTransform.setIdentity();

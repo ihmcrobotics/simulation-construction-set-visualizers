@@ -307,7 +307,7 @@ public class NewPelvisPoseHistoryCorrectionVisualizer
          
          Vector3D currentIcpBigTranslationOffset = new Vector3D();
          Quaternion currentIcpBigRotationOffset = new Quaternion();
-         currentIcpWithBigOffsetTransform_Translation.getTranslation(currentIcpBigTranslationOffset);
+         currentIcpBigTranslationOffset.set(currentIcpWithBigOffsetTransform_Translation.getTranslation());
          currentIcpBigRotationOffset.set(currentIcpWithBigOffsetTransform_Rotation.getRotation());
          smallTranslationOffset.add(currentIcpBigTranslationOffset);
          smallRotationOffset.preMultiply(currentIcpBigRotationOffset);
