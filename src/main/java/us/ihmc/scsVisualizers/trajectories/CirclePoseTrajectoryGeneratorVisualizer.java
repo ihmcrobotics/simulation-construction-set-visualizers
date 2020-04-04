@@ -59,8 +59,8 @@ public class CirclePoseTrajectoryGeneratorVisualizer
       traj.updateCircleFrame(circleCenter, circleNormal);
       ReferenceFrame circleFrame = traj.getCircleFrame();
       FramePose3D initialPose = new FramePose3D(circleFrame);
-      initialPose.setOrientationYawPitchRoll(0.0, 0.0, 0.0);
-      initialPose.setPosition(-0.5, 0.0, 0.0);
+      initialPose.getOrientation().setYawPitchRoll(0.0, 0.0, 0.0);
+      initialPose.getPosition().set(-0.5, 0.0, 0.0);
       traj.setInitialPose(initialPose);
       traj.setDesiredRotationAngle(Math.PI);
       traj.initialize();
