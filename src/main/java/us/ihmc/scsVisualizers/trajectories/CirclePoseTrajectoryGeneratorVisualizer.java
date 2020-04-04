@@ -9,6 +9,7 @@ import us.ihmc.euclid.referenceFrame.FramePoint3D;
 import us.ihmc.euclid.referenceFrame.FramePose3D;
 import us.ihmc.euclid.referenceFrame.FrameVector3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
+import us.ihmc.euclid.referenceFrame.tools.ReferenceFrameTools;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
@@ -25,7 +26,7 @@ import us.ihmc.yoVariables.variable.YoFrameVector3D;
 public class CirclePoseTrajectoryGeneratorVisualizer
 {
    private static final ReferenceFrame worldFrame = ReferenceFrame.getWorldFrame();
-   private static final ReferenceFrame aFrame = ReferenceFrame.constructFrameWithUnchangingTransformToParent("aFrame", worldFrame, TransformTools.createTransformFromTranslationAndEulerAngles(0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
+   private static final ReferenceFrame aFrame = ReferenceFrameTools.constructFrameWithUnchangingTransformToParent("aFrame", worldFrame, TransformTools.createTransformFromTranslationAndEulerAngles(0.0, 0.0, 0.0, 0.0, 0.0, 0.0));
    private final YoVariableRegistry registry = new YoVariableRegistry(getClass().getSimpleName());
 
    private final double trajectoryTime = 1.0;

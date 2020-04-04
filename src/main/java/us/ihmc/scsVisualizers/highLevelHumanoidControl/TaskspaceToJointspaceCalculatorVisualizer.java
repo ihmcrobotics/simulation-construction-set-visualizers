@@ -21,6 +21,7 @@ import us.ihmc.euclid.referenceFrame.FramePoint3D;
 import us.ihmc.euclid.referenceFrame.FramePose3D;
 import us.ihmc.euclid.referenceFrame.FrameVector3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
+import us.ihmc.euclid.referenceFrame.tools.ReferenceFrameTools;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
@@ -178,7 +179,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
       }
 
       RigidBodyTransform transformToParent = new RigidBodyTransform(new AxisAngle(), new Vector3D(0.0, 0.1, 0.0));
-      handControlFrame = ReferenceFrame.constructFrameWithUnchangingTransformToParent("ControlFrame", leftHandFrame, transformToParent);
+      handControlFrame = ReferenceFrameTools.constructFrameWithUnchangingTransformToParent("ControlFrame", leftHandFrame, transformToParent);
       taskspaceToJointspaceCalculator.setControlFrameFixedInEndEffector(handControlFrame);
       taskspaceToJointspaceCalculator.setSelectionMatrix(selectionMatrix);
 

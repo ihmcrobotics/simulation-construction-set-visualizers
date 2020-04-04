@@ -16,6 +16,7 @@ import us.ihmc.euclid.geometry.tools.EuclidGeometryTools;
 import us.ihmc.euclid.referenceFrame.FrameEllipsoid3D;
 import us.ihmc.euclid.referenceFrame.FrameVector3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
+import us.ihmc.euclid.referenceFrame.tools.ReferenceFrameTools;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.graphicsDescription.MeshDataBuilder;
@@ -38,7 +39,7 @@ public class TwistVisualizer extends Application
    {
       ellipsoidTransform.getTranslation().set(0.3, 0.3, 0.4);
       ellipsoidTransform.getRotation().setYawPitchRoll(0.5, 0.5 * Math.PI-0.5, 0.0);
-      ellipsoidFrame = ReferenceFrame.constructFrameWithUnchangingTransformToParent("ellipsoidFrame", worldFrame, ellipsoidTransform);
+      ellipsoidFrame = ReferenceFrameTools.constructFrameWithUnchangingTransformToParent("ellipsoidFrame", worldFrame, ellipsoidTransform);
       frameEllipsoid = new FrameEllipsoid3D(ellipsoidFrame, 0.2, 0.2, 0.3);
       ellipsoidCenterTwist.setToZero(ellipsoidFrame, worldFrame, ellipsoidFrame);
       ellipsoidCenterTwist.getLinearPart().set(0.0, 0.0, 0.0);
@@ -97,7 +98,7 @@ public class TwistVisualizer extends Application
             RigidBodyTransform transformFromSurfaceToCenter = new RigidBodyTransform();
             transformFromSurfaceToCenter.getTranslation().set(surfaceX, surfaceY, surfaceZ);
             String frameName = "surfaceFrameLong" + longitudeIndex + "Latitude" + latitudeIndex;
-            ReferenceFrame frameOnSurface = ReferenceFrame.constructFrameWithUnchangingTransformToParent(frameName, ellipsoidFrame, transformFromSurfaceToCenter);
+            ReferenceFrame frameOnSurface = ReferenceFrameTools.constructFrameWithUnchangingTransformToParent(frameName, ellipsoidFrame, transformFromSurfaceToCenter);
             Twist surfaceTwist = new Twist(ellipsoidCenterTwist);
             surfaceTwist.changeFrame(frameOnSurface);
             twistsOnSurface.add(surfaceTwist);
