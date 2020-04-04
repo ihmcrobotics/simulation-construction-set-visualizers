@@ -108,7 +108,7 @@ public class MultipleWaypointsPoseTrajectoryGeneratorVisualizer
          double roll = Math.cos(angle) * 0.16;
          
          orientation.setYawPitchRoll(yaw, pitch, roll);
-         pose.setOrientation(orientation);
+         pose.getOrientation().set(orientation);
          
          double yawRate = 0.1 * -Math.sin(angle) * angleDot;
          double pitchRate = 0.15 * Math.sin(angle) * angleDot;
