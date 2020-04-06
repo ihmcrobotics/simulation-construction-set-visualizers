@@ -41,6 +41,7 @@ mainDependencies {
 }
 
 oldgdxDependencies {
+   api(ihmc.sourceSetProject("main"))
    api("com.badlogicgames.gdx:gdx-bullet-platform:1.9.4:natives-desktop")
    api("com.badlogicgames.gdx:gdx-bullet:1.9.4")
 }
