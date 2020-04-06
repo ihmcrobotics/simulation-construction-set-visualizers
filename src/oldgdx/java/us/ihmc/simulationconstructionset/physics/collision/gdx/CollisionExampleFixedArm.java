@@ -1,6 +1,6 @@
 package us.ihmc.simulationconstructionset.physics.collision.gdx;
 
-import us.ihmc.euclid.Axis;
+import us.ihmc.euclid.Axis3D;
 import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
@@ -38,7 +38,7 @@ public class CollisionExampleFixedArm
       {
          super("DoublePendulum"); // create and instance of Robot
          // Create joints and assign links. Pin joints have a single axis of rotation.
-         pin1 = new PinJoint("joint1", new Vector3D(0.0, 0.0, 0), this, Axis.Y);
+         pin1 = new PinJoint("joint1", new Vector3D(0.0, 0.0, 0), this, Axis3D.Y);
          // pin1.setInitialState(0.0, 0.0);
          Link link1 = link1();
          pin1.setLink(link1); // associate link1 with the joint pin1
@@ -51,10 +51,10 @@ public class CollisionExampleFixedArm
           * since it should be placed a distance of L1 in the Z direction from
           * the previous joint.
           */
-         pin2 = new PinJoint("joint2", new Vector3D(0.0, 0.0, L1), this, Axis.Y);
+         pin2 = new PinJoint("joint2", new Vector3D(0.0, 0.0, L1), this, Axis3D.Y);
          Link link2 = link2();
 
-         Joint pin3 = new PinJoint("joint3", new Vector3D(0.0, 0.0, L2), this, Axis.Y);
+         Joint pin3 = new PinJoint("joint3", new Vector3D(0.0, 0.0, L2), this, Axis3D.Y);
          Link linkBlock = endBlock();
 
          pin3.setLink(linkBlock);
