@@ -40,6 +40,12 @@ mainDependencies {
    api("us.ihmc:ihmc-simulation-toolkit:source")
 }
 
+oldgdxDependencies {
+   api("com.badlogicgames.gdx:gdx-bullet-platform:1.9.4:natives-desktop")
+   api("com.badlogicgames.gdx:gdx-bullet:1.9.4")
+}
+
+
 if (ihmc.isBuildRoot())
 {
    remotes {
