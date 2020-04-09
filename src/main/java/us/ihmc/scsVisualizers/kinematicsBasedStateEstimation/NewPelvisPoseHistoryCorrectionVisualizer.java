@@ -202,8 +202,8 @@ public class NewPelvisPoseHistoryCorrectionVisualizer
 
    private void putPelvisWaypointInTransformBuffer(RigidBodyTransform pelvisTransformInWorldFrame, long timeStamp, Vector3D translation, Quaternion rotation)
    {
-      pelvisTransformInWorldFrame.setTranslation(translation);
-      pelvisTransformInWorldFrame.setRotation(rotation);
+      pelvisTransformInWorldFrame.getTranslation().set(translation);
+      pelvisTransformInWorldFrame.getRotation().set(rotation);
       pelvisWaypointsTransformPoseBufferInWorldFrame.put(pelvisTransformInWorldFrame, timeStamp);
    }
 
@@ -277,14 +277,14 @@ public class NewPelvisPoseHistoryCorrectionVisualizer
       
       pelvisTransformAtSpecificTimeStamp_Translation.set(pelvisTransformAtSpecificTimeStamp.getTransform3D());
       pelvisTransformAtSpecificTimeStamp_Rotation.set(pelvisTransformAtSpecificTimeStamp_Translation);
-      pelvisTransformAtSpecificTimeStamp_Translation.setRotationToZero();
-      pelvisTransformAtSpecificTimeStamp_Rotation.setTranslationToZero();
+      pelvisTransformAtSpecificTimeStamp_Translation.getRotation().setToZero();
+      pelvisTransformAtSpecificTimeStamp_Rotation.getTranslation().setToZero();
 
       icpBigOffsetTransformPoseBufferInPelvisFrame.findTransform(firstTimeStamp, currentIcpTimeStampedTransform);
       currentIcpWithBigOffsetTransform_Translation.set(currentIcpTimeStampedTransform.getTransform3D());
       currentIcpWithBigOffsetTransform_Rotation.set(currentIcpWithBigOffsetTransform_Translation);
-      currentIcpWithBigOffsetTransform_Translation.setRotationToZero();
-      currentIcpWithBigOffsetTransform_Rotation.setTranslationToZero();
+      currentIcpWithBigOffsetTransform_Translation.getRotation().setToZero();
+      currentIcpWithBigOffsetTransform_Rotation.getTranslation().setToZero();
 
       RigidBodyTransform firstTimeStamBigIcpOffsetTransform = new RigidBodyTransform();
       firstTimeStamBigIcpOffsetTransform.multiply(pelvisTransformAtSpecificTimeStamp_Translation);
@@ -302,13 +302,13 @@ public class NewPelvisPoseHistoryCorrectionVisualizer
          pelvisWaypointsTransformPoseBufferInWorldFrame.findTransform(timeStamp, pelvisTransformAtSpecificTimeStamp);
          pelvisTransformAtSpecificTimeStamp_Translation.set(pelvisTransformAtSpecificTimeStamp.getTransform3D());
          pelvisTransformAtSpecificTimeStamp_Rotation.set(pelvisTransformAtSpecificTimeStamp_Translation);
-         pelvisTransformAtSpecificTimeStamp_Translation.setRotationToZero();
-         pelvisTransformAtSpecificTimeStamp_Rotation.setTranslationToZero();
+         pelvisTransformAtSpecificTimeStamp_Translation.getRotation().setToZero();
+         pelvisTransformAtSpecificTimeStamp_Rotation.getTranslation().setToZero();
          
          Vector3D currentIcpBigTranslationOffset = new Vector3D();
          Quaternion currentIcpBigRotationOffset = new Quaternion();
-         currentIcpWithBigOffsetTransform_Translation.getTranslation(currentIcpBigTranslationOffset);
-         currentIcpWithBigOffsetTransform_Rotation.getRotation(currentIcpBigRotationOffset);
+         currentIcpBigTranslationOffset.set(currentIcpWithBigOffsetTransform_Translation.getTranslation());
+         currentIcpBigRotationOffset.set(currentIcpWithBigOffsetTransform_Rotation.getRotation());
          smallTranslationOffset.add(currentIcpBigTranslationOffset);
          smallRotationOffset.preMultiply(currentIcpBigRotationOffset);
 

@@ -21,6 +21,7 @@ import us.ihmc.euclid.referenceFrame.FramePoint3D;
 import us.ihmc.euclid.referenceFrame.FramePose3D;
 import us.ihmc.euclid.referenceFrame.FrameVector3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
+import us.ihmc.euclid.referenceFrame.tools.ReferenceFrameTools;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
@@ -178,7 +179,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
       }
 
       RigidBodyTransform transformToParent = new RigidBodyTransform(new AxisAngle(), new Vector3D(0.0, 0.1, 0.0));
-      handControlFrame = ReferenceFrame.constructFrameWithUnchangingTransformToParent("ControlFrame", leftHandFrame, transformToParent);
+      handControlFrame = ReferenceFrameTools.constructFrameWithUnchangingTransformToParent("ControlFrame", leftHandFrame, transformToParent);
       taskspaceToJointspaceCalculator.setControlFrameFixedInEndEffector(handControlFrame);
       taskspaceToJointspaceCalculator.setSelectionMatrix(selectionMatrix);
 
@@ -187,8 +188,8 @@ public class TaskspaceToJointspaceCalculatorVisualizer
       circleNormal.normalize();
       circleTrajectory.updateCircleFrame(circleCenter, circleNormal);
       FramePose3D initialPose = new FramePose3D(circleTrajectory.getCircleFrame());
-      initialPose.setPosition(0.0, -0.175, 0.0);
-      initialPose.setOrientationYawPitchRoll(0.0, Math.PI / 2.0, 0.0);
+      initialPose.getPosition().set(0.0, -0.175, 0.0);
+      initialPose.getOrientation().setYawPitchRoll(0.0, Math.PI / 2.0, 0.0);
       circleTrajectory.setInitialPose(initialPose);
       circleTrajectory.setDesiredRotationAngle(-40.0 * Math.PI);
       circleTrajectory.initialize();
@@ -210,7 +211,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
       MultiBodySystemRandomTools.nextStateWithinJointLimits(random, JointStateType.CONFIGURATION, armJoints);
       handPose.setToZero(handControlFrame);
       handPose.changeFrame(chestFrame);
-      handPose.setPosition(1.3 * handPose.getX(), handPose.getY(), handPose.getZ());
+      handPose.getPosition().set(1.3 * handPose.getX(), handPose.getY(), handPose.getZ());
       handPose.changeFrame(worldFrame);
       finalHandPose.set(handPose);
       straightLineTrajectory.setFinalPose(handPose);
@@ -324,7 +325,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
          double yaw   = amplitudeWigglePelvisYPR * Math.sin(2.0 * Math.PI * frequencyWigglePelvisYPR * yoTime.getDoubleValue() + 1.0 / 3.0 * Math.PI);
          double pitch = amplitudeWigglePelvisYPR * Math.sin(2.0 * Math.PI * frequencyWigglePelvisYPR * yoTime.getDoubleValue() + 3.0 / 3.0 * Math.PI);
          double roll  = amplitudeWigglePelvisYPR * Math.sin(2.0 * Math.PI * frequencyWigglePelvisYPR * yoTime.getDoubleValue() + 5.0 / 3.0 * Math.PI);
-         pelvisPoseWithWiggle.setOrientationYawPitchRoll(yaw, pitch, roll);
+         pelvisPoseWithWiggle.getOrientation().setYawPitchRoll(yaw, pitch, roll);
       }
 
       RigidBodyTransform transform = new RigidBodyTransform();

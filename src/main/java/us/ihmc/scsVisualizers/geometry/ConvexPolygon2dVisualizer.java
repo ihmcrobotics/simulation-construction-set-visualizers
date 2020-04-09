@@ -12,6 +12,7 @@ import us.ihmc.commons.RandomNumbers;
 import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.euclid.geometry.ConvexPolygon2D;
 import us.ihmc.euclid.geometry.interfaces.Vertex2DSupplier;
+import us.ihmc.euclid.geometry.tools.EuclidGeometryRandomTools;
 import us.ihmc.euclid.referenceFrame.FrameLine2D;
 import us.ihmc.euclid.referenceFrame.FramePoint2D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
@@ -114,7 +115,7 @@ public class ConvexPolygon2dVisualizer
       for (int i=0; i<numberOfPolygons; i++)
       {
          int numberOfPossiblePoints = RandomNumbers.nextInt(random, 3, 10);
-         convexPolygons.add(ConvexPolygon2D.generateRandomConvexPolygon2d(random, maxAbsoluteXY, numberOfPossiblePoints));
+         convexPolygons.add(EuclidGeometryRandomTools.nextConvexPolygon2D(random, maxAbsoluteXY, numberOfPossiblePoints));
       }
 
       return convexPolygons;

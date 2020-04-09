@@ -13,9 +13,10 @@ import javafx.scene.shape.MeshView;
 import javafx.stage.Stage;
 import us.ihmc.euclid.axisAngle.AxisAngle;
 import us.ihmc.euclid.geometry.tools.EuclidGeometryTools;
+import us.ihmc.euclid.referenceFrame.FrameEllipsoid3D;
 import us.ihmc.euclid.referenceFrame.FrameVector3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
-import us.ihmc.euclid.shape.primitives.Ellipsoid3D;
+import us.ihmc.euclid.referenceFrame.tools.ReferenceFrameTools;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.graphicsDescription.MeshDataBuilder;
@@ -25,22 +26,21 @@ import us.ihmc.javaFXToolkit.graphics.JavaFXMeshDataInterpreter;
 import us.ihmc.javaFXToolkit.scenes.View3DFactory;
 import us.ihmc.mecano.spatial.Twist;
 import us.ihmc.mecano.spatial.interfaces.TwistReadOnly;
-import us.ihmc.robotics.geometry.shapes.FrameEllipsoid3d;
 
 public class TwistVisualizer extends Application
 {
    private final ReferenceFrame worldFrame = ReferenceFrame.getWorldFrame();
    private final ReferenceFrame ellipsoidFrame;
    private final RigidBodyTransform ellipsoidTransform = new RigidBodyTransform();
-   private final FrameEllipsoid3d frameEllipsoid;
+   private final FrameEllipsoid3D frameEllipsoid;
    private final Twist ellipsoidCenterTwist = new Twist();
 
    public TwistVisualizer()
    {
-      ellipsoidTransform.setTranslation(0.3, 0.3, 0.4);
-      ellipsoidTransform.setRotationYawPitchRoll(0.5, 0.5 * Math.PI-0.5, 0.0);
-      ellipsoidFrame = ReferenceFrame.constructFrameWithUnchangingTransformToParent("ellipsoidFrame", worldFrame, ellipsoidTransform);
-      frameEllipsoid = new FrameEllipsoid3d(ellipsoidFrame, 0.2, 0.2, 0.3);
+      ellipsoidTransform.getTranslation().set(0.3, 0.3, 0.4);
+      ellipsoidTransform.getRotation().setYawPitchRoll(0.5, 0.5 * Math.PI-0.5, 0.0);
+      ellipsoidFrame = ReferenceFrameTools.constructFrameWithUnchangingTransformToParent("ellipsoidFrame", worldFrame, ellipsoidTransform);
+      frameEllipsoid = new FrameEllipsoid3D(ellipsoidFrame, 0.2, 0.2, 0.3);
       ellipsoidCenterTwist.setToZero(ellipsoidFrame, worldFrame, ellipsoidFrame);
       ellipsoidCenterTwist.getLinearPart().set(0.0, 0.0, 0.0);
       ellipsoidCenterTwist.getAngularPart().set(-0.3, -0.3, 0.9);
@@ -55,8 +55,7 @@ public class TwistVisualizer extends Application
       view3dFactory.addNodeToView(new AmbientLight(Color.LIGHTGRAY));
       view3dFactory.addWorldCoordinateSystem(0.3);
 
-      Ellipsoid3D ellipsoid = frameEllipsoid.getEllipsoid3d();
-      MeshDataHolder ellipsoidMesh = MeshDataGenerator.Ellipsoid(ellipsoid.getRadiusX(), ellipsoid.getRadiusY(), ellipsoid.getRadiusZ(), 32, 32);
+      MeshDataHolder ellipsoidMesh = MeshDataGenerator.Ellipsoid(frameEllipsoid.getRadiusX(), frameEllipsoid.getRadiusY(), frameEllipsoid.getRadiusZ(), 32, 32);
       ellipsoidMesh.applyTransform(ellipsoidTransform);
       MeshView ellipsoidMeshView = new MeshView(JavaFXMeshDataInterpreter.interpretMeshData(ellipsoidMesh));
 //      ellipsoidMeshView.setDrawMode(DrawMode.LINE);
@@ -76,10 +75,9 @@ public class TwistVisualizer extends Application
    {
       List<Twist> twistsOnSurface = new ArrayList<>();
 
-      Ellipsoid3D ellipsoid3d = frameEllipsoid.getEllipsoid3d();
-      double xRadius = ellipsoid3d.getRadiusX();
-      double yRadius = ellipsoid3d.getRadiusY();
-      double zRadius = ellipsoid3d.getRadiusZ();
+      double xRadius = frameEllipsoid.getRadiusX();
+      double yRadius = frameEllipsoid.getRadiusY();
+      double zRadius = frameEllipsoid.getRadiusZ();
       
       
       for (int longitudeIndex = 0; longitudeIndex < longitudeN; longitudeIndex++)
@@ -98,9 +96,9 @@ public class TwistVisualizer extends Application
             double surfaceY = yRadius * sinLongitude * cosLatitude;
             double surfaceZ = zRadius * sinLatitude;
             RigidBodyTransform transformFromSurfaceToCenter = new RigidBodyTransform();
-            transformFromSurfaceToCenter.setTranslation(surfaceX, surfaceY, surfaceZ);
+            transformFromSurfaceToCenter.getTranslation().set(surfaceX, surfaceY, surfaceZ);
             String frameName = "surfaceFrameLong" + longitudeIndex + "Latitude" + latitudeIndex;
-            ReferenceFrame frameOnSurface = ReferenceFrame.constructFrameWithUnchangingTransformToParent(frameName, ellipsoidFrame, transformFromSurfaceToCenter);
+            ReferenceFrame frameOnSurface = ReferenceFrameTools.constructFrameWithUnchangingTransformToParent(frameName, ellipsoidFrame, transformFromSurfaceToCenter);
             Twist surfaceTwist = new Twist(ellipsoidCenterTwist);
             surfaceTwist.changeFrame(frameOnSurface);
             twistsOnSurface.add(surfaceTwist);

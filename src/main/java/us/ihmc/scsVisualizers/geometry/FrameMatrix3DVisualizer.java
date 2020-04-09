@@ -47,8 +47,8 @@ public class FrameMatrix3DVisualizer
 
       for (int i = 0; i < 500; i++)
       {
-         aFramePose.setOrientationYawPitchRoll(1.0, 1.7, -0.6);
-         aFramePose.setPosition(-1.0, 2.0, 1.0);
+         aFramePose.getOrientation().setYawPitchRoll(1.0, 1.7, -0.6);
+         aFramePose.getPosition().set(-1.0, 2.0, 1.0);
          aFrame.setPoseAndUpdate(aFramePose);
 
          aFrameViz.update();

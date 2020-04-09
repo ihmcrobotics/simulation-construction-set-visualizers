@@ -52,8 +52,8 @@ public class TimeStampedTransformBufferVisualizer
       {
          RigidBodyTransform currentTransform = new RigidBodyTransform();
          long currentTimeStamp = (long) (i * (lastTimeStamp - firstTimeStamp)/numberOfTransforms + firstTimeStamp); 
-         currentTransform.setTranslation((double)(20.0/numberOfTransforms * i) - 5.0, RandomNumbers.nextDouble(random, -1.5, 1.5), RandomNumbers.nextDouble(random, 0.1, 2.0));
-         currentTransform.setRotation(RandomGeometry.nextQuaternion(random));
+         currentTransform.getTranslation().set((double)(20.0/numberOfTransforms * i) - 5.0, RandomNumbers.nextDouble(random, -1.5, 1.5), RandomNumbers.nextDouble(random, 0.1, 2.0));
+         currentTransform.getRotation().set(RandomGeometry.nextQuaternion(random));
          timeStampedPelvisPoseBuffer.put(currentTransform, currentTimeStamp);
          
          YoFramePoseUsingYawPitchRoll currentTransformYoFramePose = new YoFramePoseUsingYawPitchRoll("yoFramePose_" + i, worldFrame, registry);

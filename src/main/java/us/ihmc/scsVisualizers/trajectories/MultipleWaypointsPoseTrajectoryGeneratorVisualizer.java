@@ -61,8 +61,8 @@ public class MultipleWaypointsPoseTrajectoryGeneratorVisualizer
       PoseReferenceFrame centerOfCircle = new PoseReferenceFrame("centerOfCircle", worldFrame);
       
       FramePose3D pose = new FramePose3D(worldFrame);
-      pose.setOrientationYawPitchRoll(Math.PI / 4.0, Math.PI / 8.0, Math.PI / 16.0);
-      pose.setPosition(0.4, 0.5, 0.2);
+      pose.getOrientation().setYawPitchRoll(Math.PI / 4.0, Math.PI / 8.0, Math.PI / 16.0);
+      pose.getPosition().set(0.4, 0.5, 0.2);
       centerOfCircle.setPoseAndUpdate(pose);
       
       pose.setToZero(centerOfCircle);
@@ -100,7 +100,7 @@ public class MultipleWaypointsPoseTrajectoryGeneratorVisualizer
          double dy = radius * Math.cos(angle) * angleDot;
          double dz = 0.05 * 10.0 * Math.cos(angle * 10.0) * angleDot;
          
-         pose.setPosition(x, y, z);
+         pose.getPosition().set(x, y, z);
          linearVelocity.set(dx, dy, dz);
          
          double yaw = Math.cos(angle) * 0.1;
@@ -108,7 +108,7 @@ public class MultipleWaypointsPoseTrajectoryGeneratorVisualizer
          double roll = Math.cos(angle) * 0.16;
          
          orientation.setYawPitchRoll(yaw, pitch, roll);
-         pose.setOrientation(orientation);
+         pose.getOrientation().set(orientation);
          
          double yawRate = 0.1 * -Math.sin(angle) * angleDot;
          double pitchRate = 0.15 * Math.sin(angle) * angleDot;

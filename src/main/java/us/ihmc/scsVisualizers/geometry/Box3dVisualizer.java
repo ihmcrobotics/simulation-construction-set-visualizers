@@ -114,7 +114,7 @@ public class Box3dVisualizer
          isInsidePoint.set(0.45875994943142195, 0.8716506061253778, -0.5261917155326467);
          
          boxTransform.setRotationEulerAndZeroTranslation(0.5, 0.5, 0.5);
-         boxTransform.setTranslation(1.0, 1.0, 1.0);
+         boxTransform.getTranslation().set(1.0, 1.0, 1.0);
          
          doATick();
       }
@@ -126,7 +126,7 @@ public class Box3dVisualizer
    private void doATick()
    {
       box.getPose().set(yoBoxPose);
-      box.setSize(yoBoxSize.getX(), yoBoxSize.getY(), yoBoxSize.getZ());
+      box.getSize().set(yoBoxSize.getX(), yoBoxSize.getY(), yoBoxSize.getZ());
       for (int i = 0; i < boxVertices.length; i++)
       {
          box.getVertex(i, boxVertices[i]);

@@ -84,16 +84,16 @@ public class VelocityConstrainedPoseTrajectoryGeneratorVisualizer
       traj2.setTrajectoryTime(trajectoryTime);
 
       FramePose3D initialPose = new FramePose3D(aFrame);//RandomTools.generateRandomFramePose(random, aFrame, 2.0, 2.0, 2.0);
-      initialPose.setOrientationYawPitchRoll(0.0, 0.0, 0.0);
-      initialPose.setPosition(0.5, 0.5, 0.5);
+      initialPose.getOrientation().setYawPitchRoll(0.0, 0.0, 0.0);
+      initialPose.getPosition().set(0.5, 0.5, 0.5);
       initialAngularVelocity.set(1.0, 0.5, 5.0);
 
       FramePose3D finalPose = /*new FramePose(aFrame);*/ EuclidFrameRandomTools.nextFramePose3D(random, aFrame, 2.0, 2.0, 2.0);
 //      finalPose.setOrientation(0.0, 0.0, Math.PI / 2.0);
-      finalPose.setOrientationYawPitchRoll(1.0, 1.0, 1.0);
+      finalPose.getOrientation().setYawPitchRoll(1.0, 1.0, 1.0);
 
 
-      finalPose.setPosition(1.0, 1.0, 1.0);
+      finalPose.getPosition().set(1.0, 1.0, 1.0);
 
       FrameVector3D finalVelocity = new FrameVector3D(aFrame, 0.0, 0.0, 0.0 );
       FrameVector3D finalAngularVelocity = new FrameVector3D(aFrame, 1.0, 1.0, 3.0 );

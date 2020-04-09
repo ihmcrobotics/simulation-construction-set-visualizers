@@ -195,7 +195,7 @@ public class CutForceControllerVisualizer
 
 
       RotationMatrix zRotationMatrix = new RotationMatrix();
-      zRotationMatrix.setToYawMatrix(Math.PI / 2.0);
+      zRotationMatrix.setToYawOrientation(Math.PI / 2.0);
       Quaternion orientation = new Quaternion(zRotationMatrix);
       // The Quat4d.set(Matrix3d) is buggy
 //      orientation.set(zRotationMatrix);
