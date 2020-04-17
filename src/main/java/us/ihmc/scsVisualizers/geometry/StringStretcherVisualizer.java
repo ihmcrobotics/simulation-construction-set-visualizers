@@ -5,6 +5,7 @@ import java.util.List;
 
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.euclid.tuple2D.Point2D;
+import us.ihmc.euclid.tuple2D.interfaces.Point2DBasics;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition.GraphicType;
@@ -36,7 +37,7 @@ public class StringStretcherVisualizer implements RobotController
 
    private final Point2D minPoint = new Point2D();
    private final Point2D maxPoint = new Point2D();
-   private final List<Point2D> newPoints = new ArrayList<>();
+   private final List<Point2DBasics> newPoints = new ArrayList<>();
    private final YoBoolean problemOccured = new YoBoolean("problemOccured", registry);
    
    private final SliderBoardConfigurationManager sliderBoardConfigurationManager;
@@ -156,7 +157,7 @@ public class StringStretcherVisualizer implements RobotController
       stringStretcher.stretchString(newPoints);
       for (int i = 0; i < newPoints.size(); i++)
       {
-         Point2D point2d = newPoints.get(i);
+         Point2DBasics point2d = newPoints.get(i);
          yoWaypoints.get(i).setPosition(point2d.getX(), point2d.getY(), 0.0);
       }
    }
