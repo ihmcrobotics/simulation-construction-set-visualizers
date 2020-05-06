@@ -34,7 +34,6 @@ mainDependencies {
    api("us.ihmc:ihmc-state-estimation:source")
    api("us.ihmc:atlas:source")
    api("us.ihmc:ihmc-java-toolkit:source")
-   api("us.ihmc:ihmc-commons:0.28.2")
    api("us.ihmc:ihmc-robotics-toolkit:source")
    api("us.ihmc:ihmc-graphics-description:0.15.0")
    api("us.ihmc:ihmc-simulation-toolkit:source")
