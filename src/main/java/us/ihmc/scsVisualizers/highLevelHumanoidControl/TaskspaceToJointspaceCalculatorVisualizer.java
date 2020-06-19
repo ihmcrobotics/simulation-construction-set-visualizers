@@ -3,8 +3,8 @@ package us.ihmc.scsVisualizers.highLevelHumanoidControl;
 import java.util.LinkedHashMap;
 import java.util.Random;
 
-import org.ejml.data.DenseMatrix64F;
-import org.ejml.ops.CommonOps;
+import org.ejml.data.DMatrixRMaj;
+import org.ejml.dense.row.CommonOps_DDRM;
 
 import us.ihmc.atlas.AtlasRobotModel;
 import us.ihmc.atlas.AtlasRobotVersion;
@@ -88,14 +88,14 @@ public class TaskspaceToJointspaceCalculatorVisualizer
 
    private final int numberOfConstraints = 6;
 
-   private final DenseMatrix64F selectionMatrix = new DenseMatrix64F(numberOfConstraints, 6);
+   private final DMatrixRMaj selectionMatrix = new DMatrixRMaj(numberOfConstraints, 6);
    private FullHumanoidRobotModel fullRobotModel;
    private JointAnglesWriter jointAnglesWriter;
    private ReferenceFrame handControlFrame;
    private AtlasRobotModel robotModel;
 
    private TaskspaceToJointspaceCalculator taskspaceToJointspaceCalculator;
-   private final DenseMatrix64F jointAngles = new DenseMatrix64F(7, 1);
+   private final DMatrixRMaj jointAngles = new DMatrixRMaj(7, 1);
 
    private final YoDouble yoTime;
    private final FrameVector3D desiredHandLinearVelocity = new FrameVector3D();
@@ -113,7 +113,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
 
    public TaskspaceToJointspaceCalculatorVisualizer()
    {
-      CommonOps.setIdentity(selectionMatrix);
+      CommonOps_DDRM.setIdentity(selectionMatrix);
 //      selectionMatrix.set(0, 0, 0.0);
 //      selectionMatrix.set(0, 1, 1.0);
 //      selectionMatrix.set(1, 2, 1.0);
@@ -280,7 +280,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
 
             errorScalar.set(taskspaceToJointspaceCalculator.getSpatialErrorScalar());
 
-            DenseMatrix64F spatialError = taskspaceToJointspaceCalculator.getSubspaceSpatialError();
+            DMatrixRMaj spatialError = taskspaceToJointspaceCalculator.getSubspaceSpatialError();
             for (int rowIndex = 0; rowIndex < spatialError.getNumRows(); rowIndex++)
                errorSpatial[rowIndex].set(spatialError.get(rowIndex, 0));
 
