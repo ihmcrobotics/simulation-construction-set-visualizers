@@ -56,15 +56,14 @@ public class STPShape3DMeshBuilder
       return toSTPConvexPolytope3DMesh(boxPolytope, largeRadius, smallRadius, faceColor, edgeColor, vertexColor, highlightLimits);
    }
 
-   //   public static Node toSTPConvexPolytope3DMesh(ConvexPolytope3DSTPBoundingVolume stpConvexPolytope3D, Color faceColor, Color edgeColor, Color vertexColor,
-   //                                                boolean highlightLimits)
-   //   {
-   //      ConvexPolytope3DReadOnly convexPolytope = stpConvexPolytope3D.getShape3D();
-   //      double largeRadius = stpConvexPolytope3D.getLargeRadius();
-   //      double smallRadius = stpConvexPolytope3D.getSmallRadius();
-   //
-   //      return toSTPConvexPolytope3DMesh(convexPolytope, largeRadius, smallRadius, faceColor, edgeColor, vertexColor, highlightLimits);
-   //   }
+   public static Node toSTPConvexPolytope3DMesh(STPConvexPolytope3DReadOnly stpConvexPolytope3D, Color faceColor, Color edgeColor, Color vertexColor,
+                                                boolean highlightLimits)
+   {
+      double largeRadius = stpConvexPolytope3D.getLargeRadius();
+      double smallRadius = stpConvexPolytope3D.getSmallRadius();
+
+      return toSTPConvexPolytope3DMesh(stpConvexPolytope3D, largeRadius, smallRadius, faceColor, edgeColor, vertexColor, highlightLimits);
+   }
 
    public static Node toSTPCapsule3DMesh(STPCapsule3DReadOnly stpCapsule3D, Color faceColor, Color edgeColor, Color vertexColor, boolean highlightLimits)
    {
@@ -553,8 +552,8 @@ public class STPShape3DMeshBuilder
 
       if (edgeIndex == neighborStartIndex)
       {
-         v1 = neighbor.getVertex(neighborStartIndex + 1);
-         v2 = neighbor.getVertex(neighborStartIndex + 2);
+         v1 = neighbor.getVertex((neighborStartIndex + 1) % neighbor.getNumberOfEdges());
+         v2 = neighbor.getVertex((neighborStartIndex + 2) % neighbor.getNumberOfEdges());
       }
       else
       {
