@@ -7,20 +7,18 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.AmbientLight;
 import javafx.scene.Node;
-import javafx.scene.PointLight;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.MeshView;
 import javafx.stage.Stage;
 import us.ihmc.euclid.shape.tools.EuclidShapeRandomTools;
-import us.ihmc.euclid.tools.EuclidCoreRandomTools;
 import us.ihmc.euclid.tuple3D.interfaces.Point3DReadOnly;
 import us.ihmc.javaFXToolkit.cameraControllers.FocusBasedCameraMouseEventHandler;
 import us.ihmc.javaFXToolkit.scenes.View3DFactory;
 import us.ihmc.javaFXToolkit.shapes.JavaFXMeshBuilder;
 import us.ihmc.robotics.geometry.shapes.Shape3DMeshFactories.UVMeshType;
 
-public class STPCapsule3DBoundingVolumeVisualizer extends Application
+public class STPRamp3DVisualizer extends Application
 {
    @Override
    public void start(Stage primaryStage) throws Exception
@@ -33,26 +31,18 @@ public class STPCapsule3DBoundingVolumeVisualizer extends Application
       view3dFactory.addNodeToView(new AmbientLight(Color.GRAY));
       view3dFactory.addPointLight(-10.0, 0.0, -1.0, Color.WHEAT);
 
-      PointLight light = new PointLight(Color.WHEAT);
-      light.getTransforms().addAll(view3dFactory.getScene().getCamera().getTransforms());
-      view3dFactory.addNodeToView(light);
-
       Random random = new Random(34106);
-      for (int i = 0; i < 10; i++)
+      //      for (int i = 0; i < 10; i++)
       {
-         STPCapsule3D stpCapsule = new STPCapsule3D(EuclidShapeRandomTools.nextCapsule3D(random));
-         stpCapsule.setMargins(0.005, 0.03);
-         stpCapsule.setSize(EuclidCoreRandomTools.nextDouble(random, 0.5, 1.5), EuclidCoreRandomTools.nextDouble(random, 0.05, 0.5));
-         stpCapsule.getPosition().set(EuclidCoreRandomTools.nextPoint3D(random, 5.0));
-         view3dFactory.addNodeToView(Shape3DMeshFactories.toShape3DMesh(stpCapsule, Color.DARKCYAN));
-         view3dFactory.addNodeToView(STPShape3DBoundingVolumeMeshBuilder.toSTPCapsule3DMesh(stpCapsule,
-                                                                                            Color.CORNFLOWERBLUE,
-                                                                                            Color.BLUEVIOLET,
-                                                                                            Color.DARKORANGE,
-                                                                                            true));
+         STPRamp3D stpRamp = new STPRamp3D(EuclidShapeRandomTools.nextRamp3D(random));
+         stpRamp.getSize().set(0.5, 0.5, 0.5);
+         stpRamp.getPose().setToZero();
+         stpRamp.setMargins(0.005, 0.2);
+         view3dFactory.addNodeToView(Shape3DMeshFactories.toRamp3DMesh(stpRamp, Color.DARKCYAN));
+         view3dFactory.addNodeToView(STPShape3DMeshBuilder.toSTPRamp3DMesh(stpRamp, Color.CORNFLOWERBLUE, Color.BLUEVIOLET, Color.DARKORANGE, true));
 
          int resolution = 150;
-         view3dFactory.addNodeToView(Shape3DMeshFactories.toUVMesh(stpCapsule,
+         view3dFactory.addNodeToView(Shape3DMeshFactories.toUVMesh(stpRamp,
                                                                    Color.DARKRED.deriveColor(0.0, 1.0, 1.0, 0.2),
                                                                    resolution,
                                                                    resolution,

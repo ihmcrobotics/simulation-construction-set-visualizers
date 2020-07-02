@@ -20,7 +20,7 @@ import us.ihmc.javaFXToolkit.scenes.View3DFactory;
 import us.ihmc.javaFXToolkit.shapes.JavaFXMeshBuilder;
 import us.ihmc.robotics.geometry.shapes.Shape3DMeshFactories.UVMeshType;
 
-public class STPBox3DBoundingVolumeVisualizer extends Application
+public class STPBox3DVisualizer extends Application
 {
    @Override
    public void start(Stage primaryStage) throws Exception
@@ -47,7 +47,7 @@ public class STPBox3DBoundingVolumeVisualizer extends Application
          stpBox.setMargins(0.05, 0.15);
          view3dFactory.addNodeToView(Shape3DMeshFactories.toBox3DMesh(box3D, Color.DARKCYAN));
 
-         view3dFactory.addNodeToView(STPShape3DBoundingVolumeMeshBuilder.toSTPBox3DMesh(stpBox,
+         view3dFactory.addNodeToView(STPShape3DMeshBuilder.toSTPBox3DMesh(stpBox,
                                                                                         Color.CORNFLOWERBLUE,
                                                                                         Color.BLUEVIOLET,
                                                                                         Color.DARKORANGE,

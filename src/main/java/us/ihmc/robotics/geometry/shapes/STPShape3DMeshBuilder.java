@@ -20,6 +20,7 @@ import us.ihmc.euclid.shape.convexPolytope.interfaces.Face3DReadOnly;
 import us.ihmc.euclid.shape.convexPolytope.interfaces.HalfEdge3DReadOnly;
 import us.ihmc.euclid.shape.convexPolytope.interfaces.Vertex3DReadOnly;
 import us.ihmc.euclid.shape.primitives.interfaces.BoxPolytope3DView;
+import us.ihmc.euclid.shape.primitives.interfaces.RampPolytope3DView;
 import us.ihmc.euclid.tools.EuclidCoreTools;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.euclid.tuple3D.Point3D32;
@@ -41,7 +42,7 @@ import us.ihmc.javaFXToolkit.shapes.TextureColorAdaptivePalette;
 import us.ihmc.robotics.geometry.shapes.interfaces.STPBox3DReadOnly;
 import us.ihmc.robotics.geometry.shapes.interfaces.STPCapsule3DReadOnly;
 
-public class STPShape3DBoundingVolumeMeshBuilder
+public class STPShape3DMeshBuilder
 {
    private static final double TwoPi = 2.0 * Math.PI;
 
@@ -260,14 +261,14 @@ public class STPShape3DBoundingVolumeMeshBuilder
    //      return meshView;
    //   }
 
-   //   public static Node toSTPRamp3DMesh(Ramp3DSTPBoundingVolume stpRamp3D, Color faceColor, Color edgeColor, Color vertexColor, boolean highlightLimits)
-   //   {
-   //      RampPolytope3DView rampPolytope = stpRamp3D.getShape3D().asConvexPolytope();
-   //      double largeRadius = stpRamp3D.getLargeRadius();
-   //      double smallRadius = stpRamp3D.getSmallRadius();
-   //
-   //      return toSTPConvexPolytope3DMesh(rampPolytope, largeRadius, smallRadius, faceColor, edgeColor, vertexColor, highlightLimits);
-   //   }
+   public static Node toSTPRamp3DMesh(STPRamp3D stpRamp3D, Color faceColor, Color edgeColor, Color vertexColor, boolean highlightLimits)
+   {
+      RampPolytope3DView rampPolytope = stpRamp3D.asConvexPolytope();
+      double largeRadius = stpRamp3D.getLargeRadius();
+      double smallRadius = stpRamp3D.getSmallRadius();
+
+      return toSTPConvexPolytope3DMesh(rampPolytope, largeRadius, smallRadius, faceColor, edgeColor, vertexColor, highlightLimits);
+   }
 
    private static Node toSTPConvexPolytope3DMesh(ConvexPolytope3DReadOnly convexPolytope, double largeRadius, double smallRadius, Color faceColor,
                                                  Color edgeColor, Color vertexColor, boolean highlightLimits)
