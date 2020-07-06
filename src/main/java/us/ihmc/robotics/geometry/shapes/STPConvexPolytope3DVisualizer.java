@@ -11,12 +11,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.MeshView;
 import javafx.stage.Stage;
-import us.ihmc.euclid.shape.tools.EuclidShapeRandomTools;
+import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.euclid.tuple3D.interfaces.Point3DReadOnly;
 import us.ihmc.javaFXToolkit.cameraControllers.FocusBasedCameraMouseEventHandler;
 import us.ihmc.javaFXToolkit.scenes.View3DFactory;
 import us.ihmc.javaFXToolkit.shapes.JavaFXMeshBuilder;
 import us.ihmc.robotics.geometry.shapes.Shape3DMeshFactories.UVMeshType;
+import us.ihmc.robotics.robotSide.RobotSide;
 
 public class STPConvexPolytope3DVisualizer extends Application
 {
@@ -33,19 +34,45 @@ public class STPConvexPolytope3DVisualizer extends Application
 
       Random random = new Random(524);
 
-      STPConvexPolytope3D stpPolytope = new STPConvexPolytope3D(EuclidShapeRandomTools.nextConeConvexPolytope3D(random));
-      stpPolytope.setMargins(0.08, 0.10);
+      STPConvexPolytope3D stpPolytope = new STPConvexPolytope3D(atlasFootCollision());
+//      stpPolytope.setMargins(0.08, 0.10);
       view3dFactory.addNodeToView(Shape3DMeshFactories.toFace3DsMesh(stpPolytope.getFaces(), Color.DARKCYAN));
-      view3dFactory.addNodeToView(STPShape3DMeshBuilder.toSTPConvexPolytope3DMesh(stpPolytope, Color.CORNFLOWERBLUE, Color.BLUEVIOLET, Color.DARKORANGE, true));
+      view3dFactory.addNodeToView(STPShape3DMeshBuilder.toSTPConvexPolytope3DMesh(stpPolytope, Color.CORNFLOWERBLUE, Color.BLUEVIOLET, Color.DARKORANGE, false));
       int resolution = 150;
-//      view3dFactory.addNodeToView(Shape3DMeshFactories.toUVMesh(stpPolytope, Color.DARKRED.deriveColor(0.0, 1.0, 1.0, 0.2), resolution, resolution, UVMeshType.HULL));
-      view3dFactory.addNodeToView(Shape3DMeshFactories.toUVMesh(stpPolytope, Color.DARKRED.deriveColor(0.0, 1.0, 1.0, 0.2), resolution, resolution, UVMeshType.SUPPORT_VERTICES));
+      //      view3dFactory.addNodeToView(Shape3DMeshFactories.toUVMesh(stpPolytope, Color.DARKRED.deriveColor(0.0, 1.0, 1.0, 0.2), resolution, resolution, UVMeshType.HULL));
+      view3dFactory.addNodeToView(Shape3DMeshFactories.toUVMesh(stpPolytope,
+                                                                Color.DARKRED.deriveColor(0.0, 1.0, 1.0, 0.2),
+                                                                resolution,
+                                                                resolution,
+                                                                UVMeshType.SUPPORT_VERTICES));
 
       primaryStage.setTitle(getClass().getSimpleName());
       primaryStage.setMaximized(true);
       primaryStage.setScene(view3dFactory.getScene());
       primaryStage.setOnCloseRequest(event -> stop());
       primaryStage.show();
+   }
+
+   public static STPConvexPolytope3D atlasFootCollision()
+   {
+      STPConvexPolytope3D footShape = new STPConvexPolytope3D(1.0e-5);
+
+      for (RobotSide footSide : RobotSide.values)
+      {
+         for (double z : new double[] {0.077, 0.03})
+         {
+            // Heel
+            footShape.addVertex(new Point3D(-0.08, footSide.negateIfRightSide(0.065), z));
+            // Start toe taper
+            footShape.addVertex(new Point3D(+0.12, footSide.negateIfRightSide(0.065), z));
+         }
+         // Toe
+         footShape.addVertex(new Point3D(+0.17, footSide.negateIfRightSide(0.035), 0.077));
+      }
+
+      footShape.setMargins(1.0e-5, 10e-3);
+
+      return footShape;
    }
 
    @Override

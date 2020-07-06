@@ -41,6 +41,7 @@ import us.ihmc.javaFXToolkit.shapes.JavaFXMultiColorMeshBuilder;
 import us.ihmc.javaFXToolkit.shapes.TextureColorAdaptivePalette;
 import us.ihmc.robotics.geometry.shapes.interfaces.STPBox3DReadOnly;
 import us.ihmc.robotics.geometry.shapes.interfaces.STPCapsule3DReadOnly;
+import us.ihmc.robotics.geometry.shapes.interfaces.STPConvexPolytope3DReadOnly;
 import us.ihmc.robotics.geometry.shapes.interfaces.STPCylinder3DReadOnly;
 
 public class STPShape3DMeshBuilder
