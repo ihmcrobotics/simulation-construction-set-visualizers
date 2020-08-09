@@ -19,17 +19,17 @@ import us.ihmc.robotics.math.trajectories.VelocityConstrainedOrientationTrajecto
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoseUsingYawPitchRoll;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFrameVector3D;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
-import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
-import us.ihmc.yoVariables.variable.YoFrameVector3D;
 
 public class VelocityConstrainedOrientationTrajectoryGeneratorVisualizer
 {
    private static final ReferenceFrame worldFrame = ReferenceFrame.getWorldFrame();
    private static final Random random = new Random(4566561L);
 
-   private final YoVariableRegistry registry = new YoVariableRegistry(getClass().getSimpleName());
+   private final YoRegistry registry = new YoRegistry(getClass().getSimpleName());
 
    private final double trajectoryTime = 3.0;
    private final double dt = 0.0001;
@@ -86,7 +86,7 @@ public class VelocityConstrainedOrientationTrajectoryGeneratorVisualizer
       Robot robot = new Robot("dummy");
 
       SimulationConstructionSet scs = new SimulationConstructionSet(robot, parameters);
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       scs.setDT(dt, recordFrequency);
       YoFramePoseUsingYawPitchRoll desiredOrientationViz = new YoFramePoseUsingYawPitchRoll("desiredOrientationViz", "viz", worldFrame, registry);
       YoFramePoseUsingYawPitchRoll orientationFromIntegrationViz = new YoFramePoseUsingYawPitchRoll("orientationFromIntegrationViz", "viz", worldFrame, registry);

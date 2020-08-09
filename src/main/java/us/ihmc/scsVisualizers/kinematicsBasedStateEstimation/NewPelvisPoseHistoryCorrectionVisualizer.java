@@ -29,14 +29,14 @@ import us.ihmc.simulationconstructionset.util.ControllerFailureException;
 import us.ihmc.simulationconstructionset.util.simulationRunner.BlockingSimulationRunner.SimulationExceededMaximumTimeException;
 import us.ihmc.stateEstimation.humanoid.kinematicsBasedStateEstimation.ClippedSpeedOffsetErrorInterpolatorParameters;
 import us.ihmc.stateEstimation.humanoid.kinematicsBasedStateEstimation.NewPelvisPoseHistoryCorrection;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
-import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoseUsingYawPitchRoll;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoLong;
 
 public class NewPelvisPoseHistoryCorrectionVisualizer
 {
    private static final ReferenceFrame worldFrame = ReferenceFrame.getWorldFrame();
-   private final YoVariableRegistry registry;
+   private final YoRegistry registry;
 
    private Robot robot;
    private ReferenceFrame pelvisReferenceFrame;
@@ -74,7 +74,7 @@ public class NewPelvisPoseHistoryCorrectionVisualizer
       YoGraphicsListRegistry yoGraphicsListRegistry = new YoGraphicsListRegistry();
 
       setupRobot();
-      registry = robot.getRobotsYoVariableRegistry();
+      registry = robot.getRobotsYoRegistry();
       setupSim();
       setupCorrector(yoGraphicsListRegistry);
 

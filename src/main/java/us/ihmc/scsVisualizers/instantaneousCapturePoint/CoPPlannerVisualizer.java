@@ -47,13 +47,13 @@ import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
 import us.ihmc.simulationconstructionset.gui.tools.SimulationOverheadPlotterFactory;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFrameConvexPolygon2D;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoint3D;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoseUsingYawPitchRoll;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFrameVector3D;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoBoolean;
 import us.ihmc.yoVariables.variable.YoDouble;
-import us.ihmc.yoVariables.variable.YoFrameConvexPolygon2D;
-import us.ihmc.yoVariables.variable.YoFramePoint3D;
-import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
-import us.ihmc.yoVariables.variable.YoFrameVector3D;
 import us.ihmc.yoVariables.variable.YoInteger;
 
 public class CoPPlannerVisualizer
@@ -67,7 +67,7 @@ public class CoPPlannerVisualizer
    private static final int numberOfSteps = 10;
 
    private static final ReferenceFrame worldFrame = ReferenceFrame.getWorldFrame();
-   private final YoVariableRegistry registry = new YoVariableRegistry("CoPPlanVisualizer");
+   private final YoRegistry registry = new YoRegistry("CoPPlanVisualizer");
    private final YoGraphicsListRegistry graphicsListRegistry = new YoGraphicsListRegistry();
    private final SimulationConstructionSet scs;
 
@@ -171,7 +171,7 @@ public class CoPPlannerVisualizer
       Robot robot = new Robot("Dummy");
       yoTime = robot.getYoTime();
       scs = new SimulationConstructionSet(robot, scsParameters);
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       scs.addYoGraphicsListRegistry(graphicsListRegistry);
       scs.setPlaybackRealTimeRate(0.025);
       Graphics3DObject linkGraphics = new Graphics3DObject();

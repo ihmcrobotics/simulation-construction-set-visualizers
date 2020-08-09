@@ -3,6 +3,7 @@ package us.ihmc.robotics.math.trajectories;
 import java.util.ArrayList;
 
 import us.ihmc.commonWalkingControlModules.trajectories.PositionOptimizedTrajectoryGenerator;
+import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.euclid.referenceFrame.FramePoint3D;
 import us.ihmc.euclid.referenceFrame.FrameVector3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
@@ -11,13 +12,12 @@ import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
-import us.ihmc.yoVariables.variable.YoFramePoint3D;
 import us.ihmc.robotics.geometry.SpiralBasedAlgorithm;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
-import us.ihmc.commons.thread.ThreadTools;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoint3D;
+import us.ihmc.yoVariables.registry.YoRegistry;
 
 public class TrajectoryPointOptimizerVisualizer
 {
@@ -31,7 +31,7 @@ public class TrajectoryPointOptimizerVisualizer
    private static final int points = 10;
 
    private static final ReferenceFrame worldFrame = ReferenceFrame.getWorldFrame();
-   private final YoVariableRegistry registry = new YoVariableRegistry(getClass().getSimpleName());
+   private final YoRegistry registry = new YoRegistry(getClass().getSimpleName());
    private final YoGraphicsListRegistry graphicsListRegistry = new YoGraphicsListRegistry();
 
    private final PositionOptimizedTrajectoryGenerator trajectory = new PositionOptimizedTrajectoryGenerator("", registry, graphicsListRegistry, -1, points);
@@ -130,7 +130,7 @@ public class TrajectoryPointOptimizerVisualizer
       parameters.setCreateGUI(true);
       parameters.setDataBufferSize(100);
       SimulationConstructionSet scs = new SimulationConstructionSet(new Robot("dummy"), parameters);
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       scs.setDT(1.0, 1);
       Graphics3DObject linkGraphics = new Graphics3DObject();
       linkGraphics.addCoordinateSystem(0.3);

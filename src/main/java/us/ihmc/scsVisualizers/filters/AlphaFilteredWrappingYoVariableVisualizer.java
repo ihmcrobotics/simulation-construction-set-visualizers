@@ -3,7 +3,7 @@ package us.ihmc.scsVisualizers.filters;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
 import us.ihmc.yoVariables.variable.YoLong;
 import us.ihmc.robotics.math.filters.AlphaFilteredWrappingYoVariable;
@@ -15,7 +15,7 @@ import us.ihmc.commons.thread.ThreadTools;
 public class AlphaFilteredWrappingYoVariableVisualizer
 {
    private static final ReferenceFrame worldFrame = ReferenceFrame.getWorldFrame();
-   private final YoVariableRegistry registry = new YoVariableRegistry(getClass().getSimpleName());
+   private final YoRegistry registry = new YoRegistry(getClass().getSimpleName());
 
    private final double dt = 0.001;
    private final int recordFrequency = 5;
@@ -73,7 +73,7 @@ public class AlphaFilteredWrappingYoVariableVisualizer
       parameters.setDataBufferSize(bufferSize);
 
       SimulationConstructionSet scs = new SimulationConstructionSet(new Robot("dummy"), parameters);
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       scs.setDT(dt, recordFrequency);
       scs.setGroundVisible(false);
       scs.addYoGraphicsListRegistry(yoGraphicsListRegistry, true);

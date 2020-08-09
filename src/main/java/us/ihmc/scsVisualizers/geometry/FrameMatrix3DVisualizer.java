@@ -16,14 +16,14 @@ import us.ihmc.robotics.random.RandomGeometry;
 import us.ihmc.robotics.referenceFrames.PoseReferenceFrame;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
-import us.ihmc.yoVariables.variable.YoFramePoint3D;
-import us.ihmc.yoVariables.variable.YoFrameVector3D;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoint3D;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFrameVector3D;
+import us.ihmc.yoVariables.registry.YoRegistry;
 
 public class FrameMatrix3DVisualizer
 {
    private static final ReferenceFrame worldFrame = ReferenceFrame.getWorldFrame();
-   private final YoVariableRegistry registry = new YoVariableRegistry(getClass().getSimpleName());
+   private final YoRegistry registry = new YoRegistry(getClass().getSimpleName());
 
    private final PoseReferenceFrame aFrame = new PoseReferenceFrame("aFrame", worldFrame);
 
@@ -42,7 +42,7 @@ public class FrameMatrix3DVisualizer
    public FrameMatrix3DVisualizer()
    {
       SimulationConstructionSet scs = new SimulationConstructionSet(new Robot("Dummy"));
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       YoGraphicReferenceFrame aFrameViz = createYoGraphics(scs);
 
       for (int i = 0; i < 500; i++)

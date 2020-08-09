@@ -25,11 +25,11 @@ import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
 import us.ihmc.simulationconstructionset.gui.tools.SimulationOverheadPlotterFactory;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFrameConvexPolygon2D;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFrameLine2D;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoBoolean;
 import us.ihmc.yoVariables.variable.YoDouble;
-import us.ihmc.yoVariables.variable.YoFrameConvexPolygon2D;
-import us.ihmc.yoVariables.variable.YoFrameLine2D;
 
 public class ConvexPolygon2dVisualizer
 {
@@ -37,7 +37,7 @@ public class ConvexPolygon2dVisualizer
 
    private final AtlasPhysicalProperties atlasPhysicalProperties = new AtlasPhysicalProperties(1);
    private final YoGraphicsListRegistry yoGraphicsListRegistry = new YoGraphicsListRegistry();
-   private final YoVariableRegistry registry = new YoVariableRegistry(getClass().getSimpleName());
+   private final YoRegistry registry = new YoRegistry(getClass().getSimpleName());
 
    private final YoDouble amountToShrink = new YoDouble("amountToShrink", registry);
    private final YoBoolean shrinkSucceed = new YoBoolean("shrinkSucceed", registry);
@@ -75,7 +75,7 @@ public class ConvexPolygon2dVisualizer
       }
 
       scs.addYoGraphicsListRegistry(yoGraphicsListRegistry);
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       
       SimulationOverheadPlotterFactory simulationOverheadPlotterFactory = scs.createSimulationOverheadPlotterFactory();
       simulationOverheadPlotterFactory.addYoGraphicsListRegistries(yoGraphicsListRegistry);

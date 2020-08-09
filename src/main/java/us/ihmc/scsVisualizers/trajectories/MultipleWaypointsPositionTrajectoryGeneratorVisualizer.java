@@ -14,11 +14,11 @@ import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
 import us.ihmc.yoVariables.providers.DoubleProvider;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.registry.YoRegistry;
 
 public class MultipleWaypointsPositionTrajectoryGeneratorVisualizer
 {
-   private final YoVariableRegistry registry = new YoVariableRegistry(getClass().getSimpleName());
+   private final YoRegistry registry = new YoRegistry(getClass().getSimpleName());
 
    private final double trajectoryTime = 5.0;
    private final double dt = 0.001;
@@ -60,7 +60,7 @@ public class MultipleWaypointsPositionTrajectoryGeneratorVisualizer
       parameters.setCreateGUI(true);
       parameters.setDataBufferSize(bufferSize);
       SimulationConstructionSet scs = new SimulationConstructionSet(new Robot("dummy"), parameters);
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       scs.setDT(dt, recordFrequency);
       Graphics3DObject linkGraphics = new Graphics3DObject();
       linkGraphics.addCoordinateSystem(0.3);

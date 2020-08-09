@@ -14,13 +14,13 @@ import us.ihmc.robotics.math.trajectories.ParabolicWithFinalVelocityConstrainedP
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoint3D;
 import us.ihmc.yoVariables.providers.DoubleProvider;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
-import us.ihmc.yoVariables.variable.YoFramePoint3D;
+import us.ihmc.yoVariables.registry.YoRegistry;
 
 public class ParabolicWithFinalVelocityConstrainedTrajectoryGeneratorVisualizer
 {
-   private final YoVariableRegistry registry = new YoVariableRegistry(getClass().getSimpleName());
+   private final YoRegistry registry = new YoRegistry(getClass().getSimpleName());
    private final YoGraphicsListRegistry yoGraphicsListRegistry = new YoGraphicsListRegistry();
 
    private final double trajectoryTime = 0.3;
@@ -67,7 +67,7 @@ public class ParabolicWithFinalVelocityConstrainedTrajectoryGeneratorVisualizer
       parameters.setCreateGUI(true);
       parameters.setDataBufferSize(bufferSize);
       SimulationConstructionSet scs = new SimulationConstructionSet(new Robot("dummy"), parameters);
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       scs.setDT(dt, recordFrequency);
       Graphics3DObject linkGraphics = new Graphics3DObject();
       linkGraphics.addCoordinateSystem(0.3);

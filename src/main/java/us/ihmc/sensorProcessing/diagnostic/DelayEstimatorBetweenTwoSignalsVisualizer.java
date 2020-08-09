@@ -3,7 +3,7 @@ package us.ihmc.sensorProcessing.diagnostic;
 import java.util.Random;
 
 import us.ihmc.robotics.math.filters.DelayedYoDouble;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
 import us.ihmc.robotics.math.functionGenerator.YoFunctionGenerator;
 import us.ihmc.robotics.math.functionGenerator.YoFunctionGeneratorMode;
@@ -19,7 +19,7 @@ public class DelayEstimatorBetweenTwoSignalsVisualizer
 
    public DelayEstimatorBetweenTwoSignalsVisualizer()
    {
-      YoVariableRegistry registry = new YoVariableRegistry("Blop");
+      YoRegistry registry = new YoRegistry("Blop");
       Robot robot = new Robot("Dummy");
       YoDouble yoTime = robot.getYoTime();
       YoFunctionGenerator functionGenerator = new YoFunctionGenerator("foo", yoTime, registry);
@@ -36,7 +36,7 @@ public class DelayEstimatorBetweenTwoSignalsVisualizer
 
       SimulationConstructionSetParameters parameters = new SimulationConstructionSetParameters(true, BUFFER);
       SimulationConstructionSet scs = new SimulationConstructionSet(robot, parameters);
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       scs.startOnAThread();
 
       for (int i = 0; i < BUFFER; i++)

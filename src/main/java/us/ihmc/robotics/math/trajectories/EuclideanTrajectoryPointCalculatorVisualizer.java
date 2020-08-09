@@ -21,9 +21,9 @@ import us.ihmc.robotics.math.trajectories.trajectorypoints.lists.FrameEuclideanT
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoint3D;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
-import us.ihmc.yoVariables.variable.YoFramePoint3D;
 
 public class EuclideanTrajectoryPointCalculatorVisualizer
 {
@@ -36,7 +36,7 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
 
    private final WaypointGenerator waypointGenerator = WaypointGenerator.LINE;
 
-   private final YoVariableRegistry registry = new YoVariableRegistry(getClass().getSimpleName());
+   private final YoRegistry registry = new YoRegistry(getClass().getSimpleName());
 
    private final double trajectoryTime = 10.0;
    private final double dt = 0.001;
@@ -122,7 +122,7 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
       parameters.setCreateGUI(true);
       parameters.setDataBufferSize(bufferSize);
       SimulationConstructionSet scs = new SimulationConstructionSet(new Robot("dummy"), parameters);
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       scs.setDT(dt, recordFrequency);
       Graphics3DObject linkGraphics = new Graphics3DObject();
       linkGraphics.addCoordinateSystem(0.3);

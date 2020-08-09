@@ -8,7 +8,7 @@ import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
 import us.ihmc.simulationconstructionset.util.RobotController;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
 
 public class FirstOrderFilteredYoVariableVisualizer
@@ -47,7 +47,7 @@ public class FirstOrderFilteredYoVariableVisualizer
       
       private final YoDouble t;
 
-      private final YoVariableRegistry registry;
+      private final YoRegistry registry;
 
       private final YoDouble filterInput;
 
@@ -72,14 +72,14 @@ public class FirstOrderFilteredYoVariableVisualizer
          this.name = name;
          this.DT = DT;
          
-         registry = new YoVariableRegistry("TestHighPassFilterController");
+         registry = new YoRegistry("TestHighPassFilterController");
 
          filterInput = new YoDouble("filterInput", registry);
 
          inputFrequency_radPerSec = new YoDouble("inputFrequency_radPerSec", registry);
          inputFrequency_radPerSec.set(1.0);
 
-         this.t = (YoDouble) robot.getVariable("t");
+         this.t = (YoDouble) robot.findVariable("t");
 
          this.minPassThroughFreq_radPerSec = new YoDouble("minFreq_RadPerSec", registry);
          minPassThroughFreq_radPerSec.set(1.0);
@@ -117,7 +117,7 @@ public class FirstOrderFilteredYoVariableVisualizer
          properAmplitudeBandPass.set(properAmplitudeHighPass.getDoubleValue() * properAmplitudeLowPass.getDoubleValue());
       }
       
-      public YoVariableRegistry getYoVariableRegistry()
+      public YoRegistry getYoRegistry()
       {
          return registry;
       }

@@ -17,10 +17,10 @@ import us.ihmc.robotics.trajectories.providers.ConstantDoubleProvider;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoint3D;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFrameVector3D;
 import us.ihmc.yoVariables.providers.DoubleProvider;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
-import us.ihmc.yoVariables.variable.YoFramePoint3D;
-import us.ihmc.yoVariables.variable.YoFrameVector3D;
+import us.ihmc.yoVariables.registry.YoRegistry;
 
 public class VelocityConstrainedPoseTrajectoryGeneratorVisualizer
 {
@@ -28,7 +28,7 @@ public class VelocityConstrainedPoseTrajectoryGeneratorVisualizer
    private static final Random random = new Random(46561L);
    private static final ReferenceFrame aFrame = worldFrame;//RandomTools.generateRandomReferenceFrame("aFrame", random, worldFrame);
 
-   private final YoVariableRegistry registry = new YoVariableRegistry(getClass().getSimpleName());
+   private final YoRegistry registry = new YoRegistry(getClass().getSimpleName());
 
    private final double trajectoryTime = 1.0;
    private final double dt = 0.001;
@@ -122,7 +122,7 @@ public class VelocityConstrainedPoseTrajectoryGeneratorVisualizer
       Robot robot = new Robot("dummy");
 
       SimulationConstructionSet scs = new SimulationConstructionSet(robot, parameters);
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       scs.setDT(dt, recordFrequency);
       scs.addYoGraphicsListRegistry(yoGraphicsListRegistry);
 

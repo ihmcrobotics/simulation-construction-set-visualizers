@@ -9,7 +9,7 @@ import us.ihmc.simulationconstructionset.GraphConfiguration;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.util.RobotController;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
 
 /**
@@ -46,7 +46,7 @@ public class ButterworthFusedYoVariableVisualizer
       {
       } ;
 
-      ButterworthFusedYoVariableController controller = new ButterworthFusedYoVariableController((YoDouble)robot.getVariable("t"));
+      ButterworthFusedYoVariableController controller = new ButterworthFusedYoVariableController((YoDouble)robot.findVariable("t"));
       robot.setController(controller);
 
       SimulationConstructionSet scs = new SimulationConstructionSet(robot);
@@ -127,7 +127,7 @@ public class ButterworthFusedYoVariableVisualizer
 
    private class ButterworthFusedYoVariableController implements RobotController
    {
-      private final YoVariableRegistry registry = new YoVariableRegistry("ButterworthFusedYoVariableController");
+      private final YoRegistry registry = new YoRegistry("ButterworthFusedYoVariableController");
 
       private final YoDouble dc = new YoDouble("dc", registry);
 
@@ -183,7 +183,7 @@ public class ButterworthFusedYoVariableVisualizer
          alpha.set(0.75);
       }
 
-      public YoVariableRegistry getYoVariableRegistry()
+      public YoRegistry getYoRegistry()
       {
          return registry;
       }

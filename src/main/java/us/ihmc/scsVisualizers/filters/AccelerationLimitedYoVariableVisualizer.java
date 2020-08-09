@@ -1,6 +1,6 @@
 package us.ihmc.scsVisualizers.filters;
 
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
 import us.ihmc.robotics.math.filters.AccelerationLimitedYoVariable;
 import us.ihmc.robotics.math.filters.FilteredVelocityYoVariable;
@@ -34,11 +34,11 @@ public class AccelerationLimitedYoVariableVisualizer
    private final Robot robot = new Robot("generic_robot");
    private String nameYo = "processed";
    private SimulationConstructionSet scs;
-   private YoVariableRegistry registry;
+   private YoRegistry registry;
 
    public AccelerationLimitedYoVariableVisualizer()
    {
-      registry = new YoVariableRegistry("generic_registry");
+      registry = new YoRegistry("generic_registry");
 
       raw = new YoDouble("raw", registry);
       alphaVariable = new YoDouble("alpha", registry);

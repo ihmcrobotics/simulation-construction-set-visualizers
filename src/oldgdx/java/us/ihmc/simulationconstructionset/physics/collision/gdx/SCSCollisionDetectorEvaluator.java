@@ -30,7 +30,7 @@ public class SCSCollisionDetectorEvaluator
       double halfZ = heightZ/2.0;
 
       Robot robot = new Robot("robot");
-      YoInteger numberOfCollisions = new YoInteger("numberOfCollisions", robot.getRobotsYoVariableRegistry());
+      YoInteger numberOfCollisions = new YoInteger("numberOfCollisions", robot.getRobotsYoRegistry());
 
       ArrayList<YoGraphicPosition> pointsOnA = new ArrayList<>();
       ArrayList<YoGraphicPosition> pointsOnB = new ArrayList<>();
@@ -39,8 +39,8 @@ public class SCSCollisionDetectorEvaluator
 
       for (int i=0; i<4; i++)
       {
-         YoGraphicPosition pointOnAViz = new YoGraphicPosition("pointOnA", "_" + i, robot.getRobotsYoVariableRegistry(), 0.03, YoAppearance.Purple());
-         YoGraphicPosition pointOnBViz = new YoGraphicPosition("pointOnB", "_" + i, robot.getRobotsYoVariableRegistry(), 0.03, YoAppearance.Gold());
+         YoGraphicPosition pointOnAViz = new YoGraphicPosition("pointOnA", "_" + i, robot.getRobotsYoRegistry(), 0.03, YoAppearance.Purple());
+         YoGraphicPosition pointOnBViz = new YoGraphicPosition("pointOnB", "_" + i, robot.getRobotsYoRegistry(), 0.03, YoAppearance.Gold());
 
          yoGraphicsListRegistry.registerYoGraphic("Collision", pointOnAViz);
          yoGraphicsListRegistry.registerYoGraphic("Collision", pointOnBViz);
@@ -66,11 +66,11 @@ public class SCSCollisionDetectorEvaluator
  
       linkOne.setMass(mass);
       linkOne.setMomentOfInertia(0.1 * mass, 0.1 * mass, 0.1 * mass);
-      linkOne.enableCollisions(4, collisionHandler, robot.getRobotsYoVariableRegistry());
+      linkOne.enableCollisions(4, collisionHandler, robot.getRobotsYoRegistry());
 
       linkTwo.setMass(mass);
       linkTwo.setMomentOfInertia(0.1 * mass, 0.1 * mass, 0.1 * mass);
-      linkTwo.enableCollisions(4, collisionHandler, robot.getRobotsYoVariableRegistry());
+      linkTwo.enableCollisions(4, collisionHandler, robot.getRobotsYoRegistry());
 
       // Graphics
       Graphics3DObject linkOneGraphics = new Graphics3DObject();
