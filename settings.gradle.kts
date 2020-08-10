@@ -9,7 +9,7 @@ buildscript {
 }
 
 /** Browse source at https://github.com/ihmcrobotics/ihmc-build */
-def ihmcSettingsConfigurator = new us.ihmc.build.IHMCSettingsConfigurator(settings, logger, ext)
+val ihmcSettingsConfigurator = us.ihmc.build.IHMCSettingsConfigurator(settings, logger, extra)
 ihmcSettingsConfigurator.checkRequiredPropertiesAreSet()
 ihmcSettingsConfigurator.configureExtraSourceSets()
 ihmcSettingsConfigurator.findAndIncludeCompositeBuilds()
