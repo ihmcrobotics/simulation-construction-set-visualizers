@@ -39,9 +39,9 @@ import us.ihmc.simulationConstructionSetTools.util.HumanoidFloatingRootJointRobo
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
 import us.ihmc.simulationconstructionset.simulatedSensors.WrenchCalculatorInterface;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoseUsingYawPitchRoll;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
-import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
 
 public class CutForceControllerVisualizer
 {
@@ -61,7 +61,7 @@ public class CutForceControllerVisualizer
    private FullHumanoidRobotModel fullRobotModel;
    private HumanoidFloatingRootJointRobot robot;
 
-   private final YoVariableRegistry registry = new YoVariableRegistry(getClass().getSimpleName());
+   private final YoRegistry registry = new YoRegistry(getClass().getSimpleName());
    private YoGraphicsListRegistry yoGraphicsListRegistry = new YoGraphicsListRegistry();
    private SimulationConstructionSet scs;
    private SimulationConstructionSetParameters scsParameters;
@@ -240,7 +240,7 @@ public class CutForceControllerVisualizer
 
 
       scs.addYoGraphicsListRegistry(yoGraphicsListRegistry);
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
 
 
       rightHandTaskTojointSpaceCalculator = new TaskspaceToJointspaceCalculator("rightHand", chest, rightHand, DTCONTROL, registry);

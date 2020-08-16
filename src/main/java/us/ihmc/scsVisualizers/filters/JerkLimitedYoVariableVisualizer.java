@@ -1,6 +1,6 @@
 package us.ihmc.scsVisualizers.filters;
 
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
 import us.ihmc.robotics.math.filters.JerkLimitedYoVariable;
 import us.ihmc.robotics.math.functionGenerator.YoFunctionGenerator;
@@ -14,7 +14,7 @@ public class JerkLimitedYoVariableVisualizer
 {
    private final SimulationConstructionSet scs;
    
-   private final YoVariableRegistry registry = new YoVariableRegistry(getClass().getSimpleName());
+   private final YoRegistry registry = new YoRegistry(getClass().getSimpleName());
    
    private final YoDouble time = new YoDouble("time", registry);
    private final YoDouble maxAcceleration = new YoDouble("maxAcceleration", registry);
@@ -40,7 +40,7 @@ public class JerkLimitedYoVariableVisualizer
       parameters.setDataBufferSize(32000);
       scs = new SimulationConstructionSet(new Robot("test"), parameters);
       
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       scs.setDT(0.0001, 10);
       scs.hideViewport();
 

@@ -15,12 +15,12 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
-import us.ihmc.yoVariables.listener.VariableChangedListener;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoint3D;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoseUsingYawPitchRoll;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFrameVector3D;
+import us.ihmc.yoVariables.listener.YoVariableChangedListener;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoBoolean;
-import us.ihmc.yoVariables.variable.YoFramePoint3D;
-import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
-import us.ihmc.yoVariables.variable.YoFrameVector3D;
 import us.ihmc.yoVariables.variable.YoVariable;
 
 public class Box3dVisualizer
@@ -28,7 +28,7 @@ public class Box3dVisualizer
    private static final ReferenceFrame WORLD = ReferenceFrame.getWorldFrame();
    
    private final SimulationConstructionSet scs;
-   private final YoVariableRegistry registry;
+   private final YoRegistry registry;
    private final YoGraphicsListRegistry yoGraphicsListRegistry;
    
    private final YoFramePoseUsingYawPitchRoll yoBoxPose;
@@ -54,10 +54,10 @@ public class Box3dVisualizer
    
    public Box3dVisualizer()
    {
-      VariableChangedListener doATickListener = new VariableChangedListener()
+      YoVariableChangedListener doATickListener = new YoVariableChangedListener()
       {
          @Override
-         public void notifyOfVariableChange(YoVariable<?> v)
+         public void changed(YoVariable v)
          {
             doATick();
          }
@@ -65,7 +65,7 @@ public class Box3dVisualizer
       
       random = new Random(546546L);
       
-      registry = new YoVariableRegistry(getClass().getSimpleName());
+      registry = new YoRegistry(getClass().getSimpleName());
       yoGraphicsListRegistry = new YoGraphicsListRegistry();
       
       yoBoxPose = new YoFramePoseUsingYawPitchRoll(prefix + "Pose", WORLD, registry);
@@ -100,7 +100,7 @@ public class Box3dVisualizer
       yoGraphicsListRegistry.registerYoGraphic("Box", new YoGraphicCoordinateSystem("center2", yoBox2Pose, 0.5)); 
       
       scs = new SimulationConstructionSet(new Robot("Robot"));
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       scs.addYoGraphicsListRegistry(yoGraphicsListRegistry);
       scs.setDT(1.0, 1);
       

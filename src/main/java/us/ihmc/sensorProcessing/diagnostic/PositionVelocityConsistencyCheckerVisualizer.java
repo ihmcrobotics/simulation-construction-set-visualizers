@@ -3,7 +3,7 @@ package us.ihmc.sensorProcessing.diagnostic;
 import java.util.Random;
 
 import us.ihmc.robotics.math.filters.DelayedYoDouble;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
 import us.ihmc.robotics.math.filters.AlphaFilteredYoVariable;
 import us.ihmc.robotics.math.functionGenerator.YoFunctionGenerator;
@@ -20,7 +20,7 @@ public class PositionVelocityConsistencyCheckerVisualizer
 
    public PositionVelocityConsistencyCheckerVisualizer()
    {
-      YoVariableRegistry registry = new YoVariableRegistry("blop");
+      YoRegistry registry = new YoRegistry("blop");
       double dt = 0.001;
       Robot robot = new Robot("Dummy");
 
@@ -45,7 +45,7 @@ public class PositionVelocityConsistencyCheckerVisualizer
 
       SimulationConstructionSetParameters parameters = new SimulationConstructionSetParameters(true, BUFFER);
       SimulationConstructionSet scs = new SimulationConstructionSet(robot, parameters);
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       scs.hideViewport();
       scs.startOnAThread();
 

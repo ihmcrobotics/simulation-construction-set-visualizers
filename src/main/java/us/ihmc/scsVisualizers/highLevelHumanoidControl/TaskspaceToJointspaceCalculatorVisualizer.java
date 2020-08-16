@@ -42,9 +42,9 @@ import us.ihmc.sensorProcessing.simulatedSensors.SDFPerfectSimulatedSensorReader
 import us.ihmc.simulationConstructionSetTools.util.HumanoidFloatingRootJointRobot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoseUsingYawPitchRoll;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
-import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
 import us.ihmc.yoVariables.variable.YoInteger;
 
 public class TaskspaceToJointspaceCalculatorVisualizer
@@ -53,7 +53,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
    private static final boolean BENCHMARK = false;
 
    private static final ReferenceFrame worldFrame = ReferenceFrame.getWorldFrame();
-   private final YoVariableRegistry registry = new YoVariableRegistry(getClass().getSimpleName());
+   private final YoRegistry registry = new YoRegistry(getClass().getSimpleName());
    private final YoFramePoseUsingYawPitchRoll finalHandPose = new YoFramePoseUsingYawPitchRoll("finalHandPose", worldFrame, registry);
    private final YoFramePoseUsingYawPitchRoll initialHandPose = new YoFramePoseUsingYawPitchRoll("initialHandPose", worldFrame, registry);
    private final YoFramePoseUsingYawPitchRoll currentHandPose = new YoFramePoseUsingYawPitchRoll("currentHandPose", worldFrame, registry);
@@ -164,7 +164,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
       if (!BENCHMARK)
       {
          scs.addYoGraphicsListRegistry(yoGraphicsListRegistry);
-         scs.addYoVariableRegistry(registry);
+         scs.addYoRegistry(registry);
       }
 
       taskspaceToJointspaceCalculator = new TaskspaceToJointspaceCalculator("leftHand", chest, leftHand, dt, registry);
@@ -219,7 +219,7 @@ public class TaskspaceToJointspaceCalculatorVisualizer
       for (int k = 0; k < numberOfRuns; k++)
       {
          straightLineTrajectory.switchTrajectoryFrame(worldFrame);
-         finalHandPose.getFramePoseIncludingFrame(handPose);
+         handPose.setIncludingFrame(finalHandPose);
          initialHandPose.set(handPose);
          jointAnglesWriter.updateRobotConfigurationBasedOnFullRobotModel();
          straightLineTrajectory.setInitialPose(handPose);

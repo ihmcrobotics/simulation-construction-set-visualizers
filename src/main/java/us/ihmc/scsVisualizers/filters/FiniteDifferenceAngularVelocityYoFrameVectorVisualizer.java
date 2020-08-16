@@ -1,8 +1,5 @@
 package us.ihmc.scsVisualizers.filters;
 
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
-import us.ihmc.yoVariables.variable.YoDouble;
-import us.ihmc.yoVariables.variable.YoFrameQuaternion;
 import us.ihmc.euclid.referenceFrame.FrameQuaternion;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.robotics.math.filters.FiniteDifferenceAngularVelocityYoFrameVector;
@@ -10,6 +7,9 @@ import us.ihmc.robotics.math.trajectories.SimpleOrientationTrajectoryGenerator;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFrameQuaternion;
+import us.ihmc.yoVariables.registry.YoRegistry;
+import us.ihmc.yoVariables.variable.YoDouble;
 
 public class FiniteDifferenceAngularVelocityYoFrameVectorVisualizer
 {
@@ -19,7 +19,7 @@ public class FiniteDifferenceAngularVelocityYoFrameVectorVisualizer
 
    public FiniteDifferenceAngularVelocityYoFrameVectorVisualizer()
    {
-      YoVariableRegistry registry = new YoVariableRegistry("blop");
+      YoRegistry registry = new YoRegistry("blop");
       SimpleOrientationTrajectoryGenerator traj = new SimpleOrientationTrajectoryGenerator("traj", worldFrame, registry);
       traj.setInitialOrientation(new FrameQuaternion());
       traj.setFinalOrientation(new FrameQuaternion(worldFrame, 0.8, -1.0, 2.1));
@@ -34,7 +34,7 @@ public class FiniteDifferenceAngularVelocityYoFrameVectorVisualizer
 
       SimulationConstructionSetParameters parameters = new SimulationConstructionSetParameters(true, BUFFER);
       SimulationConstructionSet scs = new SimulationConstructionSet(robot, parameters);
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       scs.hideViewport();
       scs.startOnAThread();
 

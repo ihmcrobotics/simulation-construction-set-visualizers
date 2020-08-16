@@ -2,7 +2,7 @@ package us.ihmc.sensorProcessing.diagnostic;
 
 import java.util.Random;
 
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
 import us.ihmc.robotics.math.functionGenerator.YoFunctionGenerator;
 import us.ihmc.robotics.math.functionGenerator.YoFunctionGeneratorMode;
@@ -19,7 +19,7 @@ public class Online1DSignalFourierAnalysisVisualizer
    public Online1DSignalFourierAnalysisVisualizer()
    {
       double dt = 0.001;
-      YoVariableRegistry registry = new YoVariableRegistry("blup");
+      YoRegistry registry = new YoRegistry("blup");
       Robot robot = new Robot("Dummy");
       YoDouble yoTime = robot.getYoTime();
 
@@ -36,7 +36,7 @@ public class Online1DSignalFourierAnalysisVisualizer
 
       SimulationConstructionSetParameters parameters = new SimulationConstructionSetParameters(true, BUFFER);
       SimulationConstructionSet scs = new SimulationConstructionSet(robot, parameters);
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       scs.hideViewport();
       scs.startOnAThread();
 

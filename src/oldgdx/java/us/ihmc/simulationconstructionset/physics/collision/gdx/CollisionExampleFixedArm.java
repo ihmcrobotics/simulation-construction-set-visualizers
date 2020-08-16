@@ -15,10 +15,10 @@ public class CollisionExampleFixedArm
 {
    public static class DoublePendulumRobot extends Robot
    {
-      private final YoDouble potentialEnergy = new YoDouble("potentialEnergy", getRobotsYoVariableRegistry());
-      private final YoDouble linearKineticEnergy = new YoDouble("linearKineticEnergy", getRobotsYoVariableRegistry());
-      private final YoDouble rotationalKineticEnergy = new YoDouble("rotationalKineticEnergy", getRobotsYoVariableRegistry());
-      private final YoDouble totalEnergy = new YoDouble("totalEnergy", getRobotsYoVariableRegistry());
+      private final YoDouble potentialEnergy = new YoDouble("potentialEnergy", getRobotsYoRegistry());
+      private final YoDouble linearKineticEnergy = new YoDouble("linearKineticEnergy", getRobotsYoRegistry());
+      private final YoDouble rotationalKineticEnergy = new YoDouble("rotationalKineticEnergy", getRobotsYoRegistry());
+      private final YoDouble totalEnergy = new YoDouble("totalEnergy", getRobotsYoRegistry());
 
       //      ScsCollisionDetector collisionDetector = new JBulletCollisionDetector(getRobotsYoVariableRegistry(), 10000);
       private final ScsCollisionDetector collisionDetector = new GdxCollisionDetector(10000.0);
@@ -158,7 +158,7 @@ public class CollisionExampleFixedArm
          CollisionShapeDescription shapeDesc = factory.createBox(size / 2.0, size / 2.0, size / 2.0);
          factory.addShape(ret, null, shapeDesc, false, 0xFFFFFFFF, 0xFFFFFFFF);
 
-         ret.enableCollisions(4, collisionHandler, this.getRobotsYoVariableRegistry());
+         ret.enableCollisions(4, collisionHandler, this.getRobotsYoRegistry());
          return ret;
       }
 
@@ -178,7 +178,7 @@ public class CollisionExampleFixedArm
          linkGraphics.translate(0.0, 0.0, 0.0);
          linkGraphics.addCube(width, width, height, YoAppearance.Beige());
          ground.setLinkGraphics(linkGraphics);
-         ground.enableCollisions(4, collisionHandler, this.getRobotsYoVariableRegistry());
+         ground.enableCollisions(4, collisionHandler, this.getRobotsYoRegistry());
 
          groundJoint.setLink(ground);
          groundJoint.setPositionAndVelocity(0.0, 0.0, -height, 0.0, 0.0, 0.0);

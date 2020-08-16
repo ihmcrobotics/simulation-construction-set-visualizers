@@ -10,7 +10,7 @@ import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
 import us.ihmc.simulationconstructionset.util.RobotController;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
 
 /**
@@ -59,7 +59,7 @@ public class InfiniteImpulseResponseFilteredYoVariableVisualizer
 
    private static class TestIIRFilterController implements RobotController
    {
-      private final YoVariableRegistry registry = new YoVariableRegistry("TestIIRFilterController");
+      private final YoRegistry registry = new YoRegistry("TestIIRFilterController");
 
       private final YoDouble input = new YoDouble("input", registry);
 
@@ -104,7 +104,7 @@ public class InfiniteImpulseResponseFilteredYoVariableVisualizer
 
          maxRate.set(0.5);
 
-         this.t = (YoDouble) robot.getVariable("t");
+         this.t = (YoDouble) robot.findVariable("t");
 
          double alpha = 0.95;
 
@@ -201,7 +201,7 @@ public class InfiniteImpulseResponseFilteredYoVariableVisualizer
          rateLimitFilterd.update();
       }
 
-      public YoVariableRegistry getYoVariableRegistry()
+      public YoRegistry getYoRegistry()
       {
          return registry;
       }

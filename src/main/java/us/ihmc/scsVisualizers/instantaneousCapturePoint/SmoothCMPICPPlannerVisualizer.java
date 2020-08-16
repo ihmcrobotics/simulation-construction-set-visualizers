@@ -70,13 +70,13 @@ import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
 import us.ihmc.simulationconstructionset.gui.tools.SimulationOverheadPlotterFactory;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFrameConvexPolygon2D;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoint3D;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoseUsingYawPitchRoll;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFrameVector3D;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoBoolean;
 import us.ihmc.yoVariables.variable.YoDouble;
-import us.ihmc.yoVariables.variable.YoFrameConvexPolygon2D;
-import us.ihmc.yoVariables.variable.YoFramePoint3D;
-import us.ihmc.yoVariables.variable.YoFramePoseUsingYawPitchRoll;
-import us.ihmc.yoVariables.variable.YoFrameVector3D;
 import us.ihmc.yoVariables.variable.YoInteger;
 
 public class SmoothCMPICPPlannerVisualizer
@@ -102,7 +102,7 @@ public class SmoothCMPICPPlannerVisualizer
    private static final double omega = 3.4;
 
    private static final ReferenceFrame worldFrame = ReferenceFrame.getWorldFrame();
-   private final YoVariableRegistry registry = new YoVariableRegistry("SmoothCMPBasedICPPlannerVisualizer");
+   private final YoRegistry registry = new YoRegistry("SmoothCMPBasedICPPlannerVisualizer");
    private final YoGraphicsListRegistry graphicsListRegistry = new YoGraphicsListRegistry();
    private final SimulationConstructionSet scs;
 
@@ -353,7 +353,7 @@ public class SmoothCMPICPPlannerVisualizer
       Robot robot = new Robot("Dummy");
       yoTime = robot.getYoTime();
       scs = new SimulationConstructionSet(robot, scsParameters);
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       scs.addYoGraphicsListRegistry(graphicsListRegistry);
       scs.setPlaybackRealTimeRate(0.025);
       Graphics3DObject linkGraphics = new Graphics3DObject();
@@ -942,7 +942,7 @@ public class SmoothCMPICPPlannerVisualizer
 
       if (SHOW_WITHOUT_ANGULAR_MOMENTUM)
       {
-         YoVariableRegistry dummyRegistry = new YoVariableRegistry("ICPAMOff");
+         YoRegistry dummyRegistry = new YoRegistry("ICPAMOff");
          YoGraphicsListRegistry dummyGrahpics = new YoGraphicsListRegistry();
          icpPlannerAMOff = new SmoothCMPBasedICPPlanner(new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_DUAL_ROBOTIQ, RobotTarget.SCS,
                                                                             false).createFullRobotModel(),

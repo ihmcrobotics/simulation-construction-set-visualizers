@@ -24,18 +24,18 @@ import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
 import us.ihmc.simulationconstructionset.SupportedGraphics3DAdapter;
 import us.ihmc.simulationconstructionset.util.simulationRunner.BlockingSimulationRunner.SimulationExceededMaximumTimeException;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFramePoint3D;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFrameVector3D;
 import us.ihmc.yoVariables.providers.DoubleProvider;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
+import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoBoolean;
 import us.ihmc.yoVariables.variable.YoDouble;
-import us.ihmc.yoVariables.variable.YoFramePoint3D;
-import us.ihmc.yoVariables.variable.YoFrameVector3D;
 
 public class TwoWaypointPositionTrajectoryGeneratorVisualizer
 {
    private static final int numberOfTicks = 100;
 
-   private final YoVariableRegistry registry;
+   private final YoRegistry registry;
    private final YoGraphicsListRegistry yoGraphicsListRegistry;
    private static final SupportedGraphics3DAdapter graphics3DAdapterToUse = SupportedGraphics3DAdapter.JAVA_MONKEY_ENGINE;
    private static final String namePrefix = "Viz";
@@ -57,7 +57,7 @@ public class TwoWaypointPositionTrajectoryGeneratorVisualizer
 
    public TwoWaypointPositionTrajectoryGeneratorVisualizer() throws SimulationExceededMaximumTimeException
    {
-      registry = new YoVariableRegistry(namePrefix);
+      registry = new YoRegistry(namePrefix);
       yoGraphicsListRegistry = new YoGraphicsListRegistry();
 
       initialPosition = new YoFramePoint3D(namePrefix + "P0", worldFrame, registry);
@@ -96,7 +96,7 @@ public class TwoWaypointPositionTrajectoryGeneratorVisualizer
       SimulationConstructionSet scs = new SimulationConstructionSet(new Robot[] {new Robot("null")}, graphics3DAdapterToUse,
             new SimulationConstructionSetParameters(initialBufferSize));
       scs.setDT(stepTime.getDoubleValue() / (double) numberOfTicks, 5);
-      scs.addYoVariableRegistry(registry);
+      scs.addYoRegistry(registry);
       scs.addYoGraphicsListRegistry(yoGraphicsListRegistry);
 
       SliderBoardConfigurationManager sliderBoardConfigurationManager = new SliderBoardConfigurationManager(scs);
@@ -198,7 +198,7 @@ public class TwoWaypointPositionTrajectoryGeneratorVisualizer
       public TwoWaypointPositionTrajectorySpecifiedByPoints(String namePrefix, ReferenceFrame referenceFrame, DoubleProvider stepTimeProvider,
             PositionProvider initialPositionProvider, VectorProvider initialVelocityProvider, PositionProvider stancePositionProvider,
             PositionProvider finalPositionProvider, VectorProvider finalDesiredVelocityProvider, TrajectoryParametersProvider trajectoryParametersProvider,
-            YoVariableRegistry parentRegistry, int arcLengthCalculatorDivisionsPerPolynomial, YoGraphicsListRegistry yoGraphicsListRegistry,
+            YoRegistry parentRegistry, int arcLengthCalculatorDivisionsPerPolynomial, YoGraphicsListRegistry yoGraphicsListRegistry,
             double maxSwingHeightFromStanceFoot, boolean visualize, List<YoFramePoint3D> waypoints)
       {
          super(namePrefix, referenceFrame, stepTimeProvider, initialPositionProvider, initialVelocityProvider, stancePositionProvider, finalPositionProvider,

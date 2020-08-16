@@ -31,8 +31,8 @@ import us.ihmc.simulationconstructionset.scripts.Script;
 import us.ihmc.tools.processManagement.JavaProcessSpawner;
 import us.ihmc.util.PeriodicNonRealtimeThreadSchedulerFactory;
 import us.ihmc.util.PeriodicThreadSchedulerFactory;
-import us.ihmc.yoVariables.registry.YoVariableRegistry;
-import us.ihmc.yoVariables.variable.YoFrameConvexPolygon2D;
+import us.ihmc.yoVariables.euclid.referenceFrame.YoFrameConvexPolygon2D;
+import us.ihmc.yoVariables.registry.YoRegistry;
 
 public class YoGraphicPlanarRegionsListVisualizer
 {
@@ -47,7 +47,7 @@ public class YoGraphicPlanarRegionsListVisualizer
       Robot robot = new Robot("Dummy");
       SimulationConstructionSetParameters parameters = new SimulationConstructionSetParameters();
       SimulationConstructionSet scs = new SimulationConstructionSet(robot, parameters);
-      YoVariableRegistry registry = scs.getRootRegistry();
+      YoRegistry registry = scs.getRootRegistry();
       final YoGraphicPlanarRegionsList graphic = new YoGraphicPlanarRegionsList("planarRegion", 1000, 14, true, 10, registry);
       YoGraphicsListRegistry yoGraphicsListRegistry = new YoGraphicsListRegistry();
       yoGraphicsListRegistry.registerYoGraphic("test", graphic);
@@ -67,7 +67,7 @@ public class YoGraphicPlanarRegionsListVisualizer
 
    private static void setupWithRemoteVisualizer()
    {
-      YoVariableRegistry registry = new YoVariableRegistry("blop");
+      YoRegistry registry = new YoRegistry("blop");
       final YoGraphicPlanarRegionsList graphic = new YoGraphicPlanarRegionsList("planarRegion", 1000, 14, true, 10, registry);
       graphic.submitPlanarRegionsListToRender(createPlanaRegionsList(), Color.green);
       YoGraphicCoordinateSystem worldCoordinates = new YoGraphicCoordinateSystem("world", "", registry, true, 1.0);
@@ -98,7 +98,7 @@ public class YoGraphicPlanarRegionsListVisualizer
       spawner.spawn(SCSVisualizer.class);
    }
 
-   private static YoGraphicPolygon createYoGraphicPolygon(YoVariableRegistry registry)
+   private static YoGraphicPolygon createYoGraphicPolygon(YoRegistry registry)
    {
       YoFrameConvexPolygon2D convexPolygon2d = new YoFrameConvexPolygon2D("poupou", ReferenceFrame.getWorldFrame(), 30, registry);
       ConvexPolygon2D polygon = new ConvexPolygon2D(Vertex2DSupplier.asVertex2DSupplier(createCircle(new Point2D(1.0, 0.0), 0.1)));
