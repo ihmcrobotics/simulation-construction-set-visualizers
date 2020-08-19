@@ -18,7 +18,7 @@ ihmc {
 mainDependencies {
    api("us.ihmc:euclid-frame:0.15.0")
    api("us.ihmc:euclid-shape:0.15.0")
-   api("us.ihmc:ihmc-yovariables:0.9.1")
+   api("us.ihmc:ihmc-yovariables:0.9.3")
    api("org.ejml:ejml-ddense:0.39")
    api("org.ejml:ejml-core:0.39")
    api("net.sf.trove4j:trove4j:3.0.3")
@@ -30,7 +30,7 @@ mainDependencies {
    api("us.ihmc:ihmc-humanoid-robotics:source")
    api("us.ihmc:ihmc-humanoid-behaviors:source")
    api("us.ihmc:ihmc-avatar-interfaces:source")
-   api("us.ihmc:simulation-construction-set:0.20.2")
+   api("us.ihmc:simulation-construction-set:0.20.3")
    api("us.ihmc:ihmc-state-estimation:source")
    api("us.ihmc:atlas:source")
    api("us.ihmc:ihmc-java-toolkit:source")
