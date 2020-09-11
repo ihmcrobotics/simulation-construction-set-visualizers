@@ -107,6 +107,7 @@ public class CoPPlannerVisualizer
    private List<YoDouble> transferSplitFractions = new ArrayList<>();
    private List<YoDouble> weightDistributions = new ArrayList<>();
    private YoDouble finalTransferWeightDistribution;
+   private YoDouble finalTransferSplitFraction;
 
    private final YoFramePoint3D desiredCoP;
    private final YoFrameVector3D desiredCoPVelocity;
@@ -248,7 +249,7 @@ public class CoPPlannerVisualizer
          {
             if (currentStepCount == 0)
                testCoPPlanner.computeReferenceCoPsStartingFromDoubleSupport(true, nextFootstep.getRobotSide().getOppositeSide(), nextFootstep.getRobotSide());
-            else if(currentStepCount == footsteps.size())
+            else if (currentStepCount == footsteps.size())
                testCoPPlanner.computeReferenceCoPsStartingFromDoubleSupport(false, nextFootstep.getRobotSide(), nextFootstep.getRobotSide().getOppositeSide());
             else
                testCoPPlanner.computeReferenceCoPsStartingFromDoubleSupport(false, nextFootstep.getRobotSide().getOppositeSide(), nextFootstep.getRobotSide());
@@ -375,7 +376,9 @@ public class CoPPlannerVisualizer
          {
             footstep.setPredictedContactPoints(contactableFeet.get(footstep.getRobotSide()).getContactPoints2d());
          }
-         ReferenceFrame footFrame = ReferenceFrameTools.constructFrameWithUnchangingTranslationFromParent("FootstepFrame", worldFrame, footstep.getFootstepPose().getPosition());
+         ReferenceFrame footFrame = ReferenceFrameTools.constructFrameWithUnchangingTranslationFromParent("FootstepFrame",
+                                                                                                          worldFrame,
+                                                                                                          footstep.getFootstepPose().getPosition());
          tempFootPolygon.setIncludingFrame(footFrame, Vertex2DSupplier.asVertex2DSupplier(footstep.getPredictedContactPoints()));
          tempFootPolygon.changeFrameAndProjectToXYPlane(worldFrame);
          yoNextFootstepPolygon.get(i).set(tempFootPolygon);
@@ -431,8 +434,8 @@ public class CoPPlannerVisualizer
          ReferenceFrame soleFrame = contactableFoot.getSoleFrame();
          List<FramePoint2D> contactFramePoints = contactableFoot.getContactPoints2d();
          double coefficientOfFriction = contactableFoot.getCoefficientOfFriction();
-         YoPlaneContactState yoPlaneContactState = new YoPlaneContactState(sidePrefix + "Foot", foot, soleFrame, contactFramePoints, coefficientOfFriction,
-                                                                           registry);
+         YoPlaneContactState yoPlaneContactState = new YoPlaneContactState(sidePrefix
+               + "Foot", foot, soleFrame, contactFramePoints, coefficientOfFriction, registry);
          yoPlaneContactState.setFullyConstrained();
          contactStates.put(robotSide, yoPlaneContactState);
 
@@ -479,16 +482,32 @@ public class CoPPlannerVisualizer
       transferSplitFraction.set(planParameters.getTransferSplitFraction());
       transferDurations.add(transferDuration);
       transferSplitFractions.add(transferSplitFraction);
-      
+
       finalTransferWeightDistribution = new YoDouble("finalTransferWeightDistribution", registry);
       finalTransferWeightDistribution.set(0.5);
+      finalTransferSplitFraction = new YoDouble("finalTransferSplitFraction", registry);
+      finalTransferSplitFraction.set(0.5);
 
       int numberOfPointsInFoot = planParameters.getNumberOfCoPWayPointsPerFoot();
       int maxNumberOfFootstepsToConsider = planParameters.getNumberOfFootstepsToConsider();
-      testCoPPlanner = new ReferenceCoPTrajectoryGenerator("TestCoPPlanner", maxNumberOfFootstepsToConsider, bipedSupportPolygons, contactableFeet,
-                                                           numberOfFootstepsToConsider, swingDurations, transferDurations, swingSplitFractions,
-                                                           swingDurationShiftFractions, transferSplitFractions, weightDistributions, finalTransferWeightDistribution, numberOfFootstepsRegisered,
-                                                           upcomingFootstepData, soleZUpFrames, registry);
+      testCoPPlanner = new ReferenceCoPTrajectoryGenerator("TestCoPPlanner",
+                                                           maxNumberOfFootstepsToConsider,
+                                                           bipedSupportPolygons,
+                                                           contactableFeet,
+                                                           numberOfFootstepsToConsider,
+                                                           swingDurations,
+                                                           transferDurations,
+                                                           swingSplitFractions,
+                                                           swingDurationShiftFractions,
+                                                           transferSplitFractions,
+                                                           weightDistributions,
+                                                           finalTransferWeightDistribution,
+                                                           finalTransferSplitFraction,
+                                                           numberOfFootstepsRegisered,
+                                                           upcomingFootstepData,
+                                                           soleFrames,
+                                                           soleZUpFrames,
+                                                           registry);
       testCoPPlanner.initializeParameters(planParameters);
 
       YoGraphicsList yoGraphicsList = new YoGraphicsList("graphicsList");

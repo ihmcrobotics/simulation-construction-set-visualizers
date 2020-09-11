@@ -322,7 +322,12 @@ public class SmoothCMPICPPlannerVisualizer
 
       copTrackAMOff = new BagOfBalls(50, 0.003, "CoPAMOff", YoAppearance.AliceBlue(), registry, graphicsListRegistry);
       cmpTrackAMOff = new BagOfBalls(50, 0.003, "eCMPAMOff", YoAppearance.Purple(), registry, graphicsListRegistry);
-      icpTrackAMOff = new BagOfBalls(50, 0.001, "ICPAMOff", YoAppearance.Yellow(), YoGraphicPosition.GraphicType.BALL_WITH_CROSS, registry,
+      icpTrackAMOff = new BagOfBalls(50,
+                                     0.001,
+                                     "ICPAMOff",
+                                     YoAppearance.Yellow(),
+                                     YoGraphicPosition.GraphicType.BALL_WITH_CROSS,
+                                     registry,
                                      graphicsListRegistry);
       comTrackAMOff = new BagOfBalls(50, 0.001, "CoMAMOff", YoAppearance.Black(), registry, graphicsListRegistry);
 
@@ -336,9 +341,17 @@ public class SmoothCMPICPPlannerVisualizer
       comFinalTrack = new BagOfBalls(50, 0.004, "CoMFinal", YoAppearance.Green(), registry, graphicsListRegistry);
       estCoMTrack = new BagOfBalls(50, 0.004, "predictedCoM", YoAppearance.Green(), registry, graphicsListRegistry);
 
-      YoArtifactPosition desiredCMPArtifact = new YoArtifactPosition("desiredCMP", desiredCMP.getYoX(), desiredCMP.getYoY(), GraphicType.BALL_WITH_CROSS,
-                                                                     Color.RED, 0.01);
-      YoArtifactPosition desiredCoPArtifact = new YoArtifactPosition("desiredCoP", desiredCoP.getYoX(), desiredCoP.getYoY(), GraphicType.BALL, Color.BLUE,
+      YoArtifactPosition desiredCMPArtifact = new YoArtifactPosition("desiredCMP",
+                                                                     desiredCMP.getYoX(),
+                                                                     desiredCMP.getYoY(),
+                                                                     GraphicType.BALL_WITH_CROSS,
+                                                                     Color.RED,
+                                                                     0.01);
+      YoArtifactPosition desiredCoPArtifact = new YoArtifactPosition("desiredCoP",
+                                                                     desiredCoP.getYoX(),
+                                                                     desiredCoP.getYoY(),
+                                                                     GraphicType.BALL,
+                                                                     Color.BLUE,
                                                                      0.01);
       graphicsListRegistry.registerArtifact("desiredCMP", desiredCMPArtifact);
       graphicsListRegistry.registerArtifact("desiredCoP", desiredCoPArtifact);
@@ -384,10 +397,16 @@ public class SmoothCMPICPPlannerVisualizer
    private List<FootstepShiftFractions> getFootstepShiftFractions()
    {
       List<FootstepShiftFractions> shiftFractions = new ArrayList<>(footsteps.size());
-      shiftFractions.add(new FootstepShiftFractions(defaultSwingDurationShiftFraction, defaultSwingSplitFraction, defaultTransferSplitFraction, defaultTransferWeightDistribution));
+      shiftFractions.add(new FootstepShiftFractions(defaultSwingDurationShiftFraction,
+                                                    defaultSwingSplitFraction,
+                                                    defaultTransferSplitFraction,
+                                                    defaultTransferWeightDistribution));
       for (int i = 1; i < footsteps.size(); i++)
       {
-         shiftFractions.add(new FootstepShiftFractions(defaultSwingDurationShiftFraction, defaultSwingSplitFraction, defaultTransferSplitFraction, defaultTransferWeightDistribution));
+         shiftFractions.add(new FootstepShiftFractions(defaultSwingDurationShiftFraction,
+                                                       defaultSwingSplitFraction,
+                                                       defaultTransferSplitFraction,
+                                                       defaultTransferWeightDistribution));
       }
       return shiftFractions;
    }
@@ -415,9 +434,8 @@ public class SmoothCMPICPPlannerVisualizer
       {
          nextFootsteps.clear();
          nextFootstepTimings.clear();
-         int numberOfNextSteps = footsteps.size() - currentStepCount < planParameters.getNumberOfFootstepsToConsider() ?
-               footsteps.size() - currentStepCount :
-               planParameters.getNumberOfFootstepsToConsider();
+         int numberOfNextSteps = footsteps.size() - currentStepCount < planParameters.getNumberOfFootstepsToConsider() ? footsteps.size() - currentStepCount
+               : planParameters.getNumberOfFootstepsToConsider();
          for (int i = 0; i < numberOfNextSteps; i++)
          {
             nextFootsteps.add(footsteps.get(currentStepCount + i));
@@ -721,7 +739,9 @@ public class SmoothCMPICPPlannerVisualizer
          {
             footstep.setPredictedContactPoints(contactableFeet.get(footstep.getRobotSide()).getContactPoints2d());
          }
-         ReferenceFrame footFrame = ReferenceFrameTools.constructFrameWithUnchangingTranslationFromParent("FootstepFrame", worldFrame, footstep.getFootstepPose().getPosition());
+         ReferenceFrame footFrame = ReferenceFrameTools.constructFrameWithUnchangingTranslationFromParent("FootstepFrame",
+                                                                                                          worldFrame,
+                                                                                                          footstep.getFootstepPose().getPosition());
          tempFootPolygon.setIncludingFrame(footFrame, Vertex2DSupplier.asVertex2DSupplier(footstep.getPredictedContactPoints()));
          tempFootPolygon.changeFrameAndProjectToXYPlane(worldFrame);
          yoNextFootstepPolygon.get(i).set(tempFootPolygon);
@@ -803,8 +823,8 @@ public class SmoothCMPICPPlannerVisualizer
 
    private void generateRandomPredictedContactPoints(Footstep footstep)
    {
-      FrameConvexPolygon2D randomSupportPolygon = new FrameConvexPolygon2D(
-            FrameVertex2DSupplier.asFrameVertex2DSupplier(contactableFeet.get(footstep.getRobotSide()).getContactPoints2d()));
+      FrameConvexPolygon2D randomSupportPolygon = new FrameConvexPolygon2D(FrameVertex2DSupplier.asFrameVertex2DSupplier(contactableFeet.get(footstep.getRobotSide())
+                                                                                                                                        .getContactPoints2d()));
       List<FramePoint2D> randomPredictedContactPointList = new ArrayList<>();
 
       double minX = 0.5 * randomSupportPolygon.getMinX();
@@ -844,14 +864,14 @@ public class SmoothCMPICPPlannerVisualizer
          double yToAnkle = 0.0;
          double zToAnkle = 0.084;
          List<Point2D> contactPointsInSoleFrame = new ArrayList<Point2D>();
-         contactPointsInSoleFrame
-               .add(new Point2D(atlasPhysicalProperties.getFootLengthForControl() / 2.0, atlasPhysicalProperties.getToeWidthForControl() / 2.0));
-         contactPointsInSoleFrame
-               .add(new Point2D(atlasPhysicalProperties.getFootLengthForControl() / 2.0, -atlasPhysicalProperties.getToeWidthForControl() / 2.0));
-         contactPointsInSoleFrame
-               .add(new Point2D(-atlasPhysicalProperties.getFootLengthForControl() / 2.0, -atlasPhysicalProperties.getFootWidthForControl() / 2.0));
-         contactPointsInSoleFrame
-               .add(new Point2D(-atlasPhysicalProperties.getFootLengthForControl() / 2.0, atlasPhysicalProperties.getFootWidthForControl() / 2.0));
+         contactPointsInSoleFrame.add(new Point2D(atlasPhysicalProperties.getFootLengthForControl() / 2.0,
+                                                  atlasPhysicalProperties.getToeWidthForControl() / 2.0));
+         contactPointsInSoleFrame.add(new Point2D(atlasPhysicalProperties.getFootLengthForControl() / 2.0,
+                                                  -atlasPhysicalProperties.getToeWidthForControl() / 2.0));
+         contactPointsInSoleFrame.add(new Point2D(-atlasPhysicalProperties.getFootLengthForControl() / 2.0,
+                                                  -atlasPhysicalProperties.getFootWidthForControl() / 2.0));
+         contactPointsInSoleFrame.add(new Point2D(-atlasPhysicalProperties.getFootLengthForControl() / 2.0,
+                                                  atlasPhysicalProperties.getFootWidthForControl() / 2.0));
          FootSpoof contactableFoot = new FootSpoof(sidePrefix + "Foot", xToAnkle, yToAnkle, zToAnkle, contactPointsInSoleFrame, 0.0);
          FramePose3D startingPose = new FramePose3D(worldFrame);
          startingPose.setToZero(worldFrame);
@@ -869,8 +889,8 @@ public class SmoothCMPICPPlannerVisualizer
          ReferenceFrame soleFrame = contactableFoot.getSoleFrame();
          List<FramePoint2D> contactFramePoints = contactableFoot.getContactPoints2d();
          double coefficientOfFriction = contactableFoot.getCoefficientOfFriction();
-         YoPlaneContactState yoPlaneContactState = new YoPlaneContactState(sidePrefix + "Foot", foot, soleFrame, contactFramePoints, coefficientOfFriction,
-                                                                           registry);
+         YoPlaneContactState yoPlaneContactState = new YoPlaneContactState(sidePrefix
+               + "Foot", foot, soleFrame, contactFramePoints, coefficientOfFriction, registry);
          yoPlaneContactState.setFullyConstrained();
          contactStates.put(robotSide, yoPlaneContactState);
 
@@ -936,17 +956,35 @@ public class SmoothCMPICPPlannerVisualizer
       transferDuration.set(defaultTransferTime);
       transferSplitFraction.set(planParameters.getSwingSplitFraction());
       AtlasRobotModel atlasRobotModel = new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_NO_HANDS, RobotTarget.SCS, false);
-      icpPlanner = new SmoothCMPBasedICPPlanner(atlasRobotModel.createFullRobotModel(), bipedSupportPolygons, soleZUpFrames, contactableFeet, null, yoTime,
-                                                registry, graphicsListRegistry, 9.81, planParameters);
+      icpPlanner = new SmoothCMPBasedICPPlanner(atlasRobotModel.createFullRobotModel(),
+                                                bipedSupportPolygons,
+                                                soleFrames,
+                                                soleZUpFrames,
+                                                contactableFeet,
+                                                null,
+                                                yoTime,
+                                                registry,
+                                                graphicsListRegistry,
+                                                9.81,
+                                                planParameters);
       icpPlanner.setFinalTransferDuration(1.0);
 
       if (SHOW_WITHOUT_ANGULAR_MOMENTUM)
       {
          YoRegistry dummyRegistry = new YoRegistry("ICPAMOff");
          YoGraphicsListRegistry dummyGrahpics = new YoGraphicsListRegistry();
-         icpPlannerAMOff = new SmoothCMPBasedICPPlanner(new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_DUAL_ROBOTIQ, RobotTarget.SCS,
+         icpPlannerAMOff = new SmoothCMPBasedICPPlanner(new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_DUAL_ROBOTIQ,
+                                                                            RobotTarget.SCS,
                                                                             false).createFullRobotModel(),
-                                                        bipedSupportPolygons, soleZUpFrames, contactableFeet, null, yoTime, dummyRegistry, dummyGrahpics, 9.81,
+                                                        bipedSupportPolygons,
+                                                        soleFrames,
+                                                        soleZUpFrames,
+                                                        contactableFeet,
+                                                        null,
+                                                        yoTime,
+                                                        dummyRegistry,
+                                                        dummyGrahpics,
+                                                        9.81,
                                                         planParametersNoMomentum);
          icpPlannerAMOff.setFinalTransferDuration(1.0);
       }
