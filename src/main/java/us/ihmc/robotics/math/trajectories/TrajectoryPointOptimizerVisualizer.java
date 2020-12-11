@@ -1,6 +1,7 @@
 package us.ihmc.robotics.math.trajectories;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import us.ihmc.commonWalkingControlModules.trajectories.PositionOptimizedTrajectoryGenerator;
 import us.ihmc.commons.thread.ThreadTools;
@@ -30,7 +31,7 @@ public class TrajectoryPointOptimizerVisualizer
     * <li>
     * </ul>
     */
-   private static final boolean VISUALIZE_CONVERGENCE = true;
+   private static final boolean VISUALIZE_CONVERGENCE = false;
 
    private enum TestType
    {
@@ -111,12 +112,14 @@ public class TrajectoryPointOptimizerVisualizer
 
    private void setupSwing()
    {
-      initialPosition.setIncludingFrame(worldFrame, -0.5, 0.0, 0.0);
-      initialVelocity.setIncludingFrame(worldFrame, 0.0, 0.0, 0.0);
-      finalPosition.setIncludingFrame(worldFrame, 0.5, 0.0, 0.0);
-      finalVelocity.setIncludingFrame(worldFrame, 0.0, 0.0, 0.0);
-      waypointPositions.add(new FramePoint3D(worldFrame, -0.01, 0.0, 1.0));
-      waypointPositions.add(new FramePoint3D(worldFrame, 0.01, 0.0, 1.0));
+      // Actual swing from an Atlas sim.
+      initialPosition.setIncludingFrame(worldFrame, 0.654, 0.129, -0.004);
+      initialVelocity.setIncludingFrame(worldFrame, 0.045, 0.015, 0.207);
+      finalPosition.setIncludingFrame(worldFrame, 1.416, 0.125, -0.022);
+      finalVelocity.setIncludingFrame(worldFrame, 0.000, 0.000, -0.300);
+      waypointPositions.add(new FramePoint3D(worldFrame, 0.768, 0.129, 0.093));
+      waypointPositions.add(new FramePoint3D(worldFrame, 1.301, 0.126, 0.081));
+      Arrays.asList(initialPosition, finalPosition, waypointPositions.get(0), waypointPositions.get(1)).forEach(p -> p.add(-1,0,0.3));
    }
 
    private void createGUIAndSleep()
@@ -175,6 +178,7 @@ public class TrajectoryPointOptimizerVisualizer
          }
       }
 
+      scs.cropBuffer();
       scs.startOnAThread();
       ThreadTools.sleepForever();
    }
