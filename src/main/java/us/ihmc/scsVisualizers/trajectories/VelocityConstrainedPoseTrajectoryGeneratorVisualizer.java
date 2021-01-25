@@ -13,7 +13,6 @@ import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.euclid.referenceFrame.tools.EuclidFrameRandomTools;
 import us.ihmc.euclid.tuple4D.Quaternion;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
-import us.ihmc.robotics.trajectories.providers.ConstantDoubleProvider;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
@@ -67,7 +66,7 @@ public class VelocityConstrainedPoseTrajectoryGeneratorVisualizer
       ReferenceFrame trajectoryFrame = aFrame;
 
 
-      DoubleProvider trajectoryTimeProvider = new ConstantDoubleProvider(trajectoryTime);
+      DoubleProvider trajectoryTimeProvider = () -> trajectoryTime;
       traj1 = new VelocityConstrainedPoseTrajectoryGenerator(namePrefix + "1", trajectoryFrame, registry, true, yoGraphicsListRegistry);
       traj2 = new StraightLinePoseTrajectoryGenerator(namePrefix + "2", trajectoryFrame, registry, true, yoGraphicsListRegistry);
 
@@ -131,20 +130,14 @@ public class VelocityConstrainedPoseTrajectoryGeneratorVisualizer
       {
          robot.getYoTime().set(t);
          traj1.compute(t);
-         traj1.getPosition(tempPoint);
-         position.set(tempPoint);
-         traj1.getVelocity(tempVector);
-         velocity.set(tempVector);
-         traj1.getAcceleration(tempVector);
-         acceleration.set(tempVector);
+         position.set(traj1.getPosition());
+         velocity.set(traj1.getVelocity());
+         acceleration.set(traj1.getAcceleration());
 
          traj2.compute(t);
-         traj2.getPosition(tempPoint);
-         position.set(tempPoint);
-         traj2.getVelocity(tempVector);
-         velocity.set(tempVector);
-         traj2.getAcceleration(tempVector);
-         acceleration.set(tempVector);
+         position.set(traj2.getPosition());
+         velocity.set(traj2.getVelocity());
+         acceleration.set(traj2.getAcceleration());
 
          traj1.showVisualization();
          traj2.showVisualization();
@@ -154,9 +147,9 @@ public class VelocityConstrainedPoseTrajectoryGeneratorVisualizer
          if(t >= dt && t <= trajectoryTime -dt)
          {
             traj1.compute(t + FDdt);
-            traj1.getOrientation(orientation3);
+            orientation3.setIncludingFrame(traj1.getOrientation());
             traj1.compute(t - FDdt);
-            traj1.getOrientation(orientation1);
+            orientation1.setIncludingFrame(traj1.getOrientation());
 
 
             orientation3.changeFrame(worldFrame);

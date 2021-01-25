@@ -43,8 +43,7 @@ public class FiniteDifferenceAngularVelocityYoFrameVectorVisualizer
       for (int i = 0; i < BUFFER ; i++)
       {
          traj.compute(yoTime.getDoubleValue());
-         traj.getOrientation(orientation);
-         orientationToDifferentiate.set(orientation);
+         orientationToDifferentiate.set(traj.getOrientation());
          filteredAngularVelocityYoFrameVector.update();
 
          yoTime.add(dt);

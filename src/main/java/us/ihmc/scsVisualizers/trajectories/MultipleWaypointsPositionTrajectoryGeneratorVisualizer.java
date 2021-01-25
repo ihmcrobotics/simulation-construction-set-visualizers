@@ -7,9 +7,7 @@ import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.robotics.math.trajectories.StraightLinePositionTrajectoryGenerator;
 import us.ihmc.robotics.math.trajectories.generators.MultipleWaypointsPositionTrajectoryGenerator;
-import us.ihmc.robotics.trajectories.providers.ConstantDoubleProvider;
-import us.ihmc.robotics.trajectories.providers.ConstantPositionProvider;
-import us.ihmc.robotics.trajectories.providers.PositionProvider;
+import us.ihmc.robotics.trajectories.providers.FramePositionProvider;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
@@ -32,10 +30,15 @@ public class MultipleWaypointsPositionTrajectoryGeneratorVisualizer
 
    public MultipleWaypointsPositionTrajectoryGeneratorVisualizer()
    {
-      DoubleProvider trajectoryTimeProvider = new ConstantDoubleProvider(trajectoryTime);
-      PositionProvider initialPositionProvider = new ConstantPositionProvider(new FramePoint3D(worldFrame, 1.0, 0.0, 1.0));
-      PositionProvider finalPositionProvider = new ConstantPositionProvider(new FramePoint3D(worldFrame, 0.2, 1.0, 0.4));
-      simpleTraj = new StraightLinePositionTrajectoryGenerator("simpleTraj", worldFrame, trajectoryTimeProvider, initialPositionProvider, finalPositionProvider, registry);
+      DoubleProvider trajectoryTimeProvider = () -> trajectoryTime;
+      FramePositionProvider initialPositionProvider = () -> new FramePoint3D(worldFrame, 1.0, 0.0, 1.0);
+      FramePositionProvider finalPositionProvider = () -> new FramePoint3D(worldFrame, 0.2, 1.0, 0.4);
+      simpleTraj = new StraightLinePositionTrajectoryGenerator("simpleTraj",
+                                                               worldFrame,
+                                                               trajectoryTimeProvider,
+                                                               initialPositionProvider,
+                                                               finalPositionProvider,
+                                                               registry);
       simpleTraj.initialize();
 
       traj = new MultipleWaypointsPositionTrajectoryGenerator("testedTraj", 200, worldFrame, registry);
@@ -50,8 +53,8 @@ public class MultipleWaypointsPositionTrajectoryGeneratorVisualizer
       {
          double timeAtWaypoint = i * trajectoryTime / (numberOfWaypoints - 1.0);
          simpleTraj.compute(timeAtWaypoint);
-         simpleTraj.getPosition(waypointPosition);
-         simpleTraj.getVelocity(waypointVelocity);
+         waypointPosition.setIncludingFrame(simpleTraj.getPosition());
+         waypointVelocity.setIncludingFrame(simpleTraj.getVelocity());
          traj.appendWaypoint(timeAtWaypoint, waypointPosition, waypointVelocity);
       }
       traj.initialize();

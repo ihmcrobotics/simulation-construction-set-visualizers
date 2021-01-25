@@ -13,8 +13,8 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicCoordinateSystem;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.robotics.geometry.RotationTools;
-import us.ihmc.robotics.math.trajectories.YoPolynomial;
 import us.ihmc.robotics.math.trajectories.generators.MultipleWaypointsPoseTrajectoryGenerator;
+import us.ihmc.robotics.math.trajectories.yoVariables.YoPolynomial;
 import us.ihmc.robotics.referenceFrames.PoseReferenceFrame;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
@@ -151,23 +151,23 @@ public class MultipleWaypointsPoseTrajectoryGeneratorVisualizer
       {
          robot.getYoTime().set(t);
          trajectoryGenerator.compute(t);
-         trajectoryGenerator.getPosition(tempPoint);
+         tempPoint.setIncludingFrame(trajectoryGenerator.getPosition());
          position.set(tempPoint);
-         trajectoryGenerator.getVelocity(tempVector);
+         tempVector.setIncludingFrame(trajectoryGenerator.getVelocity());
          velocity.set(tempVector);
-         trajectoryGenerator.getAcceleration(tempVector);
+         tempVector.setIncludingFrame(trajectoryGenerator.getAcceleration());
          acceleration.set(tempVector);
 
          position.set(tempPoint);
          velocity.set(tempVector);
          acceleration.set(tempVector);
          
-         trajectoryGenerator.getPose(pose);
+         pose.setIncludingFrame(trajectoryGenerator.getPose());
          currentPoseGraphic.setPose(pose);
          
-         trajectoryGenerator.getVelocity(linearVelocity);
+         linearVelocity.setIncludingFrame(trajectoryGenerator.getVelocity());
          yoLinearVelocity.set(linearVelocity);
-         trajectoryGenerator.getAngularVelocity(angularVelocity);
+         angularVelocity.setIncludingFrame(trajectoryGenerator.getAngularVelocity());
          yoAngularVelocity.set(angularVelocity);
          
          trajectoryGenerator.showVisualization();

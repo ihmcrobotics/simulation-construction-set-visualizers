@@ -128,7 +128,7 @@ public class HermiteCurveBasedOrientationTrajectoryGeneratorVisualizer
       {
          robot.getYoTime().set(t);
          traj1.compute(t);
-         traj1.getOrientation(orientationCurr);
+         orientationCurr.setIncludingFrame(traj1.getOrientation());
          FD2AngularVelocity.update(quatCurr);
 
          desiredPosition.interpolate(initialPosition, finalPosition, t / trajectoryTime);
@@ -166,8 +166,7 @@ public class HermiteCurveBasedOrientationTrajectoryGeneratorVisualizer
             }
          }
 
-         FrameVector3D direction = new FrameVector3D();
-         traj1.getAngularVelocity(direction);
+         FrameVector3D direction = new FrameVector3D(traj1.getAngularVelocity());
          if (direction.length() < 1.0e-10)
             direction.set(0.0, 0.0, 0.0);
          else

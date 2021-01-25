@@ -4,7 +4,6 @@ import java.util.function.Supplier;
 
 import us.ihmc.commons.lists.RecyclingArrayList;
 import us.ihmc.commons.thread.ThreadTools;
-import us.ihmc.euclid.referenceFrame.FramePoint3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
 import us.ihmc.euclid.tuple3D.Point3D;
 import us.ihmc.euclid.tuple3D.Vector3D;
@@ -134,9 +133,7 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
       {
          traj.compute(t);
 
-         FramePoint3D currentPosition = new FramePoint3D();
-         traj.getPosition(currentPosition);
-         currentPositionViz.set(currentPosition);
+         currentPositionViz.set(traj.getPosition());
 
          scs.tickAndUpdate();
       }

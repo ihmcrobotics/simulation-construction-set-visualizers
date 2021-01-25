@@ -85,8 +85,8 @@ public class MultipleWaypointsOrientationTrajectoryGeneratorVisualizer
       {
          double timeAtWaypoint = numberOfWaypoints == 1 ? trajectoryTime / 2.0 : i * trajectoryTime / (numberOfWaypoints - 1.0);
          simpleTraj.compute(timeAtWaypoint);
-         simpleTraj.getOrientation(waypointOrientation);
-         simpleTraj.getAngularVelocity(waypointAngularVelocity);
+         waypointOrientation.setIncludingFrame(simpleTraj.getOrientation());
+         waypointAngularVelocity.setIncludingFrame(simpleTraj.getAngularVelocity());
          testedTraj.appendWaypoint(timeAtWaypoint, waypointOrientation, waypointAngularVelocity);
 
          waypointOrientationViz[i] = new YoFramePoseUsingYawPitchRoll("waypointOrientationViz" + i, worldFrame, registry);
@@ -120,19 +120,19 @@ public class MultipleWaypointsOrientationTrajectoryGeneratorVisualizer
 
          interpolatedPosition.interpolate(initialPosition, finalPosition, t / trajectoryTime);
          timeVizAsPosition.set(interpolatedPosition);
-         simpleTraj.getOrientation(tempOrientation);
+         tempOrientation.setIncludingFrame(simpleTraj.getOrientation());
          simpleTrajOrientationViz.set(tempOrientation);
 
-         simpleTraj.getAngularVelocity(tempVelocity);
+         tempVelocity.setIncludingFrame(simpleTraj.getAngularVelocity());
          tempVelocity.normalize();
          simpleTrajVelocityDirectionViz.set(tempVelocity);
 
 
-         testedTraj.getAngularVelocity(tempVelocity);
+         tempVelocity.setIncludingFrame(testedTraj.getAngularVelocity());
          tempVelocity.normalize();
 
          testedTrajVelocityDirectionViz.set(tempVelocity);
-         testedTraj.getOrientation(tempOrientation);
+         tempOrientation.setIncludingFrame(testedTraj.getOrientation());
          testedTrajOrientationViz.set(tempOrientation);
          yoTime.add(dt);
          scs.tickAndUpdate();

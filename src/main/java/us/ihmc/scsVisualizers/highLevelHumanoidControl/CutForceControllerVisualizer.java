@@ -378,7 +378,7 @@ public class CutForceControllerVisualizer
             if(scaledTimeVariable.getDoubleValue() < TRAJECTORYTIME)
             {
                straightLineTrajectory.compute(scaledTimeVariable.getDoubleValue() + DTCONTROL);
-               straightLineTrajectory.getPose(tempPose);
+               tempPose.setIncludingFrame(straightLineTrajectory.getPose());
                straightLineTrajectory.getLinearData(preScalingTrajectoryPosition, preScalingTrajectoryVelocity, preScalingTrajectoryAcceleration);
                preScalingTrajectoryVelocityDouble = preScalingTrajectoryVelocity.length();
 
@@ -389,7 +389,7 @@ public class CutForceControllerVisualizer
 
                nextPositionInWorld.set(tempPose.getPosition());
                straightLineTrajectory.compute(scaledTimeVariable.getDoubleValue());
-               straightLineTrajectory.getPose(tempPose);
+               tempPose.setIncludingFrame(straightLineTrajectory.getPose());
                if(tempPose.getReferenceFrame() != worldFrame)
                {
                   tempPose.changeFrame(worldFrame);
@@ -473,9 +473,9 @@ public class CutForceControllerVisualizer
             scaledTimeVariable.add(DTCONTROL * scaleFactor.getDoubleValue());
             straightLineTrajectory.compute(scaledTimeVariable.getDoubleValue());
 
-            straightLineTrajectory.getPose(handPose);
-            straightLineTrajectory.getVelocity(desiredHandLinearVelocity);
-            straightLineTrajectory.getAngularVelocity(desiredHandAngularVelocity);
+            handPose.setIncludingFrame(straightLineTrajectory.getPose());
+            desiredHandLinearVelocity.setIncludingFrame(straightLineTrajectory.getVelocity());
+            desiredHandAngularVelocity.setIncludingFrame(straightLineTrajectory.getAngularVelocity());
 
             // scale the velocities with the scalefFactor
             desiredHandLinearVelocity.scale(scaleFactor.getDoubleValue());

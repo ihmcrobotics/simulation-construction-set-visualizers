@@ -28,9 +28,6 @@ public class SoftTouchdownTrajectoryGeneratorVisualizer
    private final YoFrameVector3D velocity = new YoFrameVector3D("velocity", worldFrame, registry);
    private final YoFrameVector3D acceleration = new YoFrameVector3D("acceleration", worldFrame, registry);
 
-   private final FramePoint3D tempPoint = new FramePoint3D();
-   private final FrameVector3D tempVector = new FrameVector3D();
-
    public SoftTouchdownTrajectoryGeneratorVisualizer()
    {
       traj = new SoftTouchdownPositionTrajectoryGenerator("Traj", registry);
@@ -47,12 +44,9 @@ public class SoftTouchdownTrajectoryGeneratorVisualizer
       for (double t = 0.0; t <= trajectoryTime; t += dt)
       {
          traj.compute(t);
-         traj.getPosition(tempPoint);
-         position.set(tempPoint);
-         traj.getVelocity(tempVector);
-         velocity.set(tempVector);
-         traj.getAcceleration(tempVector);
-         acceleration.set(tempVector);
+         position.set(traj.getPosition());
+         velocity.set(traj.getVelocity());
+         acceleration.set(traj.getAcceleration());
 
          scs.tickAndUpdate();
       }

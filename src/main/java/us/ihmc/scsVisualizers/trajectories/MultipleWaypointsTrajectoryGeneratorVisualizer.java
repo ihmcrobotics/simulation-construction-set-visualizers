@@ -3,14 +3,11 @@ package us.ihmc.scsVisualizers.trajectories;
 import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
-import us.ihmc.robotics.math.trajectories.QuinticPolynomialTrajectoryGenerator;
 import us.ihmc.robotics.math.trajectories.generators.MultipleWaypointsTrajectoryGenerator;
-import us.ihmc.robotics.math.trajectories.providers.YoVariableDoubleProvider;
-import us.ihmc.robotics.trajectories.providers.ConstantDoubleProvider;
+import us.ihmc.robotics.math.trajectories.yoVariables.YoPolynomial;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
-import us.ihmc.yoVariables.providers.DoubleProvider;
 import us.ihmc.yoVariables.registry.YoRegistry;
 
 public class MultipleWaypointsTrajectoryGeneratorVisualizer
@@ -22,23 +19,21 @@ public class MultipleWaypointsTrajectoryGeneratorVisualizer
    private final int recordFrequency = 1;
    private final int bufferSize = (int) (trajectoryTime / dt / recordFrequency + 2);
 
-   private final QuinticPolynomialTrajectoryGenerator simpleTraj;
+   private final YoPolynomial simpleTraj;
    private final MultipleWaypointsTrajectoryGenerator traj;
    
-   private final YoVariableDoubleProvider trajectoryTimeProvider;
-
    public MultipleWaypointsTrajectoryGeneratorVisualizer()
    {
       YoGraphicsListRegistry yoGraphicsListRegistry = new YoGraphicsListRegistry();
 
-      trajectoryTimeProvider = new YoVariableDoubleProvider("trajectoryTime", registry);
-      trajectoryTimeProvider.set(trajectoryTime);
-
-      DoubleProvider initialPositionProvider = new ConstantDoubleProvider(0.0);
-      DoubleProvider initialVelocityProvider = new ConstantDoubleProvider(0.0);
-      DoubleProvider finalPositionProvider = new ConstantDoubleProvider(1.0);
-      DoubleProvider finalVelocityProvider = new ConstantDoubleProvider(0.5);
-      simpleTraj = new QuinticPolynomialTrajectoryGenerator("simpleTraj", initialPositionProvider, initialVelocityProvider, finalPositionProvider, finalVelocityProvider, trajectoryTimeProvider, registry);
+      simpleTraj = new YoPolynomial("simpleTraj", 6, registry);
+      double z0 = 0.0;
+      double zd0 = 0.0;
+      double zdd0 = 0.0;
+      double zf = 1.0;
+      double zdf = 0.5;
+      double zddf = 0.0;
+      simpleTraj.setQuintic(0.0, trajectoryTime, z0, zd0, zdd0, zf, zdf, zddf);
       simpleTraj.initialize();
 
       traj = new MultipleWaypointsTrajectoryGenerator("testedTraj", 15, registry);
