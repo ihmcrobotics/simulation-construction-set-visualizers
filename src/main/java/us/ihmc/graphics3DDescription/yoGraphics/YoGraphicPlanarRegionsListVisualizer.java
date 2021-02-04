@@ -79,7 +79,7 @@ public class YoGraphicPlanarRegionsListVisualizer
 
       PeriodicThreadSchedulerFactory scheduler = new PeriodicNonRealtimeThreadSchedulerFactory();
       final YoVariableServer yoVariableServer = new YoVariableServer(YoGraphicPlanarRegionsListVisualizer.class, scheduler, null, LogSettings.TOOLBOX, 0.001);
-      yoVariableServer.setMainRegistry(registry, null, yoGraphicsListRegistry);
+      yoVariableServer.setMainRegistry(registry, yoGraphicsListRegistry);
       yoVariableServer.start();
       Runnable command = new Runnable()
       {
