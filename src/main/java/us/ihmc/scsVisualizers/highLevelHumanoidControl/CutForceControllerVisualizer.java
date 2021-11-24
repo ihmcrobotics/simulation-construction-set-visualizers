@@ -179,7 +179,7 @@ public class CutForceControllerVisualizer
       atlasRobotModel = new AtlasRobotModel(AtlasRobotVersion.ATLAS_UNPLUGGED_V5_DUAL_ROBOTIQ, RobotTarget.SCS, false);
       fullRobotModel = atlasRobotModel.createFullRobotModel();
       robot = atlasRobotModel.createHumanoidFloatingRootJointRobot(false);
-      atlasRobotModel.getDefaultRobotInitialSetup(0.0, 0.0).initializeRobot(robot, atlasRobotModel.getJointMap());
+      atlasRobotModel.getDefaultRobotInitialSetup(0.0, 0.0).initializeRobot(robot);
 
       SDFPerfectSimulatedSensorReader sensorReader = new SDFPerfectSimulatedSensorReader(robot, fullRobotModel, new HumanoidReferenceFrames(fullRobotModel));
       sensorReader.read();
