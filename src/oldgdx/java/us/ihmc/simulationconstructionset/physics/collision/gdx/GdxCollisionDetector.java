@@ -97,7 +97,7 @@ public class GdxCollisionDetector implements ScsCollisionDetector
          BulletCollisionShapeWithLink info = allShapes.get(i);
          info.getTransformToWorld(transformScs);
 
-         transformScs.getTranslation(world);
+         world.set(transformScs.getTranslation());
 
          GdxUtil.convert(transformScs, transformGdx);
          //         info.setTransformToWorld(transformScs);
