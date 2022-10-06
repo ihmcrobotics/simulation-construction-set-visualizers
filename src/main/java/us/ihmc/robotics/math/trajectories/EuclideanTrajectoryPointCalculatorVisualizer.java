@@ -110,8 +110,8 @@ public class EuclideanTrajectoryPointCalculatorVisualizer
          Point3D position3d = new Point3D();
          Vector3D linearVelocity3d = new Vector3D();
          EuclideanTrajectoryPointBasics waypoint = waypoints.getTrajectoryPoint(i);
-         waypoint.getPosition(position3d);
-         waypoint.getLinearVelocity(linearVelocity3d);
+         position3d.set(waypoint.getPosition());
+         linearVelocity3d.set(waypoint.getLinearVelocity());
          trajectoryPointsViz.add().set(waypoint.getTime(), position3d, linearVelocity3d);
          relativeWaypointTimes[i].set(waypoint.getTime() - previousWaypointTime);
          previousWaypointTime = waypoint.getTime();
