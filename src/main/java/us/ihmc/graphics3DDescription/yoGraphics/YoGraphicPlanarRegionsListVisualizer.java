@@ -77,8 +77,7 @@ public class YoGraphicPlanarRegionsListVisualizer
       yoGraphicsListRegistry.registerYoGraphic("test", worldCoordinates);
       yoGraphicsListRegistry.registerYoGraphic("test", polygon);
 
-      PeriodicThreadSchedulerFactory scheduler = new PeriodicNonRealtimeThreadSchedulerFactory();
-      final YoVariableServer yoVariableServer = new YoVariableServer(YoGraphicPlanarRegionsListVisualizer.class, scheduler, null, LogSettings.TOOLBOX, 0.001);
+      final YoVariableServer yoVariableServer = new YoVariableServer(YoGraphicPlanarRegionsListVisualizer.class, null, LogSettings.TOOLBOX, 0.001);
       yoVariableServer.setMainRegistry(registry, yoGraphicsListRegistry);
       yoVariableServer.start();
       Runnable command = new Runnable()
