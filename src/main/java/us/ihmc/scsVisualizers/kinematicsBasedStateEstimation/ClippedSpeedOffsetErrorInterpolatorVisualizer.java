@@ -5,6 +5,7 @@ import java.util.Random;
 import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.euclid.referenceFrame.FramePose3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
+import us.ihmc.euclid.tools.EuclidCoreRandomTools;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.euclid.tuple4D.Quaternion;
@@ -14,7 +15,6 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicCoordinateSystem;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.humanoidRobotics.communication.subscribers.TimeStampedTransformBuffer;
 import us.ihmc.robotics.kinematics.TimeStampedTransform3D;
-import us.ihmc.robotics.random.RandomGeometry;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
@@ -238,13 +238,13 @@ public class ClippedSpeedOffsetErrorInterpolatorVisualizer
       Quaternion rotation = new Quaternion();
       
       timeStamp = 0;
-      translation = RandomGeometry.nextVector3D(random);
-      rotation = RandomGeometry.nextQuaternion(random);
+      translation = EuclidCoreRandomTools.nextVector3D(random);
+      rotation = EuclidCoreRandomTools.nextQuaternion(random);
       putReferenceFrameToBeCorrectedWaypointInTransformBuffer(timeStamp, translation, rotation);
       
       timeStamp = maxTimeStamp;
-      translation = RandomGeometry.nextVector3D(random);
-      rotation = RandomGeometry.nextQuaternion(random);
+      translation = EuclidCoreRandomTools.nextVector3D(random);
+      rotation = EuclidCoreRandomTools.nextQuaternion(random);
       putReferenceFrameToBeCorrectedWaypointInTransformBuffer(timeStamp, translation, rotation);
    }
 

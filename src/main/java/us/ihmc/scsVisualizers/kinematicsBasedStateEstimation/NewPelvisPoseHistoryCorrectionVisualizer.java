@@ -8,6 +8,7 @@ import ihmc_common_msgs.msg.dds.StampedPosePacket;
 import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.euclid.referenceFrame.FramePose3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
+import us.ihmc.euclid.tools.EuclidCoreRandomTools;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.euclid.tuple4D.Quaternion;
@@ -21,7 +22,6 @@ import us.ihmc.mecano.multiBodySystem.RigidBody;
 import us.ihmc.mecano.multiBodySystem.SixDoFJoint;
 import us.ihmc.mecano.multiBodySystem.interfaces.RigidBodyBasics;
 import us.ihmc.robotics.kinematics.TimeStampedTransform3D;
-import us.ihmc.robotics.random.RandomGeometry;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
@@ -296,8 +296,8 @@ public class NewPelvisPoseHistoryCorrectionVisualizer
 
       for (long timeStamp = firstTimeStamp + 1000; timeStamp < lastTimeStamp; timeStamp += 1000)
       {
-         Vector3D smallTranslationOffset = RandomGeometry.nextVector3D(random, 0.02);
-         Quaternion smallRotationOffset = RandomGeometry.nextQuaternion(random, 0.02);
+         Vector3D smallTranslationOffset = EuclidCoreRandomTools.nextVector3D(random, 0.02);
+         Quaternion smallRotationOffset = EuclidCoreRandomTools.nextQuaternion(random, 0.02);
          
          pelvisWaypointsTransformPoseBufferInWorldFrame.findTransform(timeStamp, pelvisTransformAtSpecificTimeStamp);
          pelvisTransformAtSpecificTimeStamp_Translation.set(pelvisTransformAtSpecificTimeStamp.getTransform3D());

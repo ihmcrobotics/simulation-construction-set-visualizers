@@ -7,12 +7,12 @@ import us.ihmc.euclid.referenceFrame.FrameMatrix3D;
 import us.ihmc.euclid.referenceFrame.FramePose3D;
 import us.ihmc.euclid.referenceFrame.FrameVector3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
+import us.ihmc.euclid.tools.EuclidCoreRandomTools;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicPosition;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicReferenceFrame;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicVector;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
-import us.ihmc.robotics.random.RandomGeometry;
 import us.ihmc.robotics.referenceFrames.PoseReferenceFrame;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
@@ -57,7 +57,7 @@ public class FrameMatrix3DVisualizer
          yoVectorOriginal.set(originalVector);
 
          // Build a random transformation matrix
-         transformationFrameMatrix.setIncludingFrame(worldFrame, RandomGeometry.nextMatrix3D(random, 1.0));
+         transformationFrameMatrix.setIncludingFrame(worldFrame, EuclidCoreRandomTools.nextMatrix3D(random, 1.0));
 
          // Transform the originalVector while in worldFrame
          transformationFrameMatrix.transform(originalVector, transformedVector);

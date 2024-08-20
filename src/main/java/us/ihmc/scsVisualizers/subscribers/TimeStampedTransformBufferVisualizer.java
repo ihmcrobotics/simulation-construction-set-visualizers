@@ -6,6 +6,7 @@ import us.ihmc.commons.RandomNumbers;
 import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.euclid.referenceFrame.FramePose3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
+import us.ihmc.euclid.tools.EuclidCoreRandomTools;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.graphicsDescription.Graphics3DObject;
 import us.ihmc.graphicsDescription.appearance.YoAppearance;
@@ -13,7 +14,6 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicCoordinateSystem;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.humanoidRobotics.communication.subscribers.TimeStampedTransformBuffer;
 import us.ihmc.robotics.kinematics.TimeStampedTransform3D;
-import us.ihmc.robotics.random.RandomGeometry;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
@@ -53,7 +53,7 @@ public class TimeStampedTransformBufferVisualizer
          RigidBodyTransform currentTransform = new RigidBodyTransform();
          long currentTimeStamp = (long) (i * (lastTimeStamp - firstTimeStamp)/numberOfTransforms + firstTimeStamp); 
          currentTransform.getTranslation().set((double)(20.0/numberOfTransforms * i) - 5.0, RandomNumbers.nextDouble(random, -1.5, 1.5), RandomNumbers.nextDouble(random, 0.1, 2.0));
-         currentTransform.getRotation().set(RandomGeometry.nextQuaternion(random));
+         currentTransform.getRotation().set(EuclidCoreRandomTools.nextQuaternion(random));
          timeStampedPelvisPoseBuffer.put(currentTransform, currentTimeStamp);
          
          YoFramePoseUsingYawPitchRoll currentTransformYoFramePose = new YoFramePoseUsingYawPitchRoll("yoFramePose_" + i, worldFrame, registry);

@@ -7,6 +7,7 @@ import us.ihmc.commons.thread.ThreadTools;
 import us.ihmc.euclid.axisAngle.AxisAngle;
 import us.ihmc.euclid.referenceFrame.FramePose3D;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
+import us.ihmc.euclid.tools.EuclidCoreRandomTools;
 import us.ihmc.euclid.transform.RigidBodyTransform;
 import us.ihmc.euclid.tuple3D.Vector3D;
 import us.ihmc.euclid.tuple4D.Quaternion;
@@ -16,7 +17,6 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicCoordinateSystem;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.humanoidRobotics.communication.subscribers.TimeStampedTransformBuffer;
 import us.ihmc.robotics.kinematics.TimeStampedTransform3D;
-import us.ihmc.robotics.random.RandomGeometry;
 import us.ihmc.robotics.referenceFrames.PoseReferenceFrame;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
@@ -81,7 +81,7 @@ public class OutdatedPoseToUpToDateReferenceFrameUpdaterVisualizer
          RigidBodyTransform currentUpToDateTransform = new RigidBodyTransform();
          long currentTimeStamp = (long) (i * (lastTimeStamp - firstTimeStamp) / numberOfUpToDateTransforms + firstTimeStamp);
          currentUpToDateTransform.getTranslation().set((double) (20.0 / numberOfUpToDateTransforms * i) - 5.0, RandomNumbers.nextDouble(random, -1.5, 1.5), RandomNumbers.nextDouble(random, 0.1, 2.0));
-         currentUpToDateTransform.getRotation().set(RandomGeometry.nextQuaternion(random));
+         currentUpToDateTransform.getRotation().set(EuclidCoreRandomTools.nextQuaternion(random));
          upToDateTimeStampedTransformPoseBuffer.put(currentUpToDateTransform, currentTimeStamp);
          outdatedPoseToUpToDateReferenceFrameUpdater.putStateEstimatorTransformInBuffer(currentUpToDateTransform, currentTimeStamp);
 
@@ -96,7 +96,7 @@ public class OutdatedPoseToUpToDateReferenceFrameUpdaterVisualizer
       for (int j = 0; j < numberOfOutdatedTransforms; j++)
       {
          TimeStampedTransform3D upToDateTimeStampedTransformInPast = new TimeStampedTransform3D();
-         AxisAngle errorRotationOffset = RandomGeometry.nextAxisAngle(random, 0.6);
+         AxisAngle errorRotationOffset = EuclidCoreRandomTools.nextAxisAngle(random, 0.6);
          Vector3D errorTranslationOffset = new Vector3D(0.05 * j, 0.0, 0.2 * j);
 //         Quat4d errorRotationOffset = new Quat4d();
 //         RotationFunctions.setQuaternionBasedOnYawPitchRoll(errorRotationOffset,Math.toRadians(95.0), 0.0, 0.0);
