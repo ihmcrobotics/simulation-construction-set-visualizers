@@ -1,8 +1,8 @@
 package us.ihmc.scsVisualizers.filters;
 
-import us.ihmc.robotics.math.filters.FirstOrderBandPassFilteredYoVariable;
-import us.ihmc.robotics.math.filters.FirstOrderFilteredYoVariable;
-import us.ihmc.robotics.math.filters.FirstOrderFilteredYoVariable.FirstOrderFilterType;
+import us.ihmc.robotics.math.filters.FirstOrderBandPassFilteredYoDouble;
+import us.ihmc.robotics.math.filters.FirstOrderFilteredYoDouble;
+import us.ihmc.robotics.math.filters.FirstOrderFilteredYoDouble.FirstOrderFilterType;
 import us.ihmc.simulationConstructionSetTools.util.inputdevices.MidiSliderBoard;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
@@ -56,9 +56,9 @@ public class FirstOrderFilteredYoVariableVisualizer
       private final YoDouble minPassThroughFreq_radPerSec;
       private final YoDouble maxPassThroughFreq_radPerSec;
 
-      private final FirstOrderFilteredYoVariable highPass;
-      private final FirstOrderFilteredYoVariable lowPass;
-      private final FirstOrderBandPassFilteredYoVariable bandPass;
+      private final FirstOrderFilteredYoDouble highPass;
+      private final FirstOrderFilteredYoDouble lowPass;
+      private final FirstOrderBandPassFilteredYoDouble bandPass;
       
       private final YoDouble properAmplitudeHighPass;
       private final YoDouble properAmplitudeLowPass;
@@ -87,9 +87,15 @@ public class FirstOrderFilteredYoVariableVisualizer
          this.maxPassThroughFreq_radPerSec = new YoDouble("maxFreq_radPerSec", registry);
          maxPassThroughFreq_radPerSec.set(100.0);
          
-         this.highPass = new FirstOrderFilteredYoVariable("highPass", "", minPassThroughFreq_radPerSec.getDoubleValue() / (2.0*Math.PI), robot.getYoTime(), FirstOrderFilterType.HIGH_PASS, registry);
-         this.lowPass = new FirstOrderFilteredYoVariable("lowPass", "", maxPassThroughFreq_radPerSec.getDoubleValue()  / (2.0*Math.PI), robot.getYoTime(), FirstOrderFilterType.LOW_PASS, registry);
-         this.bandPass = new FirstOrderBandPassFilteredYoVariable("bandPass", "", minPassThroughFreq_radPerSec.getDoubleValue() / (2.0*Math.PI), maxPassThroughFreq_radPerSec.getDoubleValue() / (2.0*Math.PI), robot.getYoTime(), registry);
+         this.highPass = new FirstOrderFilteredYoDouble("highPass", "", minPassThroughFreq_radPerSec.getDoubleValue() / (2.0 * Math.PI), robot.getYoTime(), FirstOrderFilterType.HIGH_PASS, registry);
+         this.lowPass = new FirstOrderFilteredYoDouble("lowPass", "", maxPassThroughFreq_radPerSec.getDoubleValue() / (2.0 * Math.PI), robot.getYoTime(), FirstOrderFilterType.LOW_PASS, registry);
+         this.bandPass = new FirstOrderBandPassFilteredYoDouble("bandPass",
+                                                                "",
+                                                                  minPassThroughFreq_radPerSec.getDoubleValue() / (2.0*Math.PI),
+                                                                  maxPassThroughFreq_radPerSec.getDoubleValue() / (2.0*Math.PI),
+                                                                robot.getYoTime(),
+                                                                FirstOrderBandPassFilteredYoDouble.FirstOrderFilterType.BAND,
+                                                                registry);
          
          this.properAmplitudeHighPass = new YoDouble("properAmplitudeHighPass", registry);
          this.properAmplitudeLowPass = new YoDouble("properAmplitudeLowPass", registry);

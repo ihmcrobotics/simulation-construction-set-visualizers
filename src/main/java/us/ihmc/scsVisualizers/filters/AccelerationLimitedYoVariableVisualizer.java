@@ -3,7 +3,7 @@ package us.ihmc.scsVisualizers.filters;
 import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
 import us.ihmc.robotics.math.filters.AccelerationLimitedYoVariable;
-import us.ihmc.robotics.math.filters.FilteredVelocityYoVariable;
+import us.ihmc.robotics.math.filters.FilteredFiniteDifferenceYoVariable;
 import us.ihmc.robotics.math.functionGenerator.YoFunctionGenerator;
 import us.ihmc.robotics.math.functionGenerator.YoFunctionGeneratorMode;
 import us.ihmc.simulationconstructionset.Robot;
@@ -24,8 +24,8 @@ public class AccelerationLimitedYoVariableVisualizer
 
    private final YoDouble raw;
    private final YoDouble alphaVariable;
-   private final FilteredVelocityYoVariable rawRate;
-   private final FilteredVelocityYoVariable rawAcceleration;
+   private final FilteredFiniteDifferenceYoVariable rawRate;
+   private final FilteredFiniteDifferenceYoVariable rawAcceleration;
 
    private static double amplitude = 2.0;
    private static double frequency = 0.1;
@@ -43,8 +43,8 @@ public class AccelerationLimitedYoVariableVisualizer
       raw = new YoDouble("raw", registry);
       alphaVariable = new YoDouble("alpha", registry);
       alphaVariable.set(0.0); //set to zero to prevent smoothing of velocity
-      rawRate = new FilteredVelocityYoVariable("rawRate", "", alphaVariable, raw, dt, registry);
-      rawAcceleration = new FilteredVelocityYoVariable("rawAcceleration", "", alphaVariable, rawRate, dt, registry);
+      rawRate = new FilteredFiniteDifferenceYoVariable("rawRate", "", alphaVariable, raw, dt, registry);
+      rawAcceleration = new FilteredFiniteDifferenceYoVariable("rawAcceleration", "", alphaVariable, rawRate, dt, registry);
 
       scs = new SimulationConstructionSet(robot);
       scs.changeBufferSize(bufferSize);
