@@ -2,8 +2,8 @@ package us.ihmc.scsVisualizers.filters;
 
 import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
-import us.ihmc.robotics.math.filters.AccelerationLimitedYoVariable;
-import us.ihmc.robotics.math.filters.FilteredFiniteDifferenceYoVariable;
+import us.ihmc.yoVariables.filters.AccelerationLimitedYoVariable;
+import us.ihmc.yoVariables.filters.FilteredFiniteDifferenceYoVariable;
 import us.ihmc.robotics.math.functionGenerator.YoFunctionGenerator;
 import us.ihmc.robotics.math.functionGenerator.YoFunctionGeneratorMode;
 import us.ihmc.simulationconstructionset.Robot;

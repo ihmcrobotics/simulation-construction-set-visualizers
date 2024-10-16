@@ -2,7 +2,7 @@ package us.ihmc.scsVisualizers.filters;
 
 import us.ihmc.euclid.referenceFrame.FrameQuaternion;
 import us.ihmc.euclid.referenceFrame.ReferenceFrame;
-import us.ihmc.robotics.math.filters.FiniteDifferenceAngularVelocityYoFrameVector3D;
+import us.ihmc.yoVariables.euclid.filters.FiniteDifferenceAngularVelocityYoFrameVector3D;
 import us.ihmc.robotics.math.trajectories.SimpleOrientationTrajectoryGenerator;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;

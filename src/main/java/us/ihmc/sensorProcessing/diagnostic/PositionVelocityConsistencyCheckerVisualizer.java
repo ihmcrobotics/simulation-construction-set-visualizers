@@ -2,10 +2,11 @@ package us.ihmc.sensorProcessing.diagnostic;
 
 import java.util.Random;
 
-import us.ihmc.robotics.math.filters.DelayedYoDouble;
+import us.ihmc.yoVariables.filters.AlphaFilterTools;
+import us.ihmc.yoVariables.filters.AlphaFilteredYoVariable;
+import us.ihmc.yoVariables.filters.DelayedYoDouble;
 import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
-import us.ihmc.robotics.math.filters.AlphaFilteredYoVariable;
 import us.ihmc.robotics.math.functionGenerator.YoFunctionGenerator;
 import us.ihmc.robotics.math.functionGenerator.YoFunctionGeneratorMode;
 import us.ihmc.simulationconstructionset.Robot;
@@ -32,7 +33,7 @@ public class PositionVelocityConsistencyCheckerVisualizer
       functionGenerator.setMode(YoFunctionGeneratorMode.CHIRP_LINEAR);
       YoDouble positionSignal = new YoDouble("positionSignal", registry);
       YoDouble digitizedPositionSignal = new YoDouble("digitizedPositionSignal", registry);
-      double alpha = AlphaFilteredYoVariable.computeAlphaGivenBreakFrequencyProperly(16.0, dt);
+      double alpha = AlphaFilterTools.computeAlphaGivenBreakFrequencyProperly(16.0, dt);
       AlphaFilteredYoVariable processedPositionSignal = new AlphaFilteredYoVariable("processedPositionSignal", registry, alpha, digitizedPositionSignal);
       YoDouble velocitySignal = new YoDouble("velocitySignal", registry);
       DelayedYoDouble delayedVelocitySignal = new DelayedYoDouble("delayedVelocitySignal", "", velocitySignal, 9, registry);

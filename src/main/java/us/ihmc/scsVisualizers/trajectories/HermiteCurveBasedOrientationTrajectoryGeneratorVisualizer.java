@@ -14,7 +14,7 @@ import us.ihmc.graphicsDescription.yoGraphics.YoGraphicCoordinateSystem;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicVector;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
 import us.ihmc.robotics.geometry.AngleTools;
-import us.ihmc.robotics.math.filters.FiniteDifferenceAngularVelocityYoFrameVector3D;
+import us.ihmc.yoVariables.euclid.filters.FiniteDifferenceAngularVelocityYoFrameVector3D;
 import us.ihmc.robotics.math.trajectories.HermiteCurveBasedOrientationTrajectoryGenerator;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
