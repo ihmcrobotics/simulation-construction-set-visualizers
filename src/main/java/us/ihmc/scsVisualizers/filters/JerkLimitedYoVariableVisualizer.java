@@ -2,7 +2,7 @@ package us.ihmc.scsVisualizers.filters;
 
 import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
-import us.ihmc.robotics.math.filters.JerkLimitedYoVariable;
+import us.ihmc.robotics.math.filters.JerkLimitedYoDouble;
 import us.ihmc.robotics.math.functionGenerator.YoFunctionGenerator;
 import us.ihmc.robotics.math.functionGenerator.YoFunctionGeneratorMode;
 import us.ihmc.simulationconstructionset.Robot;
@@ -24,8 +24,8 @@ public class JerkLimitedYoVariableVisualizer
    private final YoDouble inputAcceleration = new YoDouble("inputAcceleration", registry);
 
    double dt = 0.006;
-   JerkLimitedYoVariable smoothedYoVariable = new JerkLimitedYoVariable("smoothedPosition", registry, maxAcceleration, maxJerk, inputPosition, inputVelocity,
-         inputAcceleration, dt);
+   JerkLimitedYoDouble smoothedYoVariable = new JerkLimitedYoDouble("smoothedPosition", registry, maxAcceleration, maxJerk, inputPosition, inputVelocity,
+                                                                    inputAcceleration, dt);
 
    public static void main(String[] args)
    {
