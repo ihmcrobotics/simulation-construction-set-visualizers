@@ -94,7 +94,6 @@ public class FirstOrderFilteredYoVariableVisualizer
                                                                   minPassThroughFreq_radPerSec.getDoubleValue() / (2.0*Math.PI),
                                                                   maxPassThroughFreq_radPerSec.getDoubleValue() / (2.0*Math.PI),
                                                                 robot.getYoTime(),
-                                                                FirstOrderBandPassFilteredYoDouble.FirstOrderFilterType.BAND,
                                                                 registry);
          
          this.properAmplitudeHighPass = new YoDouble("properAmplitudeHighPass", registry);
