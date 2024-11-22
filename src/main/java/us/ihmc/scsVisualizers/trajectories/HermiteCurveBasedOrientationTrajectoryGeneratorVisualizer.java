@@ -13,9 +13,9 @@ import us.ihmc.graphicsDescription.appearance.YoAppearance;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicCoordinateSystem;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicVector;
 import us.ihmc.graphicsDescription.yoGraphics.YoGraphicsListRegistry;
-import us.ihmc.robotics.geometry.AngleTools;
-import us.ihmc.robotics.math.filters.FiniteDifferenceAngularVelocityYoFrameVector;
-import us.ihmc.robotics.math.trajectories.HermiteCurveBasedOrientationTrajectoryGenerator;
+import us.ihmc.commons.AngleTools;
+import us.ihmc.robotics.math.trajectories.yoVariables.HermiteCurveBasedOrientationTrajectoryGenerator;
+import us.ihmc.yoVariables.euclid.filters.FiniteDifferenceAngularVelocityYoFrameVector3D;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
@@ -45,8 +45,8 @@ public class HermiteCurveBasedOrientationTrajectoryGeneratorVisualizer
    private FrameVector3D angularVelocityPrev = new FrameVector3D();
    double angle, omega;
 
-   private final FiniteDifferenceAngularVelocityYoFrameVector FD2AngularVelocity = new FiniteDifferenceAngularVelocityYoFrameVector("FD2AngularVelocity",
-                                                                                                                                    worldFrame, dt, registry);
+   private final FiniteDifferenceAngularVelocityYoFrameVector3D FD2AngularVelocity = new FiniteDifferenceAngularVelocityYoFrameVector3D("FD2AngularVelocity",
+                                                                                                                                        worldFrame, dt, registry);
 
    private final YoFrameVector3D FDAngularVelocity = new YoFrameVector3D("FDAngularVelocity", worldFrame, registry);
    private final YoDouble FDAngularVelocityMagnitude = new YoDouble("FDAngularVelocityMagnitude", registry);
