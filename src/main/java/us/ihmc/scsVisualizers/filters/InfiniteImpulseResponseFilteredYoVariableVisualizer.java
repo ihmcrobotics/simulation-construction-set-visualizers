@@ -1,6 +1,6 @@
 package us.ihmc.scsVisualizers.filters;
 
-import us.ihmc.robotics.dataStructures.ComplexNumber;
+import us.ihmc.math.ComplexNumber;
 import us.ihmc.robotics.math.filters.AlphaFilteredYoVariable;
 import us.ihmc.robotics.math.filters.ButterworthFilteredYoVariable;
 import us.ihmc.robotics.math.filters.ButterworthFilteredYoVariable.ButterworthFilterType;
@@ -132,7 +132,7 @@ public class InfiniteImpulseResponseFilteredYoVariableVisualizer
          //       double a2 = 0.90, b2 = 0.05; // High Frequency
          //       double a2 = 0.96, b2 = 0.05;  //
 
-         ComplexNumber[] complexZeroPairs = new ComplexNumber[] { new ComplexNumber(a1, b1) }; // Low frequency.
+         ComplexNumber[] complexZeroPairs = new ComplexNumber[] {new ComplexNumber(a1, b1) }; // Low frequency.
          ComplexNumber[] complexPolePairs = new ComplexNumber[] { new ComplexNumber(a2, b2) }; // High frequency.
 
          double gainAtZero = (1.0 - 2.0 * a1 + a1 * a1 + b1 * b1) / (1.0 - 2.0 * a2 + a2 * a2 + b2 * b2);
