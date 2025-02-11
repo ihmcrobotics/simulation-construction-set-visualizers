@@ -25,7 +25,6 @@ mainDependencies {
    api("us.ihmc:ihmc-robot-models:source")
    api("us.ihmc:ihmc-sensor-processing:source")
    api("us.ihmc:ihmc-humanoid-robotics:source")
-   api("us.ihmc:ihmc-humanoid-behaviors:source")
    api("us.ihmc:ihmc-avatar-interfaces:source")
    api("us.ihmc:ihmc-state-estimation:source")
    api("us.ihmc:atlas:source")
