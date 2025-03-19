@@ -1,15 +1,14 @@
 package us.ihmc.scsVisualizers.filters;
 
 import us.ihmc.math.ComplexNumber;
-import us.ihmc.robotics.math.filters.AlphaFilteredYoVariable;
-import us.ihmc.robotics.math.filters.ButterworthFilteredYoVariable;
-import us.ihmc.robotics.math.filters.ButterworthFilteredYoVariable.ButterworthFilterType;
 import us.ihmc.robotics.math.filters.InfiniteImpulseResponseFilteredYoVariable;
-import us.ihmc.robotics.math.filters.RateLimitedYoVariable;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
 import us.ihmc.simulationconstructionset.util.RobotController;
+import us.ihmc.yoVariables.filters.AlphaFilteredYoVariable;
+import us.ihmc.yoVariables.filters.ButterworthFilteredYoVariable;
+import us.ihmc.yoVariables.filters.RateLimitedYoVariable;
 import us.ihmc.yoVariables.registry.YoRegistry;
 import us.ihmc.yoVariables.variable.YoDouble;
 
@@ -74,7 +73,7 @@ public class InfiniteImpulseResponseFilteredYoVariableVisualizer
 
       private final AlphaFilteredYoVariable alphaFilterTestOutput = new AlphaFilteredYoVariable("alphaFilterTestOutput", registry, 0.95, input);
       private final ButterworthFilteredYoVariable butterworthOneFilterTestOutput = new ButterworthFilteredYoVariable("butterworthOneFilterTestOutput",
-            registry, 0.95, input, ButterworthFilterType.LOW_PASS);
+                                                                                                                     registry, 0.95, input, ButterworthFilteredYoVariable.ButterworthFilterType.LOW_PASS);
       private final InfiniteImpulseResponseFilteredYoVariable alphaFilterOutput = new InfiniteImpulseResponseFilteredYoVariable("alphaFilterOutput", 1, 0,
             registry);
       private final InfiniteImpulseResponseFilteredYoVariable butterworthOneFilterOutput = new InfiniteImpulseResponseFilteredYoVariable(
@@ -89,7 +88,7 @@ public class InfiniteImpulseResponseFilteredYoVariableVisualizer
 
       private final YoDouble alphaButterworth = new YoDouble("alphaButterworth", registry);
       private final ButterworthFilteredYoVariable doubleFilteredOutput = new ButterworthFilteredYoVariable("doubleFiltered", registry, alphaButterworth,
-            highPassInverse, ButterworthFilterType.LOW_PASS);
+                                                                                                           highPassInverse, ButterworthFilteredYoVariable.ButterworthFilterType.LOW_PASS);
 
       private final YoDouble maxRate;
       private final RateLimitedYoVariable rateLimitFilterd;
