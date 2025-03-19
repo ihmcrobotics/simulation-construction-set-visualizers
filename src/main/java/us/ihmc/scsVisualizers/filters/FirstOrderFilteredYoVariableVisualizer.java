@@ -1,8 +1,8 @@
 package us.ihmc.scsVisualizers.filters;
 
-import us.ihmc.robotics.math.filters.FirstOrderBandPassFilteredYoVariable;
-import us.ihmc.robotics.math.filters.FirstOrderFilteredYoVariable;
-import us.ihmc.robotics.math.filters.FirstOrderFilteredYoVariable.FirstOrderFilterType;
+import us.ihmc.yoVariables.filters.FirstOrderBandPassFilteredYoVariable;
+import us.ihmc.yoVariables.filters.FirstOrderFilteredYoVariable;
+import us.ihmc.yoVariables.filters.FirstOrderFilteredYoVariable.FirstOrderFilterType;
 import us.ihmc.simulationConstructionSetTools.util.inputdevices.MidiSliderBoard;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;

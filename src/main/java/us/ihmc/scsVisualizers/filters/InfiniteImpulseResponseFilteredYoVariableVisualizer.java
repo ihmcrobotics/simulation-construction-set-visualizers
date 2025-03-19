@@ -1,11 +1,11 @@
 package us.ihmc.scsVisualizers.filters;
 
 import us.ihmc.math.ComplexNumber;
-import us.ihmc.robotics.math.filters.AlphaFilteredYoVariable;
-import us.ihmc.robotics.math.filters.ButterworthFilteredYoVariable;
-import us.ihmc.robotics.math.filters.ButterworthFilteredYoVariable.ButterworthFilterType;
+import us.ihmc.yoVariables.filters.AlphaFilteredYoVariable;
+import us.ihmc.yoVariables.filters.ButterworthFilteredYoVariable;
+import us.ihmc.yoVariables.filters.ButterworthFilteredYoVariable.ButterworthFilterType;
 import us.ihmc.robotics.math.filters.InfiniteImpulseResponseFilteredYoVariable;
-import us.ihmc.robotics.math.filters.RateLimitedYoVariable;
+import us.ihmc.yoVariables.filters.RateLimitedYoVariable;
 import us.ihmc.simulationconstructionset.Robot;
 import us.ihmc.simulationconstructionset.SimulationConstructionSet;
 import us.ihmc.simulationconstructionset.SimulationConstructionSetParameters;
