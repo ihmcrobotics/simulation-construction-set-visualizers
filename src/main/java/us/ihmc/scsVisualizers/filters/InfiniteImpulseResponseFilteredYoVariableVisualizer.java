@@ -2,8 +2,6 @@ package us.ihmc.scsVisualizers.filters;
 
 import us.ihmc.math.ComplexNumber;
 import us.ihmc.yoVariables.filters.AlphaFilteredYoVariable;
-import us.ihmc.yoVariables.filters.ButterworthFilteredYoVariable;
-import us.ihmc.yoVariables.filters.ButterworthFilteredYoVariable.ButterworthFilterType;
 import us.ihmc.robotics.math.filters.InfiniteImpulseResponseFilteredYoVariable;
 import us.ihmc.yoVariables.filters.RateLimitedYoVariable;
 import us.ihmc.simulationconstructionset.Robot;
