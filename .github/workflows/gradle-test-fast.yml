@@ -18,6 +18,6 @@ jobs:
       ROSIE_PERSONAL_ACCESS_TOKEN: ${{ secrets.ROSIE_PERSONAL_ACCESS_TOKEN }}
     with:
       test-category: 'fast'
-      extra-repos: '["ihmc-open-robotics-software"]'
+      extra-repos: '["atlas", "ihmc-open-robotics-software"]'
       requires-self-hosted: false
       timeout-minutes: 30
